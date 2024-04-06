@@ -29,3 +29,19 @@ Summary
 -------
 In this lesson, you learned how to verify the installation of Apptainer on your HPC cluster and how to check its version. This is a foundational skill that ensures you can proceed with confidence in using Apptainer for more advanced tasks in container management.
 
+.. exercise:: Configure Apptainer
+   Explore the online Apptainer documentation and search for the bash environment variables that apptainer uses.
+   1. Do you have any apptainer variables set in your shell environment?
+   2. How do you set the variables for the CACHEDIR and TMPDIR so that they are pointing to a disk where you have enough free space? (e.g. your work folder)
+
+   .. solution:: Solution
+      1. Apptainer uses the following environemnt variables:
+      2. The following code creates subfolders in your work directory and makes sure that apptainer will use those folders to store temporary files
+   
+      .. codeblock:: bash
+         mkdir $WRKDIR/apptainercache/
+         mkdir $WRKDIR/apptainertemp/
+         export APPTAINER_CACHEDIR="$WRKDIR/apptainercache/"
+         export APPTAINER_TMPDIR="$WRKDIR/apptainertemp/"
+
+
