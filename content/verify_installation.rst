@@ -41,11 +41,15 @@ In this lesson, you learned how to verify the installation of Apptainer on your 
       1. Apptainer uses the following environemnt variables:
       2. The following code creates subfolders in your work directory and makes sure that apptainer will use those folders to store temporary files
    
+
       .. codeblock:: bash
       
          mkdir $WRKDIR/apptainercache/
          mkdir $WRKDIR/apptainertemp/
          export APPTAINER_CACHEDIR="$WRKDIR/apptainercache/"
          export APPTAINER_TMPDIR="$WRKDIR/apptainertemp/"
+
+
+
 
 
