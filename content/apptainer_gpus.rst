@@ -19,44 +19,42 @@ GPUs are powerful tools for accelerating computational workloads, particularly t
 
 First, we will create an Apptainer definition file that sets up an environment capable of utilizing NVIDIA GPUs.
 
-``` bash
-# Example Apptainer definition file for using NVIDIA GPUs
-Bootstrap: library
-From: nvcr.io/nvidia/cuda:11.0-base
+   ``` bash
+   # Example Apptainer definition file for using NVIDIA GPUs
+   Bootstrap: library
+   From: nvcr.io/nvidia/cuda:11.0-base
+   
+   %post
+       apt-get update && apt-get install -y cuda-samples-11-0
+   
+   %test
+       cd /usr/local/cuda-11.0/samples/1_Utilities/deviceQuery
+       make
+       ./deviceQuery
+   
+   %environment
+       export PATH=/usr/local/nvidia/bin:/usr/local/cuda/bin:${PATH}
+       export LD_LIBRARY_PATH=/usr/local/nvidia/lib:/usr/local/nvidia/lib64
 
-%post
-    apt-get update && apt-get install -y cuda-samples-11-0
+   %runscript
+       echo "Running CUDA device query..."
+       ./deviceQuery
+   ```
 
-%test
-    cd /usr/local/cuda-11.0/samples/1_Utilities/deviceQuery
-    make
-    ./deviceQuery
-
-%environment
-    export PATH=/usr/local/nvidia/bin:/usr/local/cuda/bin:${PATH}
-    export LD_LIBRARY_PATH=/usr/local/nvidia/lib:/usr/local/nvidia/lib64
-
-%runscript
-    echo "Running CUDA device query..."
-    ./deviceQuery
-
-```
-
-``` bash
-# Build the GPU-enabled container
-apptainer build cuda_container.sif cuda.def
-```
+   ``` bash
+   # Build the GPU-enabled container
+   apptainer build cuda_container.sif cuda.def
+   ```
 
 This block constructs the `cuda_container.sif` container from the `cuda.def` definition file, which includes the CUDA base image from NVIDIA's container registry. This setup ensures that the container will have access to the necessary CUDA libraries and tools to utilize GPU resources.
 
-``` bash
-# Run the container with GPU support
-apptainer exec --nv cuda_container.sif /bin/bash
-```
+   ``` bash
+   # Run the container with GPU support
+   apptainer exec --nv cuda_container.sif /bin/bash
+   ```
 
 This command executes the container with the `--nv` flag, which enables NVIDIA GPU support within the container. This flag is crucial as it allows the container to access the host's GPU resources, essential for running GPU-accelerated applications.
 
 Summary
 -------
 In this tutorial, you have learned how to configure and use an Apptainer container to access and utilize GPU resources for high-performance computational tasks. This capability is particularly valuable in scientific computing, where the processing power of GPUs can be leveraged to accelerate research and development workflows. By integrating GPU support into your containers, you enhance their functionality and applicability in a wide range of HPC scenarios.
-
