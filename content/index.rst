@@ -1,17 +1,16 @@
-Tuesdays tools and techniques for HPC
-======================================
+Containers on HPC with Apptainer
+================================
 
 .. warning::
 
-   This is under construction.  The schedule is not final, please see
-   the planning HackMD (not linked here, check on CodeRefinery chat)
-   for the current planning.
+   This is under construction. 
 
-.. admonition:: Course instance in April 2024
+.. admonition:: Course instance in May 2024
 
    You can follow the dates this course is given on the `course page
    <https://scicomp.aalto.fi/training/scip/workflows-2023/>`__.
    Dates are not yet known and registration is not yet open, though.
+
 
 Improve your cluster workflows!  You've had a basic course on working
 with a cluster - but what do people *actually* do? This course shows
@@ -24,6 +23,7 @@ follow up on the tools that are right for *you*.  The format is
 designed to be "fireside chat with experts", a combination of demos,
 type-along, and independent exercises.  You can engage at different
 levels, depending on your interest.
+
 
 .. prereq::
 
