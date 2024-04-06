@@ -19,7 +19,7 @@ Overlay file systems in containers are particularly useful in multi-user environ
 
 First, we'll set up a simple container with a base configuration, and then demonstrate how to use an overlay to modify its contents at runtime.
 
-.. codeblock:: bash
+.. code-block:: bash
 
    # Example Apptainer definition file for a basic container
    Bootstrap: library
@@ -35,7 +35,7 @@ First, we'll set up a simple container with a base configuration, and then demon
    
 
 
-.. codeblock:: bash
+.. code-block:: bash
 
    # Build the base container
    apptainer build base_container.sif base.def
@@ -43,7 +43,7 @@ First, we'll set up a simple container with a base configuration, and then demon
 
 This block constructs the ``base_container.sif`` from the ``base.def`` definition file, which includes installing basic utilities and creating an initial message file in the ``/app`` directory.
 
-.. codeblock:: bash
+.. code-block:: bash
 
    # Create a temporary overlay directory on the host
    mkdir -p /home/user/my_overlay/upper /home/user/my_overlay/work

@@ -20,14 +20,14 @@ In this demo, we will create a container that includes tools for inspecting its 
 
 First, we will prepare a simple environment inside the container that attempts to write to a bound directory, showing the effect of the read-only property.
 
-.. codeblock:: bash
+.. code-block:: bash
 
    # Create an example host directory and a simple text file
    mkdir /home/user/example_dir
    echo "This is a host file" > /home/user/example_dir/hostfile.txt
    
 
-.. codeblock:: bash
+.. code-block:: bash
 
    # Example Apptainer definition file with security settings
    Bootstrap: library
@@ -42,7 +42,7 @@ First, we will prepare a simple environment inside the container that attempts t
    
    
 
-.. codeblock:: bash
+.. code-block:: bash
 
    # Build the container with basic tools
    apptainer build security_container.sif security.def
@@ -50,7 +50,7 @@ First, we will prepare a simple environment inside the container that attempts t
 
 This block builds the ``security_container.sif`` from the definition file ``security.def``, which includes installing Nano, a simple text editor, to demonstrate file editing within the container.
 
-.. codeblock:: bash
+.. code-block:: bash
 
    # Run the container with a read-only bind to the host directory
    apptainer exec --bind /home/user/example_dir:/home/user/example_dir:ro security_container.sif /bin/bash

@@ -19,7 +19,7 @@ Resource limits on containers are crucial in multi-user environments where caref
 
 First, we'll set up a simple Apptainer definition file that runs a resource-intensive task, and then apply CPU and memory limits to this container.
 
-.. codeblock:: bash
+.. code-block:: bash
 
    # Example Apptainer definition file for a resource-intensive task
    Bootstrap: library
@@ -34,7 +34,7 @@ First, we'll set up a simple Apptainer definition file that runs a resource-inte
 
 
 
-.. codeblock:: bash
+.. code-block:: bash
 
    # Build the container for the stress test
    apptainer build stress_container.sif stress.def
@@ -42,7 +42,7 @@ First, we'll set up a simple Apptainer definition file that runs a resource-inte
 
 This block builds the ``stress_container.sif`` from the ``stress.def`` file. It includes the ``stress`` tool, which is used to generate a controlled load on the system's resources to demonstrate the effects of CPU and memory limits.
 
-.. codeblock:: bash
+.. code-block:: bash
 
    # Run the container with specific CPU and memory limits
    apptainer exec --apply-cgroups /path/to/cgroup_settings.json stress_container.sif
@@ -50,7 +50,7 @@ This block builds the ``stress_container.sif`` from the ``stress.def`` file. It 
 
 This command runs the ``stress_container.sif`` container with resource limits specified in a cgroups configuration file. This file (``cgroup_settings.json``) should contain JSON-formatted settings that define the CPU and memory limits for the container, like the following:
 
-.. codeblock:: json
+.. code-block:: json
 
    {
        "cpu": {

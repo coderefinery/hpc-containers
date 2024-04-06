@@ -18,7 +18,7 @@ Building your first container is a significant milestone in adopting container t
 
 In this tutorial, you will start with a basic container definition file that specifies the operating system, applications, and environment settings to be included in the container. You will then use Apptainer to build the container, making it ready for deployment and execution on an HPC cluster.
 
-.. codeblock:: bash
+.. code-block:: bash
 
    # Example definition file content for Apptainer
    Bootstrap: library
@@ -39,7 +39,7 @@ In this tutorial, you will start with a basic container definition file that spe
    
       
    
-.. codeblock:: bash
+.. code-block:: bash
 
    # Build an Apptainer container from a definition file
    apptainer build mycontainer.sif mydefinition.def

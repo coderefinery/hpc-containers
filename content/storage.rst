@@ -18,7 +18,7 @@ Container technology typically encapsulates application environments and depende
 
 First, we will demonstrate creating a simple application that writes data to a file inside a container, then show how this data can be preserved using a host directory bound to the container.
 
-.. codeblock:: bash
+.. code-block:: bash
 
    # Create a directory on the host to serve as persistent storage
    mkdir -p /home/user/persistent_data
@@ -38,7 +38,7 @@ First, we will demonstrate creating a simple application that writes data to a f
    
 
 
-.. codeblock:: bash
+.. code-block:: bash
 
    # Build the container that interacts with persistent data
    apptainer build data_container.sif data.def
@@ -46,7 +46,7 @@ First, we will demonstrate creating a simple application that writes data to a f
 
 This block builds the ``data_container.sif`` from the ``data.def`` file, which includes a simple script to modify and display a data file stored in ``/data``.
 
-.. codeblock:: bash
+.. code-block:: bash
    
    # Run the container with the persistent storage directory bound
    apptainer run --bind /home/user/persistent_data:/data data_container.sif

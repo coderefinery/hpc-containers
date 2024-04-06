@@ -19,7 +19,7 @@ Integrating containers into HPC workflows involves encapsulating the application
 
 Let’s start by creating an Apptainer definition file that encapsulates a typical scientific application, then proceed to integrate this container into a sample HPC workflow.
 
-.. codeblock:: bash
+.. code-block:: bash
 
    # Create a directory for the workflow
    mkdir -p /home/user/hpc_workflow
@@ -41,7 +41,7 @@ Let’s start by creating an Apptainer definition file that encapsulates a typic
 
 
 
-.. codeblock:: bash
+.. code-block:: bash
 
    # Build the container for the scientific application
    apptainer build sci_app_container.sif sci_app.def
@@ -49,7 +49,7 @@ Let’s start by creating an Apptainer definition file that encapsulates a typic
 
 This block creates the ``sci_app_container.sif`` from the ``sci_app.def`` definition file. This container includes Python and popular scientific libraries, setting up an environment capable of running complex scientific computations.
 
-.. codeblock:: bash
+.. code-block:: bash
    # Define a directory on the host for output
    mkdir -p /home/user/hpc_workflow/output
 

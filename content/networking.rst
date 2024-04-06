@@ -19,7 +19,7 @@ Networking within containers can be complex due to the isolation provided by the
 
 First, let's define a container that includes networking tools for testing connectivity and configurations.
 
-.. codeblock:: bash
+.. code-block:: bash
    
    # Create an Apptainer definition file with network tools
    Bootstrap: library
@@ -35,7 +35,7 @@ First, let's define a container that includes networking tools for testing conne
        ping -c 4 google.com
 
 
-.. codeblock:: bash
+.. code-block:: bash
    
    # Build the container with networking capabilities
    apptainer build net_container.sif net.def
@@ -43,7 +43,7 @@ First, let's define a container that includes networking tools for testing conne
 
 This block compiles the ``net_container.sif`` container from the ``net.def`` file, which includes necessary tools such as ``ifconfig`` for checking IP addresses, ``net-tools`` for various network operations, and ``ping`` to test connectivity.
 
-.. codeblock:: bash
+.. code-block:: bash
 
    # Run the container to test network settings
    apptainer exec net_container.sif /bin/bash

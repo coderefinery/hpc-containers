@@ -19,7 +19,7 @@ Containers provide a lightweight, efficient means of deploying web applications,
 
 First, we'll create a container definition file that includes a Python web application.
 
-.. codeblock:: bash
+.. code-block:: bash
 
    # Example Apptainer definition file for a Python web server
    Bootstrap: library
@@ -46,14 +46,14 @@ First, we'll create a container definition file that includes a Python web appli
   
 
 
-.. codeblock:: bash
+.. code-block:: bash
    # Build the container for the web application
    apptainer build webapp_container.sif webapp.def
 
 
 This block constructs the ``webapp_container.sif`` from the ``webapp.def`` definition file, which sets up a basic Flask application in the container. The Flask server is configured to listen on all network interfaces at port 5000, allowing external access.
 
-.. codeblock:: bash
+.. code-block:: bash
    # Run the container with network port mapping
    apptainer exec --net --network-args "portmap=5000:5000/tcp" webapp_container.sif
 

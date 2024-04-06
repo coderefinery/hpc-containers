@@ -18,7 +18,7 @@ The first step in utilizing containers on any high-performance computing (HPC) c
 This demo will not only verify the presence of Apptainer on your system but will also teach you how to check its version. Knowing the installed version is important as it helps in troubleshooting and in ensuring compatibility with various container definitions and configurations used in scientific applications.
 
 
-.. codeblock:: bash
+.. code-block:: bash
    
    # Check if Apptainer is installed and determine its version
    apptainer --version
@@ -42,7 +42,7 @@ In this lesson, you learned how to verify the installation of Apptainer on your 
       2. The following code creates subfolders in your work directory and makes sure that apptainer will use those folders to store temporary files
    
 
-      .. codeblock:: bash
+      .. code-block:: bash
       
          mkdir $WRKDIR/apptainercache/
          mkdir $WRKDIR/apptainertemp/

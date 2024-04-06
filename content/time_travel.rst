@@ -19,7 +19,7 @@ The ability to work with specific software versions is crucial for ensuring that
 First, we'll create a container that includes R 3.2 and RStudio Server 0.99, which are older versions no longer typically supported on modern systems.
 
 
-.. codeblock:: bash
+.. code-block:: bash
 
    # Example Apptainer definition file for R 3.2 and RStudio 0.99
    Bootstrap: library
@@ -39,7 +39,7 @@ First, we'll create a container that includes R 3.2 and RStudio Server 0.99, whi
 
 
 
-.. codeblock:: bash
+.. code-block:: bash
 
    # Build the container with old R and RStudio
    apptainer build rstudio_container.sif rstudio.def
@@ -48,7 +48,7 @@ First, we'll create a container that includes R 3.2 and RStudio Server 0.99, whi
 
 This block constructs the ``rstudio_container.sif`` from the ``rstudio.def`` file, setting up an Ubuntu 16.04 environment with R 3.2 and RStudio Server 0.99. These versions ensure compatibility with older scripts and packages.
 
-.. codeblock:: bash
+.. code-block:: bash
 
    # Run the container, accessing RStudio Server
    apptainer run -p rstudio_container.sif
