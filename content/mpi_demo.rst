@@ -19,46 +19,45 @@ Containers can encapsulate all the necessary software and libraries, providing a
 
 First, you will create a definition file for an Apptainer container that includes MPI libraries and a simple MPI script. Then, you will build the container and run a parallel job using MPI.
 
-``` bash
-# Apptainer definition file for MPI environment
-Bootstrap: library
-From: ubuntu:20.04
+.. code-block::  bash
+   # Apptainer definition file for MPI environment
+   Bootstrap: library
+   From: ubuntu:20.04
+   
+   %post
+       apt-get update && apt-get install -y mpich
+       echo "Hello from MPI" > /mpi_test.c
+       echo "#include <mpi.h>" >> /mpi_test.c
+       echo "int main(int argc, char* argv[]) {" >> /mpi_test.c
+       echo "    MPI_Init(&argc, &argv);" >> /mpi_test.c
+       echo "    int rank;" >> /mpi_test.c
+       echo "    MPI_Comm_rank(MPI_COMM_WORLD, &rank);" >> /mpi_test.c
+       echo "    printf(\"Rank %d: Hello MPI World!\\n\", rank);" >> /mpi_test.c
+       echo "    MPI_Finalize();" >> /mpi_test.c
+       echo "    return 0;" >> /mpi_test.c
+       echo "}" >> /mpi_test.c
+       mpicc /mpi_test.c -o /mpi_hello
 
-%post
-    apt-get update && apt-get install -y mpich
-    echo "Hello from MPI" > /mpi_test.c
-    echo "#include <mpi.h>" >> /mpi_test.c
-    echo "int main(int argc, char* argv[]) {" >> /mpi_test.c
-    echo "    MPI_Init(&argc, &argv);" >> /mpi_test.c
-    echo "    int rank;" >> /mpi_test.c
-    echo "    MPI_Comm_rank(MPI_COMM_WORLD, &rank);" >> /mpi_test.c
-    echo "    printf(\"Rank %d: Hello MPI World!\\n\", rank);" >> /mpi_test.c
-    echo "    MPI_Finalize();" >> /mpi_test.c
-    echo "    return 0;" >> /mpi_test.c
-    echo "}" >> /mpi_test.c
-    mpicc /mpi_test.c -o /mpi_hello
+   %environment
+       export PATH=/usr/local/bin:$PATH
 
-%environment
-    export PATH=/usr/local/bin:$PATH
+   %runscript
+       mpirun -np 4 /mpi_hello
 
-%runscript
-    mpirun -np 4 /mpi_hello
 
-```
+.. code-block::  bash
+   # Build the MPI container
+   apptainer build mpi_container.sif mpi.def
 
-``` bash
-# Build the MPI container
-apptainer build mpi_container.sif mpi.def
-```
 
-This block creates the container `mpi_container.sif` from the definition file `mpi.def`. It includes installing MPICH, a popular MPI implementation, and compiling a simple MPI program that will be executed within the container.
+This block creates the container ``mpi_container.sif`` from the definition file ``mpi.def``. It includes installing MPICH, a popular MPI implementation, and compiling a simple MPI program that will be executed within the container.
 
-``` bash
-# Run the MPI container job
-apptainer exec --nv mpi_container.sif mpirun -np 4 /mpi_hello
-```
+.. code-block::  bash
+   # Run the MPI container job
+   apptainer exec --nv mpi_container.sif mpirun -np 4 /mpi_hello
 
-This command runs the MPI program inside the container across four processes. The `--nv` option allows the container to access the host's Nvidia GPU resources if available, which is useful for MPI jobs that may benefit from GPU acceleration.
+
+This command runs the MPI program inside the container across four processes. The ``--nv`` option allows the container to access the host's Nvidia GPU resources if available, which is useful for MPI jobs that may benefit from GPU acceleration.
 
 Summary
 -------

@@ -18,36 +18,36 @@ Reproducibility is a cornerstone of scientific research, ensuring that results a
 
 First, we'll define a container with a Conda environment set up for a typical scientific Python stack.
 
-``` bash
-# Example Apptainer definition file for setting up a Conda environment
-Bootstrap: library
-From: continuumio/miniconda3
+.. code-block:: bash
+   # Example Apptainer definition file for setting up a Conda environment
+   Bootstrap: library
+   From: continuumio/miniconda3
+   
+   %post
+       conda create -n scienv python=3.8 numpy scipy matplotlib ipython -y
+       echo "source activate scienv" >> ~/.bashrc
+   
+   %environment
+       export PATH=/opt/conda/envs/scienv/bin:$PATH
+   
+   %runscript
+       echo "Activating Conda environment and launching IPython..."
+       source activate scienv
+       ipython
 
-%post
-    conda create -n scienv python=3.8 numpy scipy matplotlib ipython -y
-    echo "source activate scienv" >> ~/.bashrc
 
-%environment
-    export PATH=/opt/conda/envs/scienv/bin:$PATH
+.. code-block:: bash
+   # Build the container that includes the Conda environment
+   apptainer build conda_container.sif conda.def
 
-%runscript
-    echo "Activating Conda environment and launching IPython..."
-    source activate scienv
-    ipython
 
-```
+This block builds the ``conda_container.sif`` from the ``conda.def`` definition file, which uses the Miniconda image to install a Conda environment named ``scienv`` with several essential scientific computing packages like NumPy, SciPy, and Matplotlib.
 
-``` bash
-# Build the container that includes the Conda environment
-apptainer build conda_container.sif conda.def
-```
 
-This block builds the `conda_container.sif` from the `conda.def` definition file, which uses the Miniconda image to install a Conda environment named `scienv` with several essential scientific computing packages like NumPy, SciPy, and Matplotlib.
+.. code-block:: bash
+   # Run the container, initiating the Conda environment
+   apptainer exec conda_container.sif /bin/bash -c "source ~/.bashrc && ipython"
 
-``` bash
-# Run the container, initiating the Conda environment
-apptainer exec conda_container.sif /bin/bash -c "source ~/.bashrc && ipython"
-```
 
 This command starts a shell that activates the Conda environment and launches IPython, a powerful interactive shell for Python. This setup allows users to interactively compute and visualize data within the consistent environment provided by the container.
 

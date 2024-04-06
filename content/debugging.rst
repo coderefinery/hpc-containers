@@ -19,44 +19,43 @@ Containers encapsulate dependencies and environments but can sometimes obscure p
 
 First, we'll set up a simple container that includes tools and an application setup conducive to debugging. Then, we'll demonstrate how to enter this container to troubleshoot issues.
 
-``` bash
-# Example Apptainer definition file for a debuggable environment
-Bootstrap: library
-From: ubuntu:20.04
+.. code-block::  bash
+   # Example Apptainer definition file for a debuggable environment
+   Bootstrap: library
+   From: ubuntu:20.04
+   
+   %post
+       apt-get update && apt-get install -y python3 python3-pip gdb vim
+       pip3 install flask
+       echo "from flask import Flask" > /app.py
+       echo "app = Flask(__name__)" >> /app.py
+       echo "@app.route('/')" >> /app.py
+       echo "def hello():" >> /app.py
+       echo "    raise Exception('Intentional Error for Debugging')" >> /app.py
+       echo "if __name__ == '__main__':" >> /app.py
+       echo "    app.run(host='0.0.0.0', port=5000, debug=True)" >> /app.py
 
-%post
-    apt-get update && apt-get install -y python3 python3-pip gdb vim
-    pip3 install flask
-    echo "from flask import Flask" > /app.py
-    echo "app = Flask(__name__)" >> /app.py
-    echo "@app.route('/')" >> /app.py
-    echo "def hello():" >> /app.py
-    echo "    raise Exception('Intentional Error for Debugging')" >> /app.py
-    echo "if __name__ == '__main__':" >> /app.py
-    echo "    app.run(host='0.0.0.0', port=5000, debug=True)" >> /app.py
+   %environment
+       export FLASK_APP=/app.py
+   
+   %runscript
+       echo "Running Flask app with intentional errors for debugging..."
+       python3 /app.py
 
-%environment
-    export FLASK_APP=/app.py
 
-%runscript
-    echo "Running Flask app with intentional errors for debugging..."
-    python3 /app.py
+.. code-block::  bash
+   # Build the container for debugging
+   apptainer build debug_container.sif debug.def
 
-```
 
-``` bash
-# Build the container for debugging
-apptainer build debug_container.sif debug.def
-```
+This block constructs the ``debug_container.sif`` from the ``debug.def`` file, which sets up a Flask application programmed to raise an exception. This setup is useful for demonstrating how to handle errors within a live application.
 
-This block constructs the `debug_container.sif` from the `debug.def` file, which sets up a Flask application programmed to raise an exception. This setup is useful for demonstrating how to handle errors within a live application.
+.. code-block::  bash
+   # Enter the container with a shell to start debugging
+   apptainer shell debug_container.sif
 
-``` bash
-# Enter the container with a shell to start debugging
-apptainer shell debug_container.sif
-```
 
-This command launches a shell within the `debug_container.sif`, allowing you to interact directly with the container's environment. Inside the container, you can run the application, use tools like `gdb` or `vim` to inspect and modify files, or check logs to diagnose issues.
+This command launches a shell within the ``debug_container.sif``, allowing you to interact directly with the container's environment. Inside the container, you can run the application, use tools like ``gdb`` or ``vim`` to inspect and modify files, or check logs to diagnose issues.
 
 Summary
 -------
