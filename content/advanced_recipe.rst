@@ -19,38 +19,38 @@ Building a scientific software stack in a container can be challenging due to de
 
 First, we'll outline a container recipe that includes a typical setup for a bioinformatics analysis environment, featuring tools like BLAST, Python, and R.
 
-``` bash
-# Example Apptainer definition file for a bioinformatics stack
-Bootstrap: library
-From: ubuntu:20.04
+   ``` bash
+   # Example Apptainer definition file for a bioinformatics stack
+   Bootstrap: library
+   From: ubuntu:20.04
+   
+   %post
+       apt-get update && apt-get install -y wget build-essential python3 python3-pip r-base
+       pip3 install numpy scipy pandas biopython
+       wget ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ncbi-blast-2.10.1+-x64-linux.tar.gz
+       tar -xzf ncbi-blast-2.10.1+-x64-linux.tar.gz -C /usr/local/bin --strip-components=1
+       echo 'export PATH=/usr/local/bin:$PATH' >> ~/.bashrc
 
-%post
-    apt-get update && apt-get install -y wget build-essential python3 python3-pip r-base
-    pip3 install numpy scipy pandas biopython
-    wget ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ncbi-blast-2.10.1+-x64-linux.tar.gz
-    tar -xzf ncbi-blast-2.10.1+-x64-linux.tar.gz -C /usr/local/bin --strip-components=1
-    echo 'export PATH=/usr/local/bin:$PATH' >> ~/.bashrc
+   %environment
+       export PATH=/usr/local/bin:$PATH
 
-%environment
-    export PATH=/usr/local/bin:$PATH
+   %runscript
+       echo "Environment for bioinformatics analysis ready. Tools available: BLAST, Python, R."
+       exec /bin/bash
+   
+   ```
 
-%runscript
-    echo "Environment for bioinformatics analysis ready. Tools available: BLAST, Python, R."
-    exec /bin/bash
-
-```
-
-``` bash
-# Build the container for the bioinformatics stack
-apptainer build bioinfo_container.sif bioinfo.def
-```
+   ``` bash
+   # Build the container for the bioinformatics stack
+   apptainer build bioinfo_container.sif bioinfo.def
+   ```
 
 This block constructs the `bioinfo_container.sif` from the `bioinfo.def` file. It installs critical tools for bioinformatics, including BLAST for sequence analysis, and a suite of Python and R libraries commonly used in data analysis and visualization.
 
-``` bash
-# Run the container, providing an interactive shell
-apptainer shell bioinfo_container.sif
-```
+   ``` bash
+   # Run the container, providing an interactive shell
+   apptainer shell bioinfo_container.sif
+   ```
 
 This command provides an interactive shell within the `bioinfo_container.sif`, allowing users to execute the installed tools and perform analyses as if they were running on a native environment. This setup is ideal for ensuring that all users, regardless of their host system configuration, can reproduce the scientific computations.
 
