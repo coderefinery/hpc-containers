@@ -41,22 +41,60 @@ levels, depending on your interest.
 .. csv-table::
    :widths: auto
    :delim: ;
+   
+   xx min ; :doc:`intro_and_motivation
+   xx min ; :doc:`verify_installation
+   xx min ; :doc:`first_build
+   xx min ; :doc:`env_scripts
+   xx min ; :doc:`readonlydirs
+   xx min ; :doc:`networking
+   xx min ; :doc:`storage
+   xx min ; :doc:`apptainer_gpus
+   xx min ; :doc:`workflow
+   xx min ; :doc:`inspecting
+   xx min ; :doc:`overlay
+   xx min ; :doc:`webapp
+   xx min ; :doc:`mpi_demo
+   xx min ; :doc:`resources
+   xx min ; :doc:`debugging
+   xx min ; :doc:`conda
+   xx min ; :doc:`time_travel
+   xx min ; :doc:`advanced_recipe
 
-   xx min ; :doc:`laptop-to-cluster` Syncing workflows
-   xx min ; :doc:`sshfs`
-   xx min ; :doc:`interactive-work`
-   xx min ; :doc:`remote-kernels`
-   xx min ; :doc:`benchmarking`
-   xx min ; :doc:`monitoring-io`
-   xx min ; :doc:`container-and-archive-formats`
-   xx min ; :doc:`local-storage`
-   xx min ; :doc:`parallelizing-without-parallelizing`
-   xx min ; :doc:`automation`
+
+
 
 
 .. toctree::
    :maxdepth: 1
    :caption: The lesson
+
+   intro_and_motivation.rst
+
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Demos drafted with GPT
+
+   verify_installation.rst 
+   first_build.rst
+   env_scripts.rst
+   readonlydirs.rst
+   networking.rst
+   storage.rst
+   apptainer_gpus.rst
+   workflow.rst
+   inspecting.rst
+   overlay.rst
+   webapp.rst
+   mpi_demo.rst
+   resources.rst
+   debugging.rst
+   conda.rst
+   time_travel.rst
+   advanced_recipe.rst
+
+   
 
 
 .. toctree::
