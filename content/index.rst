@@ -42,24 +42,24 @@ levels, depending on your interest.
    :widths: auto
    :delim: ;
    
-   xx min ; :doc:`intro_and_motivation
-   xx min ; :doc:`verify_installation
-   xx min ; :doc:`first_build
-   xx min ; :doc:`env_scripts
-   xx min ; :doc:`readonlydirs
-   xx min ; :doc:`networking
-   xx min ; :doc:`storage
-   xx min ; :doc:`apptainer_gpus
-   xx min ; :doc:`workflow
-   xx min ; :doc:`inspecting
-   xx min ; :doc:`overlay
-   xx min ; :doc:`webapp
-   xx min ; :doc:`mpi_demo
-   xx min ; :doc:`resources
-   xx min ; :doc:`debugging
-   xx min ; :doc:`conda
-   xx min ; :doc:`time_travel
-   xx min ; :doc:`advanced_recipe
+   xx min ; :doc:`intro_and_motivation`
+   xx min ; :doc:`verify_installation`
+   xx min ; :doc:`first_build`
+   xx min ; :doc:`env_scripts`
+   xx min ; :doc:`readonlydirs`
+   xx min ; :doc:`networking`
+   xx min ; :doc:`storage`
+   xx min ; :doc:`apptainer_gpus`
+   xx min ; :doc:`workflow`
+   xx min ; :doc:`inspecting`
+   xx min ; :doc:`overlay`
+   xx min ; :doc:`webapp`
+   xx min ; :doc:`mpi_demo`
+   xx min ; :doc:`resources`
+   xx min ; :doc:`debugging`
+   xx min ; :doc:`conda`
+   xx min ; :doc:`time_travel`
+   xx min ; :doc:`advanced_recipe`
 
 
 
