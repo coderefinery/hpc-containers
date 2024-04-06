@@ -20,6 +20,7 @@ GPUs are powerful tools for accelerating computational workloads, particularly t
 First, we will create an Apptainer definition file that sets up an environment capable of utilizing NVIDIA GPUs.
 
 .. code-block:: bash
+
    # Example Apptainer definition file for using NVIDIA GPUs
    Bootstrap: library
    From: nvcr.io/nvidia/cuda:11.0-base
@@ -42,6 +43,7 @@ First, we will create an Apptainer definition file that sets up an environment c
    
 
 .. code-block:: bash
+   
    # Build the GPU-enabled container
    apptainer build cuda_container.sif cuda.def
    
@@ -49,11 +51,13 @@ First, we will create an Apptainer definition file that sets up an environment c
 This block constructs the ``cuda_container.sif`` container from the ``cuda.def`` definition file, which includes the CUDA base image from NVIDIA's container registry. This setup ensures that the container will have access to the necessary CUDA libraries and tools to utilize GPU resources.
 
 .. code-block:: bash
+   
    # Run the container with GPU support
    apptainer exec --nv cuda_container.sif /bin/bash
 
 
-This command executes the container with the `--nv` flag, which enables NVIDIA GPU support within the container. This flag is crucial as it allows the container to access the host's GPU resources, essential for running GPU-accelerated applications.
+This command executes the container with the ``--nv`` flag, which enables NVIDIA GPU support within the container. This flag is crucial as it allows the container to access the host's GPU resources, essential for running GPU-accelerated applications.
+
 
 Summary
 -------

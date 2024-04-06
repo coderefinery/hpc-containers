@@ -18,35 +18,39 @@ The ability to work with specific software versions is crucial for ensuring that
 
 First, we'll create a container that includes R 3.2 and RStudio Server 0.99, which are older versions no longer typically supported on modern systems.
 
-``` bash
-# Example Apptainer definition file for R 3.2 and RStudio 0.99
-Bootstrap: library
-From: ubuntu:16.04
+.. codeblock:: bash
 
-%post
-    apt-get update && apt-get install -y sudo gdebi-core
-    wget https://download2.rstudio.org/server/trusty/amd64/rstudio-server-0.99.903-amd64.deb
-    gdebi --non-interactive rstudio-server-0.99.903-amd64.deb
-    apt-get install -y r-base=3.2.*
-    echo 'options(repos = list(CRAN = "http://cran.rstudio.com"))' >> /etc/R/Rprofile.site
+   # Example Apptainer definition file for R 3.2 and RStudio 0.99
+   Bootstrap: library
+   From: ubuntu:16.04
+   
+   %post
+       apt-get update && apt-get install -y sudo gdebi-core
+       wget https://download2.rstudio.org/server/trusty/amd64/rstudio-server-0.99.903-amd64.deb
+       gdebi --non-interactive rstudio-server-0.99.903-amd64.deb
+       apt-get install -y r-base=3.2.*
+       echo 'options(repos = list(CRAN = "http://cran.rstudio.com"))' >> /etc/R/Rprofile.site
+   
+   %runscript
+       echo "Starting RStudio Server..."
+       /usr/lib/rstudio-server/bin/rserver --server-daemonize=0
+   
 
-%runscript
-    echo "Starting RStudio Server..."
-    /usr/lib/rstudio-server/bin/rserver --server-daemonize=0
 
-```
+.. codeblock:: bash
 
-``` bash
-# Build the container with old R and RStudio
-apptainer build rstudio_container.sif rstudio.def
-```
+   # Build the container with old R and RStudio
+   apptainer build rstudio_container.sif rstudio.def
 
-This block constructs the `rstudio_container.sif` from the `rstudio.def` file, setting up an Ubuntu 16.04 environment with R 3.2 and RStudio Server 0.99. These versions ensure compatibility with older scripts and packages.
 
-``` bash
-# Run the container, accessing RStudio Server
-apptainer run -p rstudio_container.sif
-```
+
+This block constructs the ``rstudio_container.sif`` from the ``rstudio.def`` file, setting up an Ubuntu 16.04 environment with R 3.2 and RStudio Server 0.99. These versions ensure compatibility with older scripts and packages.
+
+.. codeblock:: bash
+
+   # Run the container, accessing RStudio Server
+   apptainer run -p rstudio_container.sif
+
 
 This command starts the RStudio Server within the container. You can access RStudio interactively by connecting to the host's IP address at the specified port (default is 8787), where RStudio Server is configured to run. This setup allows users to interact with an older R environment as if it were installed directly on their machine.
 

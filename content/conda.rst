@@ -19,6 +19,7 @@ Reproducibility is a cornerstone of scientific research, ensuring that results a
 First, we'll define a container with a Conda environment set up for a typical scientific Python stack.
 
 .. code-block:: bash
+
    # Example Apptainer definition file for setting up a Conda environment
    Bootstrap: library
    From: continuumio/miniconda3
@@ -37,6 +38,7 @@ First, we'll define a container with a Conda environment set up for a typical sc
 
 
 .. code-block:: bash
+   
    # Build the container that includes the Conda environment
    apptainer build conda_container.sif conda.def
 
@@ -45,6 +47,7 @@ This block builds the ``conda_container.sif`` from the ``conda.def`` definition 
 
 
 .. code-block:: bash
+   
    # Run the container, initiating the Conda environment
    apptainer exec conda_container.sif /bin/bash -c "source ~/.bashrc && ipython"
 

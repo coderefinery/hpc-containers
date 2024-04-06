@@ -19,43 +19,44 @@ Containers provide a lightweight, efficient means of deploying web applications,
 
 First, we'll create a container definition file that includes a Python web application.
 
-``` bash
-# Example Apptainer definition file for a Python web server
-Bootstrap: library
-From: ubuntu:20.04
+.. codeblock:: bash
 
-%post
-    apt-get update && apt-get install -y python3 python3-pip
-    pip3 install flask
-    mkdir /webapp
-    echo "from flask import Flask, request" > /webapp/app.py
-    echo "app = Flask(__name__)" >> /webapp/app.py
-    echo "@app.route('/', methods=['GET'])" >> /webapp/app.py
-    echo "def home():" >> /webapp/app.py
-    echo "    return 'Hello from Flask inside Apptainer!'" >> /webapp/app.py
-    echo "if __name__ == '__main__':" >> /webapp/app.py
-    echo "    app.run(host='0.0.0.0', port=5000)" >> /webapp/app.py
+   # Example Apptainer definition file for a Python web server
+   Bootstrap: library
+   From: ubuntu:20.04
+   
+   %post
+       apt-get update && apt-get install -y python3 python3-pip
+       pip3 install flask
+       mkdir /webapp
+       echo "from flask import Flask, request" > /webapp/app.py
+       echo "app = Flask(__name__)" >> /webapp/app.py
+       echo "@app.route('/', methods=['GET'])" >> /webapp/app.py
+       echo "def home():" >> /webapp/app.py
+       echo "    return 'Hello from Flask inside Apptainer!'" >> /webapp/app.py
+       echo "if __name__ == '__main__':" >> /webapp/app.py
+       echo "    app.run(host='0.0.0.0', port=5000)" >> /webapp/app.py
+   
+   %environment
+       export FLASK_APP=/webapp/app.py
+   
+   %runscript
+       echo "Starting the Flask web server..."
+       python3 /webapp/app.py
+  
 
-%environment
-    export FLASK_APP=/webapp/app.py
 
-%runscript
-    echo "Starting the Flask web server..."
-    python3 /webapp/app.py
+.. codeblock:: bash
+   # Build the container for the web application
+   apptainer build webapp_container.sif webapp.def
 
-```
 
-``` bash
-# Build the container for the web application
-apptainer build webapp_container.sif webapp.def
-```
+This block constructs the ``webapp_container.sif`` from the ``webapp.def`` definition file, which sets up a basic Flask application in the container. The Flask server is configured to listen on all network interfaces at port 5000, allowing external access.
 
-This block constructs the `webapp_container.sif` from the `webapp.def` definition file, which sets up a basic Flask application in the container. The Flask server is configured to listen on all network interfaces at port 5000, allowing external access.
+.. codeblock:: bash
+   # Run the container with network port mapping
+   apptainer exec --net --network-args "portmap=5000:5000/tcp" webapp_container.sif
 
-``` bash
-# Run the container with network port mapping
-apptainer exec --net --network-args "portmap=5000:5000/tcp" webapp_container.sif
-```
 
 This command runs the container with network settings that map port 5000 inside the container to port 5000 on the host. This setup allows you to access the Flask web server from outside the container, demonstrating the container's network capabilities.
 

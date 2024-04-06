@@ -20,37 +20,43 @@ In this demo, we will create a container that includes tools for inspecting its 
 
 First, we will prepare a simple environment inside the container that attempts to write to a bound directory, showing the effect of the read-only property.
 
-``` bash
-# Create an example host directory and a simple text file
-mkdir /home/user/example_dir
-echo "This is a host file" > /home/user/example_dir/hostfile.txt
+.. codeblock:: bash
 
-# Example Apptainer definition file with security settings
-Bootstrap: library
-From: ubuntu:20.04
+   # Create an example host directory and a simple text file
+   mkdir /home/user/example_dir
+   echo "This is a host file" > /home/user/example_dir/hostfile.txt
+   
 
-%post
-    apt-get update && apt-get install -y nano
+.. codeblock:: bash
 
-%runscript
-    echo "Trying to modify the host file from within the container..."
-    nano /home/user/example_dir/hostfile.txt
+   # Example Apptainer definition file with security settings
+   Bootstrap: library
+   From: ubuntu:20.04
+   
+   %post
+       apt-get update && apt-get install -y nano
+   
+   %runscript
+       echo "Trying to modify the host file from within the container..."
+       nano /home/user/example_dir/hostfile.txt
+   
+   
 
-```
+.. codeblock:: bash
 
-``` bash
-# Build the container with basic tools
-apptainer build security_container.sif security.def
-```
+   # Build the container with basic tools
+   apptainer build security_container.sif security.def
 
-This block builds the `security_container.sif` from the definition file `security.def`, which includes installing Nano, a simple text editor, to demonstrate file editing within the container.
 
-``` bash
-# Run the container with a read-only bind to the host directory
-apptainer exec --bind /home/user/example_dir:/home/user/example_dir:ro security_container.sif /bin/bash
-```
+This block builds the ``security_container.sif`` from the definition file ``security.def``, which includes installing Nano, a simple text editor, to demonstrate file editing within the container.
 
-This command runs the container and binds the `/home/user/example_dir` directory from the host as read-only inside the container. When you try to modify `hostfile.txt` using Nano from within the container, you will see that the system prevents any changes, illustrating the effectiveness of read-only bindings for protecting host resources.
+.. codeblock:: bash
+
+   # Run the container with a read-only bind to the host directory
+   apptainer exec --bind /home/user/example_dir:/home/user/example_dir:ro security_container.sif /bin/bash
+
+
+This command runs the container and binds the ``/home/user/example_dir`` directory from the host as read-only inside the container. When you try to modify ``hostfile.txt`` using Nano from within the container, you will see that the system prevents any changes, illustrating the effectiveness of read-only bindings for protecting host resources.
 
 Summary
 -------

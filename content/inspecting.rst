@@ -7,7 +7,7 @@ Inspecting Containers
    * Learn to use Apptainer's inspect command to view metadata, files, and environment settings within a container.
    * Develop skills to assess and troubleshoot container configurations in HPC environments.
 
-   This demo demonstrates how to use the `inspect` command in Apptainer to examine various aspects of a container. Inspecting a container is crucial for ensuring that it has been configured correctly, verifying that all necessary dependencies are included, and understanding how the container interacts with its environment. This capability is especially important in complex HPC setups where precise control over the computational environment is needed to ensure reproducibility and security.
+   This demo demonstrates how to use the ``inspect`` command in Apptainer to examine various aspects of a container. Inspecting a container is crucial for ensuring that it has been configured correctly, verifying that all necessary dependencies are included, and understanding how the container interacts with its environment. This capability is especially important in complex HPC setups where precise control over the computational environment is needed to ensure reproducibility and security.
 
 .. prerequisites::
 
@@ -19,6 +19,7 @@ The ability to inspect a container provides transparency into the containerized 
 First, we will provide an example of a simple container definition file used to build a container, which we will then inspect.
 
 .. code-block:: bash
+
    # Example Apptainer definition file for inspection demo
    Bootstrap: library
    From: ubuntu:20.04
@@ -39,6 +40,7 @@ First, we will provide an example of a simple container definition file used to 
 
 
 .. code-block:: bash
+   
    # Build the container for inspection
    apptainer build inspect_container.sif inspect.def
    
@@ -46,6 +48,7 @@ First, we will provide an example of a simple container definition file used to 
 This block builds the ``inspect_container.sif`` from the ``inspect.def`` file, which includes a simple environment setup and labels for metadata. This setup prepares the container for detailed inspection.
 
 .. code-block::  bash
+   
    # Inspect the container to view metadata, environment variables, and runscript
    apptainer inspect --labels --environment --runscript inspect_container.sif
 

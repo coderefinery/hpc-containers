@@ -19,6 +19,7 @@ Setting environment variables inside a container is an essential skill for softw
 First, we will create a simple Apptainer definition file that includes the necessary commands to set environment variables. Then, we will build and run the container to see how these variables affect the application's behavior.
 
 .. code-block::  bash
+   
    # Example Apptainer definition file setting environment variables
    Bootstrap: library
    From: ubuntu:20.04
@@ -37,18 +38,20 @@ First, we will create a simple Apptainer definition file that includes the neces
 
 
 .. code-block::  bash
+   
    # Build the container with environment variables
    apptainer build env_container.sif env.def
 
 
-This block creates the `env_container.sif` container from the `env.def` file. It sets up an Ubuntu-based environment and installs Vim as an example application. The `%post` section modifies the system profile to permanently set an environment variable, while `%environment` sets it specifically for when the container is run.
+This block creates the ``env_container.sif`` container from the ``env.def`` file. It sets up an Ubuntu-based environment and installs Vim as an example application. The ``%post`` section modifies the system profile to permanently set an environment variable, while ``%environment`` sets it specifically for when the container is run.
 
 .. code-block::  bash
+   
    # Run the container to see environment variables in action
    apptainer run env_container.sif
 
 
-This final command executes the container, running the script defined in `%runscript`. It outputs the values of the environment variables set during the build phase and the runtime environment, demonstrating how these can be manipulated within the container.
+This final command executes the container, running the script defined in ``%runscript``. It outputs the values of the environment variables set during the build phase and the runtime environment, demonstrating how these can be manipulated within the container.
 
 Summary
 -------

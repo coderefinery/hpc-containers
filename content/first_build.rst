@@ -13,36 +13,40 @@ Building Your First Container
 
    * No prerequisites for following the demo
 
+
 Building your first container is a significant milestone in adopting container technology for scientific computing. This demo is designed to provide you with the practical skills needed to create and manage these environments, which are critical for ensuring computational reproducibility and scalability across different HPC systems.
 
 In this tutorial, you will start with a basic container definition file that specifies the operating system, applications, and environment settings to be included in the container. You will then use Apptainer to build the container, making it ready for deployment and execution on an HPC cluster.
 
-    bash
-# Example definition file content for Apptainer
-Bootstrap: library
-From: alpine:latest
+.. codeblock:: bash
 
-%post
-    apk add --no-cache python3 py3-pip
-    pip3 install numpy
+   # Example definition file content for Apptainer
+   Bootstrap: library
+   From: alpine:latest
+   
+   %post
+       apk add --no-cache python3 py3-pip
+       pip3 install numpy
+   
+   %environment
+       export PATH=/usr/local/bin:$PATH
+       export LANG=C.UTF-8
+   
+   %runscript
+       echo "Container built from the definition file is running!"
+   
+   # Save the above content into a file named 'mydefinition.def'
+   
+      
+   
+.. codeblock:: bash
 
-%environment
-    export PATH=/usr/local/bin:$PATH
-    export LANG=C.UTF-8
-
-%runscript
-    echo "Container built from the definition file is running!"
-
-# Save the above content into a file named 'mydefinition.def'
-
+   # Build an Apptainer container from a definition file
+   apptainer build mycontainer.sif mydefinition.def
    
 
-    bash
-# Build an Apptainer container from a definition file
-apptainer build mycontainer.sif mydefinition.def
-   
 
-This command constructs a container named 'mycontainer.sif' from the definition file 'mydefinition.def'. The `.sif` file format is a portable container format used by Apptainer. This step is essential as it compiles all the necessary components and software specified in your definition file into a single executable container.
+This command constructs a container named 'mycontainer.sif' from the definition file 'mydefinition.def'. The ``.sif`` file format is a portable container format used by Apptainer. This step is essential as it compiles all the necessary components and software specified in your definition file into a single executable container.
 
 Summary
 -------

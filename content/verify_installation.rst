@@ -18,10 +18,10 @@ The first step in utilizing containers on any high-performance computing (HPC) c
 This demo will not only verify the presence of Apptainer on your system but will also teach you how to check its version. Knowing the installed version is important as it helps in troubleshooting and in ensuring compatibility with various container definitions and configurations used in scientific applications.
 
 
-   ``` bash
+.. codeblock:: bash
    # Check if Apptainer is installed and determine its version
    apptainer --version
-   ```
+   
 
 This command checks if Apptainer is installed and displays the version number. This information is useful for understanding which features and functionalities are available to you, as different versions may have different capabilities.
 

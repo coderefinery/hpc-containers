@@ -19,35 +19,37 @@ Networking within containers can be complex due to the isolation provided by the
 
 First, let's define a container that includes networking tools for testing connectivity and configurations.
 
-``` bash
-# Create an Apptainer definition file with network tools
-Bootstrap: library
-From: ubuntu:20.04
+.. codeblock:: bash
+   
+   # Create an Apptainer definition file with network tools
+   Bootstrap: library
+   From: ubuntu:20.04
+   
+   %post
+       apt-get update && apt-get install -y iproute2 net-tools inetutils-ping
+   
+   %runscript
+       echo "Checking network configuration..."
+       ifconfig
+       echo "Pinging google.com to test DNS resolution and internet connectivity..."
+       ping -c 4 google.com
 
-%post
-    apt-get update && apt-get install -y iproute2 net-tools inetutils-ping
 
-%runscript
-    echo "Checking network configuration..."
-    ifconfig
-    echo "Pinging google.com to test DNS resolution and internet connectivity..."
-    ping -c 4 google.com
+.. codeblock:: bash
+   
+   # Build the container with networking capabilities
+   apptainer build net_container.sif net.def
 
-```
 
-``` bash
-# Build the container with networking capabilities
-apptainer build net_container.sif net.def
-```
+This block compiles the ``net_container.sif`` container from the ``net.def`` file, which includes necessary tools such as ``ifconfig`` for checking IP addresses, ``net-tools`` for various network operations, and ``ping`` to test connectivity.
 
-This block compiles the `net_container.sif` container from the `net.def` file, which includes necessary tools such as `ifconfig` for checking IP addresses, `net-tools` for various network operations, and `ping` to test connectivity.
+.. codeblock:: bash
 
-``` bash
-# Run the container to test network settings
-apptainer exec net_container.sif /bin/bash
-```
+   # Run the container to test network settings
+   apptainer exec net_container.sif /bin/bash
 
-This command launches the container, allowing you to interact with the shell and manually execute commands to inspect and test the network settings as defined in the `%runscript` section. You can verify the network interface configurations and test internet connectivity via DNS resolution.
+
+This command launches the container, allowing you to interact with the shell and manually execute commands to inspect and test the network settings as defined in the ``%runscript`` section. You can verify the network interface configurations and test internet connectivity via DNS resolution.
 
 Summary
 -------

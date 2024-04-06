@@ -19,46 +19,50 @@ Resource limits on containers are crucial in multi-user environments where caref
 
 First, we'll set up a simple Apptainer definition file that runs a resource-intensive task, and then apply CPU and memory limits to this container.
 
-``` bash
-# Example Apptainer definition file for a resource-intensive task
-Bootstrap: library
-From: ubuntu:20.04
+.. codeblock:: bash
 
-%post
-    apt-get update && apt-get install -y stress
+   # Example Apptainer definition file for a resource-intensive task
+   Bootstrap: library
+   From: ubuntu:20.04
+   
+   %post
+       apt-get update && apt-get install -y stress
+   
+   %runscript
+       echo "Starting stress test..."
+       stress --cpu 8 --io 4 --vm 2 --vm-bytes 256M --timeout 30s
 
-%runscript
-    echo "Starting stress test..."
-    stress --cpu 8 --io 4 --vm 2 --vm-bytes 256M --timeout 30s
 
-```
 
-``` bash
-# Build the container for the stress test
-apptainer build stress_container.sif stress.def
-```
+.. codeblock:: bash
 
-This block builds the `stress_container.sif` from the `stress.def` file. It includes the `stress` tool, which is used to generate a controlled load on the system's resources to demonstrate the effects of CPU and memory limits.
+   # Build the container for the stress test
+   apptainer build stress_container.sif stress.def
 
-``` bash
-# Run the container with specific CPU and memory limits
-apptainer exec --apply-cgroups /path/to/cgroup_settings.json stress_container.sif
-```
 
-This command runs the `stress_container.sif` container with resource limits specified in a cgroups configuration file. This file (`cgroup_settings.json`) should contain JSON-formatted settings that define the CPU and memory limits for the container, like the following:
+This block builds the ``stress_container.sif`` from the ``stress.def`` file. It includes the ``stress`` tool, which is used to generate a controlled load on the system's resources to demonstrate the effects of CPU and memory limits.
 
-``` json
-{
-    "cpu": {
-        "shares": 512
-    },
-    "memory": {
-        "limit_in_bytes": "500M"
-    }
-}
-```
+.. codeblock:: bash
 
-These settings restrict the container to using only a fraction of available CPU resources (`shares: 512`) and limit its memory usage to 500 MB. Adjust these values based on your cluster's policies and the specific requirements of your workload.
+   # Run the container with specific CPU and memory limits
+   apptainer exec --apply-cgroups /path/to/cgroup_settings.json stress_container.sif
+
+
+This command runs the ``stress_container.sif`` container with resource limits specified in a cgroups configuration file. This file (``cgroup_settings.json``) should contain JSON-formatted settings that define the CPU and memory limits for the container, like the following:
+
+.. codeblock:: json
+
+   {
+       "cpu": {
+           "shares": 512
+       },
+       "memory": {
+           "limit_in_bytes": "500M"
+       }
+   }
+
+
+These settings restrict the container to using only a fraction of available CPU resources (``shares: 512``) and limit its memory usage to 500 MB. Adjust these values based on your cluster's policies and the specific requirements of your workload.
 
 Summary
 -------

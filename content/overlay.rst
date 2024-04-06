@@ -19,39 +19,42 @@ Overlay file systems in containers are particularly useful in multi-user environ
 
 First, we'll set up a simple container with a base configuration, and then demonstrate how to use an overlay to modify its contents at runtime.
 
-``` bash
-# Example Apptainer definition file for a basic container
-Bootstrap: library
-From: ubuntu:20.04
+.. codeblock:: bash
 
-%post
-    apt-get update && apt-get install -y curl
-    mkdir /app
-    echo "Hello from the base container!" > /app/message.txt
+   # Example Apptainer definition file for a basic container
+   Bootstrap: library
+   From: ubuntu:20.04
+   
+   %post
+       apt-get update && apt-get install -y curl
+       mkdir /app
+       echo "Hello from the base container!" > /app/message.txt
+   
+   %runscript
+       cat /app/message.txt
+   
 
-%runscript
-    cat /app/message.txt
 
-```
+.. codeblock:: bash
 
-``` bash
-# Build the base container
-apptainer build base_container.sif base.def
-```
+   # Build the base container
+   apptainer build base_container.sif base.def
 
-This block constructs the `base_container.sif` from the `base.def` definition file, which includes installing basic utilities and creating an initial message file in the `/app` directory.
 
-``` bash
-# Create a temporary overlay directory on the host
-mkdir -p /home/user/my_overlay/upper /home/user/my_overlay/work
+This block constructs the ``base_container.sif`` from the ``base.def`` definition file, which includes installing basic utilities and creating an initial message file in the ``/app`` directory.
 
-# Example command to run the container with an overlay
-apptainer run --overlay /home/user/my_overlay/upper:/home/user/my_overlay/work:rw base_container.sif
-```
+.. codeblock:: bash
 
-This command runs `base_container.sif` with an overlay file system. The overlay consists of an upper directory (`/home/user/my_overlay/upper`) where changes are written, and a work directory (`/home/user/my_overlay/work`) that is used by the overlay file system to manage these changes.
+   # Create a temporary overlay directory on the host
+   mkdir -p /home/user/my_overlay/upper /home/user/my_overlay/work
 
-Inside the container, you can modify `/app/message.txt` or add new files. These changes will appear in the upper directory on the host, demonstrating how overlays allow for runtime modifications without altering the original container image.
+   # Example command to run the container with an overlay
+   apptainer run --overlay /home/user/my_overlay/upper:/home/user/my_overlay/work:rw base_container.sif
+
+
+This command runs ``base_container.sif`` with an overlay file system. The overlay consists of an upper directory (``/home/user/my_overlay/upper``) where changes are written, and a work directory (``/home/user/my_overlay/work``) that is used by the overlay file system to manage these changes.
+
+Inside the container, you can modify ``/app/message.txt`` or add new files. These changes will appear in the upper directory on the host, demonstrating how overlays allow for runtime modifications without altering the original container image.
 
 Summary
 -------

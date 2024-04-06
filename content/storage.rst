@@ -18,38 +18,41 @@ Container technology typically encapsulates application environments and depende
 
 First, we will demonstrate creating a simple application that writes data to a file inside a container, then show how this data can be preserved using a host directory bound to the container.
 
-``` bash
-# Create a directory on the host to serve as persistent storage
-mkdir -p /home/user/persistent_data
+.. codeblock:: bash
 
-# Example Apptainer definition file to use persistent storage
-Bootstrap: library
-From: ubuntu:20.04
+   # Create a directory on the host to serve as persistent storage
+   mkdir -p /home/user/persistent_data
+   
+   # Example Apptainer definition file to use persistent storage
+   Bootstrap: library
+   From: ubuntu:20.04
+   
+   %post
+       apt-get update && apt-get install -y nano
+       echo "Hello from Apptainer!" > /data/hello.txt
+   
+   %runscript
+       echo "Modifying the data file..."
+       echo "Another line added to the file." >> /data/hello.txt
+       cat /data/hello.txt
+   
 
-%post
-    apt-get update && apt-get install -y nano
-    echo "Hello from Apptainer!" > /data/hello.txt
 
-%runscript
-    echo "Modifying the data file..."
-    echo "Another line added to the file." >> /data/hello.txt
-    cat /data/hello.txt
+.. codeblock:: bash
 
-```
+   # Build the container that interacts with persistent data
+   apptainer build data_container.sif data.def
 
-``` bash
-# Build the container that interacts with persistent data
-apptainer build data_container.sif data.def
-```
 
-This block builds the `data_container.sif` from the `data.def` file, which includes a simple script to modify and display a data file stored in `/data`.
+This block builds the ``data_container.sif`` from the ``data.def`` file, which includes a simple script to modify and display a data file stored in ``/data``.
 
-``` bash
-# Run the container with the persistent storage directory bound
-apptainer run --bind /home/user/persistent_data:/data data_container.sif
-```
+.. codeblock:: bash
+   
+   # Run the container with the persistent storage directory bound
+   apptainer run --bind /home/user/persistent_data:/data data_container.sif
 
-This command mounts the `/home/user/persistent_data` directory from the host to the `/data` directory inside the container. This setup allows the container to read from and write to the persistent storage, ensuring that changes to the data file are maintained even after the container is stopped.
+
+This command mounts the ``/home/user/persistent_data`` directory from the host to the ``/data`` directory inside the container. This setup allows the container to read from and write to the persistent storage, ensuring that changes to the data file are maintained even after the container is stopped.
 
 Summary
 -------

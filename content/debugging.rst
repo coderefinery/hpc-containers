@@ -20,6 +20,7 @@ Containers encapsulate dependencies and environments but can sometimes obscure p
 First, we'll set up a simple container that includes tools and an application setup conducive to debugging. Then, we'll demonstrate how to enter this container to troubleshoot issues.
 
 .. code-block::  bash
+   
    # Example Apptainer definition file for a debuggable environment
    Bootstrap: library
    From: ubuntu:20.04
@@ -44,6 +45,7 @@ First, we'll set up a simple container that includes tools and an application se
 
 
 .. code-block::  bash
+   
    # Build the container for debugging
    apptainer build debug_container.sif debug.def
 
@@ -51,6 +53,7 @@ First, we'll set up a simple container that includes tools and an application se
 This block constructs the ``debug_container.sif`` from the ``debug.def`` file, which sets up a Flask application programmed to raise an exception. This setup is useful for demonstrating how to handle errors within a live application.
 
 .. code-block::  bash
+   
    # Enter the container with a shell to start debugging
    apptainer shell debug_container.sif
 

@@ -20,6 +20,7 @@ Containers can encapsulate all the necessary software and libraries, providing a
 First, you will create a definition file for an Apptainer container that includes MPI libraries and a simple MPI script. Then, you will build the container and run a parallel job using MPI.
 
 .. code-block::  bash
+
    # Apptainer definition file for MPI environment
    Bootstrap: library
    From: ubuntu:20.04
@@ -46,6 +47,7 @@ First, you will create a definition file for an Apptainer container that include
 
 
 .. code-block::  bash
+   
    # Build the MPI container
    apptainer build mpi_container.sif mpi.def
 
@@ -53,6 +55,7 @@ First, you will create a definition file for an Apptainer container that include
 This block creates the container ``mpi_container.sif`` from the definition file ``mpi.def``. It includes installing MPICH, a popular MPI implementation, and compiling a simple MPI program that will be executed within the container.
 
 .. code-block::  bash
+   
    # Run the MPI container job
    apptainer exec --nv mpi_container.sif mpirun -np 4 /mpi_hello
 

@@ -20,6 +20,7 @@ Building a scientific software stack in a container can be challenging due to de
 First, we'll outline a container recipe that includes a typical setup for a bioinformatics analysis environment, featuring tools like BLAST, Python, and R.
 
 .. code-block:: bash
+
    # Example Apptainer definition file for a bioinformatics stack
    Bootstrap: library
    From: ubuntu:20.04
@@ -40,6 +41,7 @@ First, we'll outline a container recipe that includes a typical setup for a bioi
    
 
 .. code-block:: bash
+   
    # Build the container for the bioinformatics stack
    apptainer build bioinfo_container.sif bioinfo.def
 
@@ -47,6 +49,7 @@ First, we'll outline a container recipe that includes a typical setup for a bioi
 This block constructs the ``bioinfo_container.sif`` from the ``bioinfo.def`` file. It installs critical tools for bioinformatics, including BLAST for sequence analysis, and a suite of Python and R libraries commonly used in data analysis and visualization.
 
 .. code-block:: bash
+   
    # Run the container, providing an interactive shell
    apptainer shell bioinfo_container.sif
 
