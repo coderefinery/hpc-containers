@@ -74,7 +74,7 @@ levels, depending on your interest.
 
 .. toctree::
    :maxdepth: 1
-   :caption: Demos and exercises
+   :caption: Examples
 
    verify_installation.rst 
    first_build.rst
@@ -83,7 +83,7 @@ levels, depending on your interest.
 
 .. toctree::
    :maxdepth: 1
-   :caption: Other examples to be tested drafted with ChatGPT
+   :caption: Untested examples 
 
    env_scripts.rst
    readonlydirs.rst
