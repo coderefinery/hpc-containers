@@ -21,7 +21,7 @@ In this tutorial, you will start with a basic container definition file that spe
 .. code-block:: bash
 
    # Example definition file content for Apptainer
-   Bootstrap: library
+   Bootstrap: docker
    From: alpine:latest
    
    %post
@@ -51,4 +51,13 @@ This command constructs a container named 'mycontainer.sif' from the definition 
 Summary
 -------
 This lesson taught you how to build a basic container using Apptainer from a definition file. You've learned a critical skill in containerization, enabling you to create reproducible and portable environments for a wide range of scientific applications. This capability is foundational in leveraging the full potential of HPC resources while ensuring consistency across different computing environments.
+
+
+.. exercise:: Build a simple container and test it
+
+   Build a simple container on your cluster. You do not have to use the example above. Test the following:
+   1. Start a terminal shell on the container and run a command such as ``date``
+   2. Test the `runscript` command that you have set. How do you run it and what is the output?
+
+
 

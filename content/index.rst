@@ -74,10 +74,17 @@ levels, depending on your interest.
 
 .. toctree::
    :maxdepth: 1
-   :caption: Demos drafted with GPT
+   :caption: Demos and exercises
 
    verify_installation.rst 
    first_build.rst
+
+
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Other examples to be tested drafted with ChatGPT
+
    env_scripts.rst
    readonlydirs.rst
    networking.rst
@@ -93,8 +100,6 @@ levels, depending on your interest.
    conda.rst
    time_travel.rst
    advanced_recipe.rst
-
-   
 
 
 .. toctree::
