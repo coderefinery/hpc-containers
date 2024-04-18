@@ -14,30 +14,33 @@ Building Your First Container
    * No prerequisites for following the demo
 
 
-Building your first container is a significant milestone in adopting container technology for scientific computing. This demo is designed to provide you with the practical skills needed to create and manage these environments, which are critical for ensuring computational reproducibility and scalability across different HPC systems.
+Building your first container is a significant first step to test the technology and make sure it works in the cluster(s) you use. This example is based on the typical case when you need to install and run a specific tool which cannot be easily installed by your HPC cluster admins. This can happen if certain tools are really tight to some specific system-wide dependencies (e.g. certain versions of libraries, compilers, operating system). 
 
-In this tutorial, you will start with a basic container definition file that specifies the operating system, applications, and environment settings to be included in the container. You will then use Apptainer to build the container, making it ready for deployment and execution on an HPC cluster.
+
+For the sake of learning, assume that the three tools ``fortune``, ``cowsay``, and ``lolcat`` cannot be installed by your cluster admins, and have strict requirements that you cannot just install them by yourself without root privileges.
+
 
 .. code-block:: bash
 
    # Example definition file content for Apptainer
    Bootstrap: docker
-   From: alpine:latest
-   
+   From: ubuntu:16.04
+
    %post
-       apk add --no-cache python3 py3-pip
-       pip3 install numpy
-   
+       apt-get -y update
+       apt-get -y install fortune cowsay lolcat
+
    %environment
-       export PATH=/usr/local/bin:$PATH
-       export LANG=C.UTF-8
-   
+       export LC_ALL=C
+       export PATH=/usr/games:$PATH
+
    %runscript
-       echo "Container built from the definition file is running!"
-   
+       fortune | cowsay | lolcat
+
    # Save the above content into a file named 'mydefinition.def'
    
-      
+
+Next we need to build the container image.
    
 .. code-block:: bash
 
@@ -57,7 +60,7 @@ This lesson taught you how to build a basic container using Apptainer from a def
 
    Build a simple container on your cluster. You do not have to use the example above. Test the following:
    1. Start a terminal shell on the container and run a command such as ``date``
-   2. Test the `runscript` command that you have set. How do you run it and what is the output?
+   2. Test the `runscript` part for the container above. How do you run it and what is the output?
 
 
 
