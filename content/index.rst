@@ -70,6 +70,7 @@ levels, depending on your interest.
    :caption: The lesson
 
    intro_and_motivation.rst
+   basics_running_containers.rst
 
 
 .. toctree::
