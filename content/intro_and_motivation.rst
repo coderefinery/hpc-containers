@@ -95,6 +95,30 @@ There are many uses, but here are some example:
 - Reducing the amount of files needed to install an application by putting
   all files in the image (especially useful for Python environments)
 
+Apptainer vs. Singularity
+-------------------------
+
+Singularity started as an open source project from Lawrence Berkeley National
+Laboratory in 2015. In 2018 a company called Sylabs was founded to provide
+commercial support for sites that use it.
+
+In 2021 the project joined Linux Foundation and was renamed Apptainer.
+
+Sylabs is still present and they maintain their own fork of the project called
+SingulartyCE.
+
+For more info, see the
+`Singularity wikipedia article <https://en.wikipedia.org/wiki/Singularity_(software)>`__.
+
+.. admonition:: Key points to remember
+
+   Your site might be running Singularity, SingularityCE or Apptainer.
+
+   In most cases the user interface is completely the same.
+
+   If you're running ``singularity`` you can just rename any
+   ``apptainer``-commands to ``singularity``.
+
 Image sources
 -------------
 
