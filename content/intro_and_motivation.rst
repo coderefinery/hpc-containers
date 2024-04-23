@@ -6,7 +6,6 @@ Intro about containers (on HPC)
    * Understand the basic logic and terms behind containers
    * Learn about the possibilities with containers on HPC clusters
 
-
 What even is a container?
 -------------------------
 
@@ -30,9 +29,27 @@ More traditional container launchers like docker, podman and kubernetes
 also manage containers' resource usage and various other aspects. When
 using apptainer, we do not need to worry about these features.
 
-.. admonition:: How traditional containers work
+.. admonition:: More technical information on how traditional containers work
+   :class: dropdown
 
-   Traditional containers use linux namespaces.
+   Traditional containers use
+   `linux namespaces <https://en.wikipedia.org/wiki/Linux_namespaces>`__
+   when they implement various features. These features include:
+
+   - **Creating a separate process identifier (PID) namespace:**
+     This means that process id's are not shared in the container and on
+     the host.
+   - **Creating a virtual network for the containers:**
+     Container runtimes such as docker often create virtual network
+     interfaces that the containers can use to communicate like actual
+     virtual machines.
+   - **Limiting container resources:**
+     Container runtimes usually limit container resource usage
+     (CPU usage, RAM usage) via Linux control groups (cgroups).
+
+   Apptainer does none of these as it is meant to be run as a normal
+   user and not as a superuser.
+
 
 Let's consider the following case:
 
@@ -43,17 +60,40 @@ Let's consider the following case:
 
 .. figure:: img/normal_application.svg
 
+   Figure 2: Without containers, your program uses libraries from the host system
+
 With containers the user would run the exact same container on both systems:
 
 .. figure:: img/containerized_application.svg
 
-.. admonition:: Key point
+   Figure 3: With containers, your program uses libraries from the container image
 
-   Containers are a way of launching an application in a self-contained
-   environment.
+.. admonition:: Key points to remember
 
-   Container can refer to:
+   Containers are a way of launching applications in a self-contained
+   environment with their own OS and program libraries.
 
+   Remember that the word container can refer to:
+     - a running container with it's own environment
+     - the container image that defines the container environment
+
+   We'll talk more on container images later.
+
+What is the intended use case of apptainer?
+-------------------------------------------
+
+Apptainer is meant for running complex applications in various systems such
+as HPC systems in a reproducible and portable way.
+
+There are many uses, but here are some example:
+
+- Installing an application that has installation instructions and has been
+  designed for specific operating system
+- Creating a self-contained application that can be used as a part of your
+  workflow in multiple different systems
+- Creating a finished application that can be shared with your paper
+- Reducing the amount of files needed to install an application by putting
+  all files in the image (especially useful for Python environments)
 
 Image sources
 -------------
