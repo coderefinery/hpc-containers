@@ -72,6 +72,7 @@ levels, depending on your interest.
    intro_and_motivation.rst
    basics_running_containers.rst
    container_images.rst
+   advanced_running_containers.rst
 
 
 .. toctree::
