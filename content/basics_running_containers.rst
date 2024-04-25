@@ -19,6 +19,8 @@ Let's create the container image with the following command:
 
 .. code-block:: console
 
+   $ mkdir apptainer_cache
+   $ export APPTAINER_CACHEDIR=$PWD/apptainer_cache
    $ apptainer pull python.sif docker://python
 
 We'll talk about container images and image building later on.
@@ -130,7 +132,6 @@ Review of this session
 ----------------------
 
 .. admonition:: Key points to remember
-
 
    - You can run the container with ``apptainer run my_image.sif``
    - You can start an interactive shell in a container with ``apptainer shell my_image.sif``
