@@ -186,11 +186,25 @@ Creating an image using a specification file
 ********************************************
 
 Let's say we want to create an apptainer image for the following
-``hello-world.py``-script:
+``example.py``-script:
 
 .. code-block:: python
 
-   print("Hello world!")
+   import argparse
+
+   parser = argparse.ArgumentParser()
+   parser.add_argument(
+       "numbers", help="Numbers to sum", type=int, nargs='*'
+   )
+   args = parser.parse_args()
+
+   numbers = args.numbers
+
+   if len(numbers) > 1:
+      print(f'Sum of numbers was: {sum(numbers)}')
+   else:
+      print('You did not give me any numbers to sum!')
+
 
 Let's create a definition file for this image:
 
@@ -200,10 +214,11 @@ Let's create a definition file for this image:
    From: python:latest
 
    %files
-       hello-world.py /opt
+       example.py /opt
 
    %runscript
-       python hello-world.py
+       echo "Got arguments: $*"
+       exec python /opt/example.py "$@"
 
 In this definition file we specify:
 
@@ -216,26 +231,268 @@ Now we can built this image with:
 
 .. code-block:: console
 
-   $ apptainer build hello-world.sif hello-world.def
+   $ apptainer build example.sif example.def
+
+.. figure:: img/build_example.svg
+
+   Figure 4: Building an image from a definition file
 
 After building the image we can test out the image with:
 
 .. code-block:: console
 
-   $ apptainer run hello-world.sif
+   $ apptainer run example.sif 1 2
 
 .. admonition:: Expected result
    :class: dropdown
 
-   Building a container should result in a container image
-   ``hello-world.sif`` being created.
+   Building container should result in a container image
+   ``example.sif`` being created.
 
-   Running the container should produce the following result.
+   Running the container should produce the following output:
 
    .. code-block:: console
 
-      $ apptainer run hello-world.sif
-      Hello world!
+      $ apptainer run example.sif 1 2
+      Got arguments: 1 2
+      Sum of numbers was: 3
+
+Running additional commands during image creation
+*************************************************
+
+More often than not creating an image involves more than
+just using an existing image.
+
+If you want to run additional installation commands,
+you can do them in a ``%post``-block. These commands will
+be run once during the building procedure.
+
+For example, let's modify our definition file so that we get an installation
+of `numpy <https://numpy.org/>`__-package in the image:
+
+.. code-block:: apptainer
+   Bootstrap: docker
+   From: python:latest
+
+   %files
+       example.py /opt
+
+   %runscript
+       echo "Got arguments: $*"
+       exec python /opt/example.py "$@"
+
+   %post
+       pip install numpy
+
+After re-building the image we can test the numpy installation with:
+
+.. code-block:: console
+
+   $ apptainer exec example.sif python -c 'import numpy; print(numpy.__version__)'
+
+.. admonition:: Expected result
+   :class: dropdown
+
+   During the build process we should see that the numpy-package is
+   being installed.
+
+   Running the container should produce the following output:
+
+   .. code-block:: console
+
+      $ apptainer exec example.sif python -c 'import numpy; print(numpy.__version__)'
+      1.26.4
+
+
+Setting environment variables in the image
+******************************************
+
+
+We can also specify that additional environment variables should be set
+when the image is being launched with an ``%environment``-block.
+
+While ``%runscript`` only applies when we ``apptainer run`` the image,
+commands specified in the ``%environment``-block will be executed when
+the image is launched.
+
+.. code-block:: apptainer
+
+   Bootstrap: docker
+   From: python:latest
+
+   %files
+       example.py /opt
+
+   %runscript
+       echo "Got arguments: $*"
+       exec python /opt/example.py "$@"
+
+   %post
+       pip install numpy
+
+   %environment
+       export MYVAR=yes
+
+After re-building the image we can test that the environment values is set with:
+
+.. code-block:: console
+
+   $ apptainer exec example.sif python -c 'import os; print(os.getenv("MYVAR"))'
+
+
+.. admonition:: Expected result
+   :class: dropdown
+
+   After rebuilding the container running the container should produce the following output:
+
+   .. code-block:: console
+
+      $ apptainer exec example.sif python -c 'import os; print(os.getenv("MYVAR"))'
+      yes
+
+
+Adding documentation to your image
+**********************************
+
+If you're planning on sharing your image with other people or you want to
+keep tabs on multiple images you can use labels to mark your image with
+a ``%labels``-block.
+
+You can also add a ``%help``-block that will tell users on how to use your
+image.
+
+Let's add these blocks to the definition file:
+
+
+.. code-block:: apptainer
+
+   Bootstrap: docker
+   From: python:latest
+
+   %files
+       example.py /opt
+
+   %runscript
+       echo "Got arguments: $*"
+       exec python /opt/example.py "$@"
+
+   %post
+       pip install numpy
+
+   %environment
+       export MYVAR=yes
+
+   %labels
+      Author: CodeRefinery
+      Version: v0.0.1
+      Description: This is an example image
+
+   %help
+      This container sums up numbers.
+
+      Example:
+
+         apptainer run example.sif 1 2
+
+
+Let's check the help message with:
+
+.. code-block:: console
+
+   $ apptainer run-help example.sif
+
+.. admonition:: Expected result
+   :class: dropdown
+
+   The output should look something like this:
+
+   .. code-block:: console
+
+      $ apptainer run-help example.sif
+          This container sums up numbers.
+
+          Example:
+
+             apptainer run example.sif 1 2
+
+Examining the container
+***********************
+
+Now that we have a container with some software in it we can examine it with
+
+.. code-block:: console
+
+   $ apptainer inspect example.sif
+
+.. admonition:: Expected result
+   :class: dropdown
+
+   The output should look something like this:
+
+   .. code-block:: console
+
+      $ apptainer inspect example.sif
+      Author:: CodeRefinery
+      Description:: This is an example image
+      Version:: v0.0.1
+      org.label-schema.build-arch: amd64
+      org.label-schema.build-date: Thursday_25_April_2024_21:45:51_EEST
+      org.label-schema.schema-version: 1.0
+      org.label-schema.usage.apptainer.version: 1.3.0
+      org.label-schema.usage.singularity.deffile.bootstrap: docker
+      org.label-schema.usage.singularity.deffile.from: python:latest
+
+We can also see the image contents with
+
+.. code-block:: console
+
+   $ apptainer sif list example.sif
+
+.. admonition:: Expected result
+   :class: dropdown
+
+   Output of the command should be something like this:
+
+   .. code-block:: console
+
+      $ apptainer sif list example.si
+      ------------------------------------------------------------------------------
+      ID   |GROUP   |LINK    |SIF POSITION (start-end)  |TYPE
+      ------------------------------------------------------------------------------
+      1    |1       |NONE    |32176-32385               |Def.FILE
+      2    |1       |NONE    |32385-34957               |JSON.Generic
+      3    |1       |NONE    |34957-35407               |JSON.Generic
+      4    |1       |NONE    |36864-394522624           |FS (Squashfs/*System/amd64)
+
+
+From the output of the previous command we see that at position 1 of the file we have
+the definition file used to build the image. We can examine that with
+
+.. code-block:: console
+
+   $ apptainer sif dump 1 example.sif
+
+
+Additional definition file options
+**********************************
+
+There are plenty of other sections that can be used in the definition
+file. For a great and comprehensive documentation, see
+`Apptainer's documentation for definition files <https://apptainer.org/docs/user/main/definition_files.html>`__.
+
+These features include:
+   - Creating multiple callable applications in the image
+   - Creating services that can be started and stopped
+   - Creating tests for the image build
+
+
+.. admonition:: Key points to remember
+
+   - Use ``apptainer pull`` to pull existing Docker images.
+   - Use ``apptainer build`` to build custom images from definition files.
+   - There are plenty of additional features provided. Check documentation
+     for more info.
+
 
 Image sources
 -------------
