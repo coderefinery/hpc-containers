@@ -223,6 +223,14 @@ After re-building the image we can test the numpy installation with:
    non-containerized installations to definition files 
    one should usually remove ``sudo`` from the front of commands.
 
+.. warning::
+
+   Remember that images should not contain any secrets
+   (passwords, sensitive code or data etc.)!
+
+   Anybody who has access to the image can access all files
+   in the image.
+
 Setting environment variables in the image
 ------------------------------------------
 
@@ -409,5 +417,6 @@ These features include:
 
    - Use ``apptainer pull`` to pull existing Docker images.
    - Use ``apptainer build`` to build custom images from definition files.
+   - Do not store secret information in images.
    - There are plenty of additional features provided. Check documentation
      for more info.

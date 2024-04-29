@@ -50,6 +50,7 @@ levels, depending on your interest.
    15 min ; :doc:`binding_folders`
    10 min ; :doc:`gpus`
    10 min ; :doc:`services_apps`
+   10 min ; :doc:`tips_tricks`
 
 
 
@@ -66,6 +67,7 @@ levels, depending on your interest.
    binding_folders.rst
    gpus.rst
    services_apps.rst
+   tips_tricks.rst
 
 
 .. toctree::
