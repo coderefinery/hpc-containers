@@ -73,10 +73,10 @@ painting. Paint below the top layer is hidden.
 
 .. admonition:: Key points to remember
 
-   - Traditional containers are built layer by layer
-   - Traditional containers are built from Dockerfiles
+   - Traditional containers are built layer by layer.
+   - Traditional containers are built from Dockerfiles.
    - Traditional container images are transferred via registries using
-     client tools or as `.tar`-files
+     client tools or as ``.tar``-files.
 
 Apptainer container images
 **************************
@@ -123,7 +123,7 @@ Additional build steps and runtime behaviour can be specified in a
    - Apptainer images are a single image layer which is stored in a .sif-file.
    - When built from traditional image, Apptainer images squash all layers to a single one.
    - Apptainer images are built from definition file (.def).
-   - Apptainer images are transferred as normal files
+   - Apptainer images are transferred as normal files.
 
 
 Building images
