@@ -42,14 +42,14 @@ levels, depending on your interest.
    :widths: auto
    :delim: ;
 
-   20 min ; :doc:`intro_and_motivation`
-   30 min ; :doc:`basics_running_containers`
-   10 min ; :doc:`container_images`
+   15 min ; :doc:`intro_and_motivation`
+   20 min ; :doc:`basics_running_containers`
+   15 min ; :doc:`container_images`
    15 min ; Break
-   20 min ; :doc:`building_images`
-   30 min ; :doc:`binding_folders`
-   30 min ; :doc:`gpus`
-   30 min ; :doc:`services_apps`
+   30 min ; :doc:`building_images`
+   15 min ; :doc:`binding_folders`
+   10 min ; :doc:`gpus`
+   10 min ; :doc:`services_apps`
 
 
 
