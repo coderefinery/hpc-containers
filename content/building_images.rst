@@ -161,8 +161,8 @@ After building the image we can test out the image with:
      you can convert a big and complex installation into what is
      basically a single executable.
 
-Running additional commands during image creation
--------------------------------------------------
+Running additional installation commands during image creation
+--------------------------------------------------------------
 
 More often than not creating an image involves more than
 just using an existing image.
@@ -208,6 +208,20 @@ After re-building the image we can test the numpy installation with:
       $ apptainer exec my_container.sif python -c 'import numpy; print(numpy.__version__)'
       1.26.4
 
+.. admonition:: Image building is done as a fake root-user
+
+   Commands that are run in the ``%post`` step and in other setup steps
+   are run in a state called
+   `fakeroot <https://apptainer.org/docs/user/main/fakeroot.html>`__ where
+   the user looks like the ``root``-user inside the container when in reality
+   the user is a normal user.
+
+   This means that use of ``sudo`` is not needed when installing packages via
+   package managers.
+
+   When converting installation instructions written for normal
+   non-containerized installations to definition files 
+   one should usually remove ``sudo`` from the front of commands.
 
 Setting environment variables in the image
 ------------------------------------------
