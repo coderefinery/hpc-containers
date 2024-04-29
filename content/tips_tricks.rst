@@ -68,3 +68,12 @@ You can also try
 `multi-stage builds <https://apptainer.org/docs/user/latest/definition_files.html#multi-stage-builds>`__
 where one container is used to build a software, which is then copied
 to another container that has only those packages required to run the software.
+
+
+I would want to install my conda environment in a container
+-----------------------------------------------------------
+
+See
+`this repository <https://github.com/simo-tuomisto/micromamba-apptainer>`__
+for an example definition file that can be used to bootstrap
+conda environment into a Apptainer container image.
