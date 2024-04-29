@@ -295,6 +295,11 @@ newly created database:
    $ apptainer run --app psql instance://postgres_server -c 'create database test;'
    $ apptainer run --app psql instance://postgres_server -c '\l'
 
+.. figure:: img/app_run_example.png
+
+   Figure 6: Running an app from a container
+
+
 You'll notice that we did not start a new container. Instead ran the application in
 the running instance by specifying ``instance://postgres_server`` instead of the
 ``.sif``-image. You'll also note that we did not need to specify the bind-mounts
