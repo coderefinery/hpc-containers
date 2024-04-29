@@ -225,7 +225,7 @@ Let's say we want to create an apptainer image for the following
 
 Let's create a definition file for this image:
 
-.. code-block:: apptainer
+.. code-block:: singularity
 
    Bootstrap: docker
    From: python:latest
@@ -297,7 +297,7 @@ be run once during the building procedure.
 For example, let's modify our definition file so that we get an installation
 of `numpy <https://numpy.org/>`__-package in the image:
 
-.. code-block:: apptainer
+.. code-block:: singularity
 
    Bootstrap: docker
    From: python:latest
@@ -342,7 +342,7 @@ While ``%runscript`` only applies when we ``apptainer run`` the image,
 commands specified in the ``%environment``-block will be executed when
 the image is launched.
 
-.. code-block:: apptainer
+.. code-block:: singularity
 
    Bootstrap: docker
    From: python:latest
@@ -391,7 +391,7 @@ image.
 Let's add these blocks to the definition file:
 
 
-.. code-block:: apptainer
+.. code-block:: singularity
 
    Bootstrap: docker
    From: python:latest
