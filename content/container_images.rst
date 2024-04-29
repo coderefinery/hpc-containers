@@ -10,6 +10,7 @@ Container images
 What is a container image?
 --------------------------
 
+
 Traditional container images (docker etc.)
 ******************************************
 
@@ -39,7 +40,7 @@ This analogy happens with traditional container images as well (e.g. docker imag
 
 A typical image might look something like this:
 
-.. figure:: img/image_explanation.svg
+.. figure:: img/image_explanation.png
 
    Figure 2: Typical container image consists of individual layers
 
@@ -68,12 +69,14 @@ store the images and the network capacity needed to transfer the images.
 When a container is launched these layers are fetched and organized on top of each
 other and when a program tries to find a file, it will go through the layers until it
 finds it. This is analogous to light bouncing off from the top layer of paint on a
-painting.
+painting. Paint below the top layer is hidden.
 
 .. admonition:: Key points to remember
 
    - Traditional containers are built layer by layer
    - Traditional containers are built from Dockerfiles
+   - Traditional container images are transferred via registries using
+     client tools or as `.tar`-files
 
 Apptainer container images
 **************************
@@ -89,9 +92,9 @@ Instead it writes all of the layers into one single layer. This is analogous
 to printing an image of a painting on a piece of paper. The hidden layers
 of paint are not replicated and only the topmost layer is visible.
 
-.. figure:: img/image_explanation_apptainer.svg
+.. figure:: img/image_explanation_apptainer.png
 
-   Figure 2: Apptainer container image is a single unchanging image layer
+   Figure 3: Apptainer container image is a single unchanging image layer
 
 This way of working has some upsides and some downsides.
 
@@ -119,11 +122,13 @@ Additional build steps and runtime behaviour can be specified in a
 
    - Apptainer images are a single image layer which is stored in a .sif-file.
    - When built from traditional image, Apptainer images squash all layers to a single one.
-   - Apptainer images are built from definition file (.def)
+   - Apptainer images are built from definition file (.def).
+   - Apptainer images are transferred as normal files
 
 
 Building images
 ---------------
+
 
 Pulling an existing image from a container registry
 ***************************************************
@@ -133,8 +138,6 @@ We have already seen how to pull a
 
 .. code-block:: console
 
-   $ mkdir apptainer_cache
-   $ export APPTAINER_CACHEDIR=$PWD/apptainer_cache
    $ apptainer pull python.sif docker://python
 
 We could have alternatively used the full registry specification URL:
@@ -147,23 +150,36 @@ The format for these registry specifications is:
 
 ``docker://REGISTRY_URL/USER_NAMESPACE/IMAGE_NAME:IMAGE_TAG``
 
+Here ``docker://`` means that we use a Docker Hub compatible container
+registry. There are other compatible registries such as
+`quay <https://quay.io/>`__ and
+`GitHub container registry <https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry>`__.
+
 You can read the command like this:
 
-.. figure:: img/pull_example.svg
+.. figure:: img/pull_example.png
 
    Figure 3: Pulling an image from a repository
 
-Handling temporary layers needed for build process
-**************************************************
+
+Handling temporary layers needed by the build process
+*****************************************************
 
 When Apptainer creates a ``.sif``-image it needs to first download any layers
 it uses for the building. Then it will squash all of these layers to one
 ``.sif``-image.
 
 These are stored in a folder specified by an environment variable
-``APPTAINER_CACHEDIR``. By default, apptainer will use
+``APPTAINER_CACHEDIR``. By default, Apptainer will use
 ``$HOME/.apptainer/cache``. This can result in you running out of quota
 during the image creation process if the home folder quota is not big.
+
+You can set the cache directory with:
+
+.. code-block:: console
+
+   $ mkdir apptainer_cache
+   $ export APPTAINER_CACHEDIR=$PWD/apptainer_cache
 
 It is adviced to move it to some filesystem that has enough space available.
 
@@ -182,11 +198,12 @@ and you can clean the cache with:
 See `this page <https://apptainer.org/docs/user/main/build_env.html#sec-cache>`__
 for more documentation.
 
+
 Creating an image using a specification file
 ********************************************
 
 Let's say we want to create an apptainer image for the following
-``example.py``-script:
+``summation.py``-script:
 
 .. code-block:: python
 
@@ -214,11 +231,11 @@ Let's create a definition file for this image:
    From: python:latest
 
    %files
-       example.py /opt
+       summation.py /opt
 
    %runscript
        echo "Got arguments: $*"
-       exec python /opt/example.py "$@"
+       exec python /opt/summation.py "$@"
 
 In this definition file we specify:
 
@@ -231,9 +248,9 @@ Now we can built this image with:
 
 .. code-block:: console
 
-   $ apptainer build example.sif example.def
+   $ apptainer build my_container.sif my_container_definition.def
 
-.. figure:: img/build_example.svg
+.. figure:: img/build_example.png
 
    Figure 4: Building an image from a definition file
 
@@ -241,21 +258,31 @@ After building the image we can test out the image with:
 
 .. code-block:: console
 
-   $ apptainer run example.sif 1 2
+   $ apptainer run my_container.sif 1 2
 
 .. admonition:: Expected result
    :class: dropdown
 
    Building container should result in a container image
-   ``example.sif`` being created.
+   ``my_container.sif`` being created.
 
    Running the container should produce the following output:
 
    .. code-block:: console
 
-      $ apptainer run example.sif 1 2
+      $ apptainer run my_container.sif 1 2
       Got arguments: 1 2
       Sum of numbers was: 3
+
+
+.. admonition:: Key points to remember
+
+   - Bootstrap settings are analogous to what you would use with
+     ``apptainer pull``.
+   - The application inside the container could be much more complex.
+     By creating a ``apptainer run``-interface via ``%runscript``-block
+     you can convert a big and complex installation into what is
+     basically a single executable.
 
 Running additional commands during image creation
 *************************************************
@@ -271,15 +298,16 @@ For example, let's modify our definition file so that we get an installation
 of `numpy <https://numpy.org/>`__-package in the image:
 
 .. code-block:: apptainer
+
    Bootstrap: docker
    From: python:latest
 
    %files
-       example.py /opt
+       summation.py /opt
 
    %runscript
        echo "Got arguments: $*"
-       exec python /opt/example.py "$@"
+       exec python /opt/summation.py "$@"
 
    %post
        pip install numpy
@@ -288,7 +316,7 @@ After re-building the image we can test the numpy installation with:
 
 .. code-block:: console
 
-   $ apptainer exec example.sif python -c 'import numpy; print(numpy.__version__)'
+   $ apptainer exec my_container.sif python -c 'import numpy; print(numpy.__version__)'
 
 .. admonition:: Expected result
    :class: dropdown
@@ -300,13 +328,12 @@ After re-building the image we can test the numpy installation with:
 
    .. code-block:: console
 
-      $ apptainer exec example.sif python -c 'import numpy; print(numpy.__version__)'
+      $ apptainer exec my_container.sif python -c 'import numpy; print(numpy.__version__)'
       1.26.4
 
 
 Setting environment variables in the image
 ******************************************
-
 
 We can also specify that additional environment variables should be set
 when the image is being launched with an ``%environment``-block.
@@ -321,11 +348,11 @@ the image is launched.
    From: python:latest
 
    %files
-       example.py /opt
+       summation.py /opt
 
    %runscript
        echo "Got arguments: $*"
-       exec python /opt/example.py "$@"
+       exec python /opt/summation.py "$@"
 
    %post
        pip install numpy
@@ -337,7 +364,7 @@ After re-building the image we can test that the environment values is set with:
 
 .. code-block:: console
 
-   $ apptainer exec example.sif python -c 'import os; print(os.getenv("MYVAR"))'
+   $ apptainer exec my_container.sif python -c 'import os; print(os.getenv("MYVAR"))'
 
 
 .. admonition:: Expected result
@@ -347,7 +374,7 @@ After re-building the image we can test that the environment values is set with:
 
    .. code-block:: console
 
-      $ apptainer exec example.sif python -c 'import os; print(os.getenv("MYVAR"))'
+      $ apptainer exec my_container.sif python -c 'import os; print(os.getenv("MYVAR"))'
       yes
 
 
@@ -370,11 +397,11 @@ Let's add these blocks to the definition file:
    From: python:latest
 
    %files
-       example.py /opt
+       summation.py /opt
 
    %runscript
        echo "Got arguments: $*"
-       exec python /opt/example.py "$@"
+       exec python /opt/summation.py "$@"
 
    %post
        pip install numpy
@@ -392,14 +419,14 @@ Let's add these blocks to the definition file:
 
       Example:
 
-         apptainer run example.sif 1 2
+         apptainer run my_container.sif 1 2
 
 
 Let's check the help message with:
 
 .. code-block:: console
 
-   $ apptainer run-help example.sif
+   $ apptainer run-help my_container.sif
 
 .. admonition:: Expected result
    :class: dropdown
@@ -408,12 +435,13 @@ Let's check the help message with:
 
    .. code-block:: console
 
-      $ apptainer run-help example.sif
+      $ apptainer run-help my_container.sif
           This container sums up numbers.
 
           Example:
 
-             apptainer run example.sif 1 2
+             apptainer run my_container.sif 1 2
+
 
 Examining the container
 ***********************
@@ -422,7 +450,7 @@ Now that we have a container with some software in it we can examine it with
 
 .. code-block:: console
 
-   $ apptainer inspect example.sif
+   $ apptainer inspect my_container.sif
 
 .. admonition:: Expected result
    :class: dropdown
@@ -431,7 +459,7 @@ Now that we have a container with some software in it we can examine it with
 
    .. code-block:: console
 
-      $ apptainer inspect example.sif
+      $ apptainer inspect my_container.sif
       Author:: CodeRefinery
       Description:: This is an example image
       Version:: v0.0.1
@@ -446,7 +474,7 @@ We can also see the image contents with
 
 .. code-block:: console
 
-   $ apptainer sif list example.sif
+   $ apptainer sif list my_container.sif
 
 .. admonition:: Expected result
    :class: dropdown
@@ -455,7 +483,7 @@ We can also see the image contents with
 
    .. code-block:: console
 
-      $ apptainer sif list example.si
+      $ apptainer sif list my_container.sif
       ------------------------------------------------------------------------------
       ID   |GROUP   |LINK    |SIF POSITION (start-end)  |TYPE
       ------------------------------------------------------------------------------
@@ -470,7 +498,7 @@ the definition file used to build the image. We can examine that with
 
 .. code-block:: console
 
-   $ apptainer sif dump 1 example.sif
+   $ apptainer sif dump 1 my_container.sif
 
 
 Additional definition file options

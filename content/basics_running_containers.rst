@@ -6,6 +6,49 @@ Basics of running containers
    * Learn what methods are available to run a container
 
 
+Different ways you can run your containers
+------------------------------------------
+
+You can run your container in multiple different ways:
+
+- You can run the container as a single application
+- You can get an interactive terminal in the container
+- You can run an application from within the container
+
+
+We'll cover these ways in this individual sections.
+
+
+How to read Apptainer commands?
+-------------------------------
+
+Apptainer's commands can sometimes have multiple flags
+which can make it hard to parse the command line.
+
+A typical apptainer command has:
+
+1. ``apptainer`` is at the start because we use the
+   Apptainer client to run the commands.
+2. A subcommand (like ``pull``, ``build``, ``exec``, ``run`` etc.)
+   that tells which Apptainer feature we want to use.
+3. Often after the subcommand we have the name of the image we
+   want to use.
+4. At the end we might have additional commands that Apptainer
+   ignores.
+
+For legibility reasons many commands in this lesson are highlighted
+in this format:
+
+.. figure:: img/apptainer_example.png
+   :width: 100%
+
+   Figure 1: How apptainer-commands are highlighted
+
+
+For the comprehensive list of client commands, see
+`Apptainer CLI reference page <https://apptainer.org/docs/user/latest/cli.html>`__.
+
+
 Obtaining a container from container registry
 ---------------------------------------------
 
@@ -19,8 +62,6 @@ Let's create the container image with the following command:
 
 .. code-block:: console
 
-   $ mkdir apptainer_cache
-   $ export APPTAINER_CACHEDIR=$PWD/apptainer_cache
    $ apptainer pull python.sif docker://python
 
 We'll talk about container images and image building later on.
@@ -31,7 +72,8 @@ Running the container
 ---------------------
 
 Running the container means that we run some specific program
-that the image creator has considered to be especially important.
+that the image creator has decided to be the main program for
+this image.
 
 When we run the container we will execute a so-called entry script
 or runscript that contains commands specified by the image creators.
@@ -61,9 +103,10 @@ Let's run the Python container image:
 
 You should read the command line like this:
 
-.. figure:: img/run_example.svg
+.. figure:: img/run_example.png
+   :scale: 50%
 
-   Figure 1: A simple run command
+   Figure 2: A simple run command
 
 This syntax might seem self-evident, but in more complex use cases we will give
 additional flags to various parts of the command.
@@ -92,9 +135,10 @@ We can launch an interactive shell in a container with
 
 You should read the command line like this:
 
-.. figure:: img/shell_example.svg
+.. figure:: img/shell_example.png
+   :scale: 50%
 
-   Figure 2: Launch a shell in a container
+   Figure 3: Launch a shell in a container
 
 
 Running a single program from the container
@@ -123,9 +167,10 @@ Let's check the Debian version in the container:
 
 You should read the command line like this:
 
-.. figure:: img/exec_example.svg
+.. figure:: img/exec_example.png
+   :scale: 50%
 
-   Figure 3: Launch a program in a container
+   Figure 4: Launch a program in a container
 
 
 Review of this session

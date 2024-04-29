@@ -20,7 +20,7 @@ This is done via method called **mount binding**.
 Binding means that a folder from the host system is mapped into a folder
 inside the container.
 
-.. figure:: img/default_mounts.svg
+.. figure:: img/default_mounts.png
 
    Figure 1: Only some folders are mounted by default
 
@@ -39,7 +39,7 @@ The following would bind folder ``/scratch`` from the host system to
 
    $ apptainer exec --bind /scratch example.sif ls /scratch
 
-.. figure:: img/bind_example.svg
+.. figure:: img/bind_example.png
 
    Figure 2: Binding a directory inside a container
 
@@ -86,6 +86,10 @@ Now when we launch the image, we can give the image GPU access with
 
    $ apptainer exec --nv pytorch-cuda.sif python -c 'import torch; print(torch.cuda.is_available())'
 
+.. figure:: img/nv_example.png
+
+   Figure 3: Enabling NVIDIA's GPUs in containers
+
 .. admonition:: Expected result
    :class: dropdown
 
@@ -95,6 +99,8 @@ Now when we launch the image, we can give the image GPU access with
 
       $ apptainer exec --nv pytorch-cuda.sif python -c 'import torch; print(torch.cuda.is_available())'
       True
+
+
 
 Using AMD's GPUs
 ****************
@@ -107,6 +113,10 @@ As an example, let's get a ROCm-enabled PyTorch-image:
 
    $ apptainer pull pytorch-rocm.sif docker://docker.io/rocm/pytorch:rocm6.1_ubuntu22.04_py3.10_pytorch_2.1.2
 
+.. figure:: img/rocm_example.png
+
+   Figure 4: Enabling AMD's GPUs in containers
+
 Now when we launch the image, we can give the image GPU access with
 
 .. code-block:: console
@@ -116,7 +126,7 @@ Now when we launch the image, we can give the image GPU access with
 .. admonition:: Expected result
    :class: dropdown
 
-   If you run this in a system with an NVIDIA GPU, you should see the following result:
+   If you run this in a system with an AMD GPU, you should see the following result:
 
    .. code-block:: console
 

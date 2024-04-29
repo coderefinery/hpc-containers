@@ -1,10 +1,10 @@
-Intro about containers (on HPC)
-===============================
+Intro to containers (on HPC)
+============================
 
 .. objectives::
 
-   * Understand the basic logic and terms behind containers
-   * Learn about the possibilities with containers on HPC clusters
+   * Understand the basic logic and terms behind container technology
+   * Learn about the possible use cases for containers on HPC clusters
 
 What even is a container?
 -------------------------
@@ -20,14 +20,15 @@ between the insides of the container and outside of the container.
 This makes shipping them between ports easy.
 
 Based on this analogue one might think that the container is just a
-storage format.
+storage format. It is that as well: containers are stored in container
+images (more on this in a later chapter).
 
 Instead it is a way of running **an application in a self-contained
 environment with all the tools that this specific application needs**.
 
-More traditional container launchers like docker, podman and kubernetes
-also manage containers' resource usage and various other aspects. When
-using apptainer, we do not need to worry about these features.
+More traditional container launchers like Docker, Podman and Kubernetes
+also manage containers' resource usage, networking and various other aspects.
+When using Apptainer, we do not need to worry about these features.
 
 .. admonition:: More technical information on how traditional containers work
    :class: dropdown
@@ -50,6 +51,10 @@ using apptainer, we do not need to worry about these features.
    Apptainer does none of these as it is meant to be run as a normal
    user and not as a superuser.
 
+   Apptainer does use
+   `user namespaces <https://apptainer.org/docs/user/latest/security.html#setuid-user-namespaces>`__
+   for launching the container without giving the user additional privileges.
+
 
 Let's consider the following case:
 
@@ -58,13 +63,13 @@ Let's consider the following case:
 3. The operating system / available software is different on the HPC cluster
 4. Even if the program runs, it is necessarily not the **exact same program** as operating system has changed
 
-.. figure:: img/normal_application.svg
+.. figure:: img/normal_application.png
 
    Figure 2: Without containers, your program uses libraries from the host system
 
 With containers the user would run the exact same container on both systems:
 
-.. figure:: img/containerized_application.svg
+.. figure:: img/containerized_application.png
 
    Figure 3: With containers, your program uses libraries from the container image
 
@@ -73,13 +78,15 @@ With containers the user would run the exact same container on both systems:
    Containers are a way of launching applications in a self-contained
    environment with their own OS and program libraries.
 
+   Filesystem used by containers is stored in container images. We'll talk
+   more on container images later.
+
    Remember that the word container can refer to:
      - a running container with it's own environment
      - the container image that defines the container environment
 
-   We'll talk more on container images later.
 
-What is the intended use case of apptainer?
+What is the intended use case of Apptainer?
 -------------------------------------------
 
 Apptainer is meant for running complex applications in various systems such
