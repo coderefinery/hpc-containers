@@ -3,7 +3,7 @@ Containers on HPC with Apptainer
 
 .. warning::
 
-   This is under construction. 
+   This is under construction.
 
 .. admonition:: Course instance in May 2024
 
@@ -41,25 +41,15 @@ levels, depending on your interest.
 .. csv-table::
    :widths: auto
    :delim: ;
-   
-   xx min ; :doc:`intro_and_motivation`
-   xx min ; :doc:`verify_installation`
-   xx min ; :doc:`first_build`
-   xx min ; :doc:`env_scripts`
-   xx min ; :doc:`readonlydirs`
-   xx min ; :doc:`networking`
-   xx min ; :doc:`storage`
-   xx min ; :doc:`apptainer_gpus`
-   xx min ; :doc:`workflow`
-   xx min ; :doc:`inspecting`
-   xx min ; :doc:`overlay`
-   xx min ; :doc:`webapp`
-   xx min ; :doc:`mpi_demo`
-   xx min ; :doc:`resources`
-   xx min ; :doc:`debugging`
-   xx min ; :doc:`conda`
-   xx min ; :doc:`time_travel`
-   xx min ; :doc:`advanced_recipe`
+
+   20 min ; :doc:`intro_and_motivation`
+   30 min ; :doc:`basics_running_containers`
+   10 min ; :doc:`container_images`
+   15 min ; Break
+   20 min ; :doc:`building_images`
+   30 min ; :doc:`binding_folders`
+   30 min ; :doc:`gpus`
+   30 min ; :doc:`services_apps`
 
 
 
@@ -72,45 +62,18 @@ levels, depending on your interest.
    intro_and_motivation.rst
    basics_running_containers.rst
    container_images.rst
-   advanced_running_containers.rst
+   building_images.rst
+   binding_folders.rst
+   gpus.rst
+   services_apps.rst
 
 
 .. toctree::
    :maxdepth: 1
    :caption: Examples
 
-   verify_installation.rst 
+   verify_installation.rst
    first_build.rst
-
-
-
-.. toctree::
-   :maxdepth: 1
-   :caption: Untested examples 
-
-   env_scripts.rst
-   readonlydirs.rst
-   networking.rst
-   storage.rst
-   apptainer_gpus.rst
-   workflow.rst
-   inspecting.rst
-   overlay.rst
-   webapp.rst
-   mpi_demo.rst
-   resources.rst
-   debugging.rst
-   conda.rst
-   time_travel.rst
-   advanced_recipe.rst
-
-
-.. toctree::
-   :maxdepth: 1
-   :caption: Reference
-
-   quick-reference
-   instructor-guide
 
 
 
