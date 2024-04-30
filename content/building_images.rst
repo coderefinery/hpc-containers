@@ -241,6 +241,10 @@ While ``%runscript`` only applies when we ``apptainer run`` the image,
 commands specified in the ``%environment``-block will be executed when
 the image is launched.
 
+Let's use this opportunity to set the terminal language options
+in the container. Usually containers do not have all available language
+settings installed, so setting these environment variables is very common.
+
 .. code-block:: singularity
 
    Bootstrap: docker
@@ -257,13 +261,15 @@ the image is launched.
        pip install numpy
 
    %environment
-       export MYVAR=yes
+       export LC_ALL=C
+       export LANGUAGE=C
+       export LANG=C
 
 After re-building the image we can test that the environment values is set with:
 
 .. code-block:: console
 
-   $ apptainer exec my_container.sif python -c 'import os; print(os.getenv("MYVAR"))'
+   $ apptainer exec my_container.sif python -c 'import os; print(os.getenv("LANG"))'
 
 
 .. admonition:: Expected result
@@ -306,7 +312,9 @@ Let's add these blocks to the definition file:
        pip install numpy
 
    %environment
-       export MYVAR=yes
+       export LC_ALL=C
+       export LANGUAGE=C
+       export LANG=C
 
    %labels
       Author: CodeRefinery
