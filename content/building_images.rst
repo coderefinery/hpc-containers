@@ -231,6 +231,7 @@ After re-building the image we can test the numpy installation with:
    Anybody who has access to the image can access all files
    in the image.
 
+
 Setting environment variables in the image
 ------------------------------------------
 
@@ -281,6 +282,15 @@ After re-building the image we can test that the environment values is set with:
 
       $ apptainer exec my_container.sif python -c 'import os; print(os.getenv("MYVAR"))'
       yes
+
+You can also set environment variables when running an image by
+setting ``APPTAINERENV_MYVAR=myvalue`` outside of the container or
+by giving ``--env MYVAR=myvalue`` as a flag to the 
+``run``/``exec``/``shell``-command.
+
+For more info on how to set environment variables when running containers,
+see `this page <https://apptainer.org/docs/user/latest/environment_and_metadata.html>`__
+from Apptainer's documentation.
 
 
 Adding documentation to your image
