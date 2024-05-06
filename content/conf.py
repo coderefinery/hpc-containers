@@ -21,9 +21,9 @@ project = "Container on HPC with Apptainer"
 copyright = "2024-, The contributors"
 author = "The contributors"
 github_user = "coderefinery"
-github_repo_name = ""  # auto-detected from dirname if blank
+github_repo_name = "ttt4hpc_containers"  # auto-detected from dirname if blank
 github_version = "main"
-conf_py_path = "/content/"  # with leading and trailing slash
+conf_py_path = "/ttt4hpc_containers/content/"  # with leading and trailing slash
 
 # -- General configuration ---------------------------------------------------
 
