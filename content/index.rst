@@ -45,15 +45,10 @@ levels, depending on your interest.
    15 min ; :doc:`intro_and_motivation`
    20 min ; :doc:`basics_running_containers`
    15 min ; :doc:`container_images`
-   15 min ; Break
-   30 min ; :doc:`building_images`
+   10 min ; Break
+   25 min ; :doc:`building_images`
    15 min ; :doc:`binding_folders`
-   10 min ; :doc:`gpus`
-   10 min ; :doc:`services_apps`
-   10 min ; :doc:`tips_tricks`
-
-
-
+   05 min ; Open discussion and where to go next
 
 
 .. toctree::
@@ -65,14 +60,21 @@ levels, depending on your interest.
    container_images.rst
    building_images.rst
    binding_folders.rst
+
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Extras
+   
    gpus.rst
    services_apps.rst
    tips_tricks.rst
 
 
+
 .. toctree::
    :maxdepth: 1
-   :caption: Examples
+   :caption: Exercises
 
    verify_installation.rst
    first_build.rst
