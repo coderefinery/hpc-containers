@@ -78,7 +78,7 @@ With containers the user would run the exact same container on both systems:
    Containers are a way of launching applications in a self-contained
    environment with their own OS and program libraries.
 
-   Filesystem used by containers is stored in container images. We'll talk
+   The filesystem used by containers is stored in container images. We'll talk
    more on container images later.
 
    Remember that the word container can refer to:
@@ -94,13 +94,13 @@ as HPC systems in a reproducible and portable way.
 
 There are many uses, but here are some example:
 
-- Installing an application that has installation instructions and has been
-  designed for specific operating system
+- Installing an application that has installation instructions designed for a specific operating system different than the one you are on.
 - Creating a self-contained application that can be used as a part of your
-  workflow in multiple different systems
+  workflow in multiple different systems and can easily be shared with colleagues 
 - Creating a finished application that can be shared with your paper
 - Reducing the amount of files needed to install an application by putting
   all files in the image (especially useful for Python environments)
+
 
 Apptainer vs. Singularity
 -------------------------
@@ -130,5 +130,3 @@ Image sources
 -------------
 
 - Shipping container, Bellarena by Rossographer, `CC BY-SA 2.0 <https://creativecommons.org/licenses/by-sa/2.0>`__, via `Wikimedia Commons <https://commons.wikimedia.org/wiki/File:Shipping_container,_Bellarena_-_geograph.org.uk_-_1859736.jpg>`__
-
-

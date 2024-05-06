@@ -16,7 +16,7 @@ You can run your container in multiple different ways:
 - You can run an application from within the container
 
 
-We'll cover these ways in this individual sections.
+We'll cover these ways in individual sections below.
 
 
 How to read Apptainer commands?
@@ -34,7 +34,7 @@ A typical apptainer command has:
 3. Often after the subcommand we have the name of the image we
    want to use.
 4. At the end we might have additional commands that Apptainer
-   ignores.
+   ignores but are to be digested by the application that the container itself is running.
 
 For legibility reasons many commands in this lesson are highlighted
 in this format:
@@ -95,10 +95,10 @@ Let's run the Python container image:
 
    .. code-block:: console
 
-      $ apptainer run python.sif 
+      $ apptainer run python.sif
       Python 3.12.3 (main, Apr 10 2024, 14:35:18) [GCC 12.2.0] on linux
       Type "help", "copyright", "credits" or "license" for more information.
-      >>> 
+      >>>
 
 
 You should read the command line like this:
@@ -129,7 +129,7 @@ We can launch an interactive shell in a container with
 
    .. code-block:: console
 
-      $ apptainer shell python.sif 
+      $ apptainer shell python.sif
       Apptainer> echo $SHELL
       /bin/bash
 
@@ -180,4 +180,4 @@ Review of this session
 
    - You can run the container with ``apptainer run my_image.sif``
    - You can start an interactive shell in a container with ``apptainer shell my_image.sif``
-   - You can run a single program in a container with ``apptainer exec my_image.sif my_program arg1 arg2``
+   - You can execute a single program in a container with ``apptainer exec my_image.sif my_program arg1 arg2``
