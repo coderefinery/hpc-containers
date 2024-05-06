@@ -72,8 +72,7 @@ Running the container
 ---------------------
 
 Running the container means that we run some specific program
-that the image creator has decided to be the main program for
-this image.
+that the image creator has set to be the default program for this image.
 
 When we run the container we will execute a so-called entry script
 or runscript that contains commands specified by the image creators.
@@ -178,6 +177,6 @@ Review of this session
 
 .. admonition:: Key points to remember
 
-   - You can run the container with ``apptainer run my_image.sif``
+   - You can run the containers default program/application/set-of-commands with ``apptainer run my_image.sif``
    - You can start an interactive shell in a container with ``apptainer shell my_image.sif``
    - You can execute a single program in a container with ``apptainer exec my_image.sif my_program arg1 arg2``
