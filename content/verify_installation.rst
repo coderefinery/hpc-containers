@@ -33,8 +33,9 @@ In this lesson, you learned how to verify the installation of Apptainer on your 
 .. exercise:: Configure Apptainer
 
    Explore the online Apptainer documentation and search for the bash environment variables that apptainer uses.
-   1. Do you have any apptainer variables set in your shell environment?
-   2. How do you set the variables for the CACHEDIR and TMPDIR so that they are pointing to a disk where you have enough free space? (e.g. your work folder)
+   
+     1. Do you have any apptainer variables set in your shell environment?
+     2. How do you set the variables for the CACHEDIR and TMPDIR so that they are pointing to a disk where you have enough free space? (e.g. your work folder)
 
    .. solution:: Solution
    
