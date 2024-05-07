@@ -58,7 +58,8 @@ You can set the cache directory with:
    $ mkdir apptainer_cache
    $ export APPTAINER_CACHEDIR=$PWD/apptainer_cache
 
-It is adviced to move it to some filesystem that has enough space available.
+It is adviced to select a location in some filesystem that has enough space available.
+For instance a type of "scratch" area on your HPC.
 
 You can check the cache status with:
 
@@ -137,6 +138,11 @@ After building the image we can test out the image with:
 
    $ apptainer run my_container.sif 1 2
 
+This will run the default set of commands specified in the `%runscript` block in
+the Apptainer definition file. The two arguments we send into the
+shell environment of the container, namely the numbers 1 and 2 are used by the
+executable in the runscript.
+
 .. admonition:: Expected result
    :class: dropdown
 
@@ -164,7 +170,7 @@ After building the image we can test out the image with:
 Running additional installation commands during image creation
 --------------------------------------------------------------
 
-More often than not creating an image involves more than
+More often than not, creating an image involves more than
 just using an existing image.
 
 If you want to run additional installation commands,
@@ -220,7 +226,7 @@ After re-building the image we can test the numpy installation with:
    package managers.
 
    When converting installation instructions written for normal
-   non-containerized installations to definition files 
+   non-containerized installations to definition files
    one should usually remove ``sudo`` from the front of commands.
 
 .. warning::
@@ -285,7 +291,7 @@ After re-building the image we can test that the environment values is set with:
 
 You can also set environment variables when running an image by
 setting ``APPTAINERENV_MYVAR=myvalue`` outside of the container or
-by giving ``--env MYVAR=myvalue`` as a flag to the 
+by giving ``--env MYVAR=myvalue`` as a flag to the
 ``run``/``exec``/``shell``-command.
 
 For more info on how to set environment variables when running containers,
