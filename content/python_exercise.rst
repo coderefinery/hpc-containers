@@ -12,6 +12,47 @@ Python environments are nowadays very popular due to the popularity of
 Python as a scientific programming language. These environments can sometimes
 be problematic for the filesystem as they require thousands of files.
 
+Exercise 1: Creating Python image with image's pip
+--------------------------------------------------
+
+.. exercise:: Install Python environment to base python image
+
+   Use the base python image and install following packages to the image:
+      - python
+      - numpy
+      - pandas
+
+   .. solution:: Solution
+
+      Create the following definition file ``python_definition.def``:
+
+      .. code-block:: singularity
+
+         Bootstrap: docker
+         From: python:latest
+
+         %post
+             # Python is already installed in the image
+             pip install numpy pandas
+
+      You can then create the container with:
+
+      .. code-block:: console
+
+         $ apptainer build python_environment.sif python_definition.def
+
+      You can test out the python with:
+
+      .. code-block:: console
+
+         $ apptainer run python_environment.sif python
+
+
+
+
+Exercise 2: Creating conda/mamba environment in an image
+--------------------------------------------------------
+
 .. exercise:: Install an environment to an apptainer image using an optimized definition file
 
    Create an environment with this definition file customized for
