@@ -61,6 +61,8 @@ This example showed you how to build a basic container using Apptainer from a de
    Build a simple container on your cluster. You do not have to use the example above. Test the following:
    1. Start a terminal shell on the container and run a command such as ``date``
    2. Test the `runscript` part for the container above. How do you run it and what is the output?
+   3. Add the `%labels` and `%help` block and test them as explained in the "Building Apptainer Images" section
+   4. Copy paste all terminal commands and output from the three point above into a text file that you can submit as homework.
 
 
 
