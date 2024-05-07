@@ -1,10 +1,6 @@
 Containers on HPC with Apptainer
 ================================
 
-.. warning::
-
-   This is under construction.
-
 .. admonition:: Course instance in May 2024
 
    You can follow the dates this course is given on the `course page
@@ -65,7 +61,7 @@ levels, depending on your interest.
 .. toctree::
    :maxdepth: 1
    :caption: Extras
-   
+
    gpus.rst
    services_apps.rst
    tips_tricks.rst
@@ -78,6 +74,7 @@ levels, depending on your interest.
 
    verify_installation.rst
    first_build.rst
+   python_exercise.rst
 
 
 
