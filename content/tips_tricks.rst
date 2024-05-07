@@ -1,6 +1,19 @@
 Tips, tricks and frequently asked questions
 ===========================================
 
+I'm having problems when building a container (e.g. ``fakeroot``-errors)
+------------------------------------------------------------------------
+
+Sometimes when the host system and the guest container have operating systems
+from different eras (e.g. Ubuntu 16.04 is really old), you might want to
+use the
+`pre-built Apptainer binaries <https://apptainer.org/docs/admin/main/installation.html#install-unprivileged-from-pre-built-binaries>`__.
+These can be installed without any privileges.
+
+The reason for this errors is that a critical piece of software called GLIBC
+might be too new in the host system. For more info, see the third point in
+`Apptainer's fakeroot documentation <https://apptainer.org/docs/user/latest/fakeroot.html>`__.
+
 
 Where should I install my software?
 -----------------------------------
