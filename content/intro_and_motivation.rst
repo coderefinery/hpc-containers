@@ -73,6 +73,9 @@ With containers the user would run the exact same container on both systems:
 
    Figure 3: With containers, your program uses libraries from the container image
 
+The OS that launches the container is often called **the host** and
+the container that is launched is called **a guest**.
+
 .. admonition:: Key points to remember
 
    Containers are a way of launching applications in a self-contained
@@ -84,6 +87,9 @@ With containers the user would run the exact same container on both systems:
    Remember that the word container can refer to:
      - a running container with it's own environment
      - the container image that defines the container environment
+
+   **Host** refers to the OS that launches the container, **guest**
+   refers to the launched container.
 
 
 What is the intended use case of Apptainer?
