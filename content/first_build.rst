@@ -24,7 +24,7 @@ For the sake of learning, assume that the three tools ``fortune``, ``cowsay``, a
 
    # Example definition file content for Apptainer
    Bootstrap: docker
-   From: ubuntu:20.04
+   From: ubuntu:24.04
 
    %post
        apt-get -y update
