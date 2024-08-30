@@ -115,20 +115,4 @@ Some learner personas:
 About the course
 ----------------
 
-
-
-
-
-
-
-See also
---------
-
-
-
-
-
-Credits
--------
-
-This course is a collaboration between ~10 different instructors.
+This lesson is part of `Tuesday Tools & Techniques for High Performance Computing <https://scicomp.aalto.fi/training/scip/ttt4hpc-2024/>`_.
