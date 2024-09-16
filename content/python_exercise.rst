@@ -69,7 +69,7 @@ Exercise 2: Creating conda/mamba environment in an image
 
       Write the following ``environment.yml``:
 
-      .. code-block:: yml
+      .. code-block:: yaml
 
         name: base
         channels:
