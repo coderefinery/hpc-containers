@@ -62,6 +62,7 @@ levels, depending on your interest.
    :maxdepth: 1
    :caption: Extras
 
+   sharing
    gpus.rst
    services_apps.rst
    tips_tricks.rst
