@@ -39,6 +39,10 @@ extensions = [
     "sphinx_coderefinery_branding",
 ]
 
+myst_enable_extensions = [
+    "colon_fence",  # ::: can be used instead of ``` for better rendering
+]
+
 # Settings for myst_nb:
 # https://myst-nb.readthedocs.io/en/latest/use/execute.html#triggering-notebook-execution
 # jupyter_execute_notebooks = "off"
