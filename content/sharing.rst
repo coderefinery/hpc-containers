@@ -32,9 +32,9 @@ An :doc:`example <building_images>` was using an official python image for our p
        pip install numpy
 
 
-Here we saw that we use the python base image (for instance from https://hub.docker.com/_/python) and in addtion we install some more software: numpy (and we bind mount a custom file into the image). 
+Here we saw that we use the python base image (for instance from `<https://hub.docker.com/_/python>`_ and in addtion we install some more software: numpy (and we bind mount a custom file into the image). 
 
-Building upon base-images is used extensively: The python image is not just python, it is again based on an another image (```FROM buildpack-deps:bookworm```) , which itself is based on another image and so on. 
+Building upon base-images is used extensively: The python image is not just python, it is again based on an another image (``FROM buildpack-deps:bookworm``) , which itself is based on another image and so on. 
 
 .. figure:: img/dockerfile_python_image.png
 
@@ -56,43 +56,27 @@ Our python image
 
 Check if there is a suitable official base image for the applications you need, and build upon that. 
 
-### Top 10 Base images
+### Popular base images
 
-There is most probably a very nice base image for most of your needs. If you google e.g. "best docker containers" you will find a list similar to this one: 
+There probably exists a base image for your need, almost whatever it is. If you google e.g. "best docker containers" you will find useful lists of popular ones. Here is a customised selection of such a list - with some images we find very useful: 
 
-1. [Alpine](https://hub.docker.com/_/alpine) (slim Linux OS)
+- `Alpine <https://hub.docker.com/_/alpine>`_ (slim Linux OS)
 
-2. [BusyBox](https://hub.docker.com/_/busybox) (slim Linux OS with many common Linux utilities)
+- `BusyBox <https://hub.docker.com/_/busybox>`_ (slim Linux OS with many common Linux utilities)
 
-3. [Nginx](https://hub.docker.com/_/nginx) (web server)
+- `Nginx <https://hub.docker.com/_/nginx>`_ (web server)
 
-4. [Ubuntu](https://hub.docker.com/_/ubuntu) (Linux OS)
+- `Ubuntu <https://hub.docker.com/_/ubuntu>`_ (Linux OS)
 
-5. [Python](https://hub.docker.com/_/python)
+- `Python <https://hub.docker.com/_/python>`_
 
-6. [PostGreSQL](https://hub.docker.com/_/postgres) (database)
+- `PostGreSQL <https://hub.docker.com/_/postgres>`_ (database)
 
-7. [Redis](https://hub.docker.com/_/redis) (database) 
+- `Node <https://hub.docker.com/_/node>`_ (web development)
 
-8. [Apache httpd](https://hub.docker.com/_/httpd) (web server)
-
-9. [Node](https://hub.docker.com/_/node) (web development)
-
-10. [MongoDB](https://hub.docker.com/_/mongo) (database) 
-
-11. [MySQL](https://hub.docker.com/_/mysql) (database) 
-
-12. [Memcached](https://hub.docker.com/_/memcached)
-
-13. [Traefik](https://hub.docker.com/_/traefik)
-
-14. [MariaDB](https://hub.docker.com/_/mariadb) (database) 
-
-15. [RabbitMQ](https://hub.docker.com/_/rabbitmq) (message broker, for instance between web application and backend)
+- `MySQL <https://hub.docker.com/_/mysql>`_ (database) 
     
-In addition I will add one of my favourites: 
-
-16. [Jupyter datascience-notebook](https://hub.docker.com/r/jupyter/datascience-notebook)
+- `Jupyter datascience-notebook <https://hub.docker.com/r/jupyter/datascience-notebook>`_
 
 Once you have found a suitable base image, you must think about what version to chose. You will see that each image has a selection of different versions, so which should you chose? More on that next. 
 
