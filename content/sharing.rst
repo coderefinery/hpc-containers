@@ -1,4 +1,5 @@
-# Sharing reproducible containers
+Sharing reproducible containers
+==================================
 
 .. objectives::
 
@@ -6,7 +7,9 @@
 - Objective 2 - Know of some common version control services
 
 
-## Reuse
+Reuse
+----------
+
 (work in progress - Maiken working on this part)
 
 - Use available base containers
@@ -56,7 +59,8 @@ Our python image
 
 Check if there is a suitable official base image for the applications you need, and build upon that. 
 
-### Popular base images
+Popular base images
++++++++++++++++++++++++++
 
 There probably exists a base image for your need, almost whatever it is. If you google e.g. "best docker containers" you will find useful lists of popular ones. Here is a customised selection of such a list - with some images we find very useful: 
 
@@ -80,20 +84,26 @@ There probably exists a base image for your need, almost whatever it is. If you 
 
 Once you have found a suitable base image, you must think about what version to chose. You will see that each image has a selection of different versions, so which should you chose? More on that next. 
 
-## Be specific
+Be specific
+-----------------
+
 (work in progress)
 
 - Use specific software version of everything
 - Show file with/without software versions and explain behaviour in both cases
 
 
-## Separate concerns
+Separate concerns
+----------------------
+
 (work in progress)
 - Only include things that are related to the computation and are general
 - Input-data is typically not general
 - User specific configuration 
  
-## Use version control and public registries
+Use version control and public registries
+----------------------------------------------
+
 - GitLab/GitHub for definition files
 - Public registry for pre-built images
 - Link the repo to the public registry
