@@ -105,9 +105,9 @@ files differ as well. Pick a definition file for your site.
 
    .. tab:: Triton (Aalto)
 
-      :download:`ompi-triton.def <examples/ompi-triton.def>`:
+      :download:`ompi-triton.def </examples/ompi-triton.def>`:
 
-      .. literalinclude:: examples/ompi-triton.def
+      .. literalinclude:: /examples/ompi-triton.def
          :language: singularity
 
       To build:
@@ -119,6 +119,7 @@ files differ as well. Pick a definition file for your site.
       To run (some extra parameters and needed to integrate with the cluster OpenMPI):
 
       .. code-block:: console
+
          module load openmpi/4.1.6
          export OMPI_MCA_orte_top_session_dir=/tmp/$USER/openmpi
          export PMIX_MCA_gds=hash
@@ -128,7 +129,7 @@ files differ as well. Pick a definition file for your site.
 
       :download:`ompi-puhti.def <examples/ompi-puhti.def>`:
 
-      .. literalinclude:: examples/ompi-puhti.def
+      .. literalinclude:: /examples/ompi-puhti.def
          :language: singularity
 
       To build:
@@ -171,7 +172,7 @@ Below are explanations on how the interconnect libraries were provided.
 
       :download:`ompi-triton.def <examples/ompi-triton.def>`, line 15:
 
-      .. literalinclude:: examples/ompi-triton.def
+      .. literalinclude:: /examples/ompi-triton.def
          :language: singularity
          :lines: 15
 
@@ -179,7 +180,7 @@ Below are explanations on how the interconnect libraries were provided.
 
       :download:`ompi-triton.def <examples/ompi-triton.def>`, line 26:
 
-      .. literalinclude:: examples/ompi-triton.def
+      .. literalinclude:: /examples/ompi-triton.def
          :language: singularity
          :lines: 26
 
@@ -189,7 +190,7 @@ Below are explanations on how the interconnect libraries were provided.
       Mellanox's Infiniband driver repository:
       :download:`ompi-puhti.def <examples/ompi-puhti.def>`, :
 
-      .. literalinclude:: examples/ompi-puhti.def
+      .. literalinclude:: /examples/ompi-puhti.def
          :language: singularity
          :lines: 27-38
 
