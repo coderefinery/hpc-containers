@@ -3,11 +3,11 @@ From: rockylinux:{{ OS_VERSION }}
 
 %arguments
 
-  GCC_VERSION=9
   NPROCS=4
   OPENMPI_VERSION=4.1.4rc1
-  UCX_VERSION=1.13.0
   OSU_MICRO_BENCHMARKS_VERSION=7.4
+  GCC_VERSION=9
+  UCX_VERSION=1.13.0
   OS_NAME=rhel
   OS_VERSION=8.6
   OFED_VERSION=5.6-2.0.9.0
@@ -46,9 +46,6 @@ From: rockylinux:{{ OS_VERSION }}
   export OMPI_DIR=/usr/mpi/gcc/openmpi-{{ OPENMPI_VERSION }}
   export PATH="$OMPI_DIR/bin:$PATH"
   export LD_LIBRARY_PATH="$OMPI_DIR/lib:$LD_LIBRARY_PATH"
-
-
-  ls $OMPI_DIR
 
   # Build osu benchmarks
   cd /opt

@@ -105,45 +105,168 @@ files differ as well. Pick a definition file for your site.
 
    .. tab:: Triton (Aalto)
 
-      :download:`ompi-triton.def </examples/ompi-triton.def>`:
+      :download:`triton-ompi.def </examples/triton-ompi.def>`:
 
-      .. literalinclude:: /examples/ompi-triton.def
+      .. literalinclude:: /examples/triton-ompi.def
          :language: singularity
 
       To build:
 
       .. code-block:: console
 
-         srun --mem=16G --cpus-per-task=4 --time=01:00:00 apptainer build ompi-triton.sif ompi-triton.def
+         srun --mem=16G --cpus-per-task=4 --time=01:00:00 apptainer build triton-ompi.sif triton-ompi.def
 
-      To run (some extra parameters and needed to integrate with the cluster OpenMPI):
+      To run (some extra parameters are needed to prevent launch errors):
 
       .. code-block:: console
 
-         module load openmpi/4.1.6
-         export OMPI_MCA_orte_top_session_dir=/tmp/$USER/openmpi
-         export PMIX_MCA_gds=hash
-         srun --mem=2G --nodes=2-2 --ntasks-per-node=1 --time=00:10:00 apptainer run ompi-triton.sif
+         $ module load openmpi/4.1.6
+         $ export OMPI_MCA_orte_top_session_dir=/tmp/$USER/openmpi
+         $ export PMIX_MCA_gds=hash
+         $ srun --partition=batch-milan --mem=2G --nodes=2-2 --ntasks-per-node=1 --time=00:10:00 apptainer run ompi-triton.sif
+         srun: job 3521915 queued and waiting for resources
+         srun: job 3521915 has been allocated resources
+
+         # OSU MPI Bandwidth Test v7.4
+         # Datatype: MPI_CHAR.
+         # Size      Bandwidth (MB/s)
+         1                       3.98
+         2                       8.05
+         4                      15.91
+         8                      32.03
+         16                     64.24
+         32                    125.47
+         64                    245.52
+         128                   469.00
+         256                   877.69
+         512                  1671.24
+         1024                 3218.11
+         2048                 5726.91
+         4096                 8096.24
+         8192                10266.18
+         16384               11242.78
+         32768               11298.70
+         65536               12038.27
+         131072              12196.28
+         262144              12202.05
+         524288              11786.58
+         1048576             12258.48
+         2097152             12179.43
+         4194304             12199.89
+
 
    .. tab:: Puhti (CSC)
 
-      :download:`ompi-puhti.def <examples/ompi-puhti.def>`:
+      :download:`puhti-ompi.def <examples/puhti-ompi.def>`:
 
-      .. literalinclude:: /examples/ompi-puhti.def
+      .. literalinclude:: /examples/puhti-ompi.def
          :language: singularity
 
       To build:
 
       .. code-block:: console
 
-         apptainer build ompi-puhti.sif ompi-puhti.def
+         apptainer build puhti-ompi.sif puhti-ompi.def
 
-      To run (some extra parameters and needed to integrate with the cluster OpenMPI):
+      To run (some extra parameters are needed to prevent error messages):
 
       .. code-block:: console
-         module load openmpi/4.1.4
-         export PMIX_MCA_gds=hash
-         srun --account=project_XXXXXXX --partition=large --mem=2G --nodes=2-2 --ntasks-per-node=1 --time=00:10:00 apptainer run ompi-puhti.sif
+
+         $ module load openmpi/4.1.4
+         $ export PMIX_MCA_gds=hash
+         $ srun --account=project_XXXXXXX --partition=large --mem=2G --nodes=2-2 --ntasks-per-node=1 --time=00:10:00 apptainer run puhti-ompi.sif
+         srun: job 23736111 queued and waiting for resources
+         srun: job 23736111 has been allocated resources
+
+         # OSU MPI Bandwidth Test v7.4
+         # Datatype: MPI_CHAR.
+         # Size      Bandwidth (MB/s)
+         1                       5.17
+         2                      10.47
+         4                      20.89
+         8                      41.63
+         16                     82.00
+         32                    166.40
+         64                    310.73
+         128                   477.56
+         256                  1162.51
+         512                  2250.29
+         1024                 3941.94
+         2048                 6174.39
+         4096                 8029.47
+         8192                10120.93
+         16384               10632.41
+         32768               10892.60
+         65536               11609.92
+         131072              11778.05
+         262144              12015.96
+         524288              11970.93
+         1048576             12008.62
+         2097152             12050.35
+         4194304             12058.36
+
+
+   .. tab:: LUMI (CSC)
+
+      :download:`lumi-mpich.def <examples/lumi-mpich.def>`:
+
+      .. literalinclude:: /examples/lumi-mpich.def
+         :language: singularity
+
+      Building images in not allowed on LUMI, so you need to
+      build this on your own laptop or some other machine:
+
+      .. code-block:: console
+
+         apptainer build lumi-mpich.sif lumi-mpich.def
+
+      Afterwards copy the image to your work directory in LUMI.
+
+      To use the fast interconnect you need to install
+      ``singularity-bindings``-module with EasyBuild:
+
+      .. code-block:: console
+
+         module load LUMI/23.09 EasyBuild-user
+         eb singularity-bindings-system-cpeGNU-23.09-noglibc.eb -r
+
+      To run the example:
+
+      .. code-block:: console
+
+         $ module load LUMI/23.09 EasyBuild-user singularity-bindings
+         $ export SINGULARITY_BIND=$SINGULARITY_BIND,/usr/lib64/libnl-3.so.200
+         $ srun --account=project_XXXXXXXXX --partition=dev-g --mem=2G --nodes=2-2 --ntasks-per-node=1 --time=00:10:00 singularity run lumi-mpich.sif
+         srun: job 8108520 queued and waiting for resources
+         srun: job 8108520 has been allocated resources
+
+         # OSU MPI Bandwidth Test v7.4
+         # Datatype: MPI_CHAR.
+         # Size      Bandwidth (MB/s)
+         1                       2.03
+         2                       4.09
+         4                       8.17
+         8                      16.23
+         16                     32.64
+         32                     65.57
+         64                    130.49
+         128                   260.55
+         256                   492.28
+         512                   983.37
+         1024                 1965.42
+         2048                 3924.00
+         4096                 7823.52
+         8192                14349.54
+         16384               17373.03
+         32768               18896.90
+         65536               20906.04
+         131072              21811.68
+         262144              22228.01
+         524288              22430.80
+         1048576             22537.82
+         2097152             22592.50
+         4194304             22619.96
+
 
    .. tab:: Sigma2 (Norway)
 
@@ -170,17 +293,17 @@ Below are explanations on how the interconnect libraries were provided.
       The interconnect support was provided by the ``libucx-dev``-package that
       provides Infiniband drivers.
 
-      :download:`ompi-triton.def <examples/ompi-triton.def>`, line 15:
+      :download:`triton-ompi.def <examples/triton-ompi.def>`, line 15:
 
-      .. literalinclude:: /examples/ompi-triton.def
+      .. literalinclude:: /examples/triton-ompi.def
          :language: singularity
          :lines: 15
 
       The OpenMPI installation was then configured to use these drivers:
 
-      :download:`ompi-triton.def <examples/ompi-triton.def>`, line 26:
+      :download:`triton-ompi.def <examples/triton-ompi.def>`, line 26:
 
-      .. literalinclude:: /examples/ompi-triton.def
+      .. literalinclude:: /examples/triton-ompi.def
          :language: singularity
          :lines: 26
 
@@ -188,11 +311,26 @@ Below are explanations on how the interconnect libraries were provided.
 
       The interconnect support is provided by installing drivers from
       Mellanox's Infiniband driver repository:
-      :download:`ompi-puhti.def <examples/ompi-puhti.def>`, :
 
-      .. literalinclude:: /examples/ompi-puhti.def
+      :download:`puhti-ompi.def <examples/puhti-ompi.def>`, lines 27-38:
+
+      .. literalinclude:: /examples/puhti-ompi.def
          :language: singularity
          :lines: 27-38
+
+   .. tab:: LUMI (CSC)
+
+      Module ``singularity-bindings`` mounts the system MPI and network drivers
+      into the container:
+
+      .. code-block:: console
+
+         $ module load LUMI/23.09 EasyBuild-user singularity-bindings
+         $ export SINGULARITY_BIND=$SINGULARITY_BIND,/usr/lib64/libnl-3.so.200
+         $ echo $SINGULARITY_BIND
+         /opt/cray,/var/spool,/etc/host.conf,/etc/hosts,/etc/nsswitch.conf,/etc/resolv.conf,/etc/ssl/openssl.cnf,/run/cxi,/usr/lib64/libbrotlicommon.so.1,/usr/lib64/libbrotlidec.so.1,/usr/lib64/libcrypto.so.1.1,/usr/lib64/libcurl.so.4,/usr/lib64/libcxi.so.1,/usr/lib64/libgssapi_krb5.so.2,/usr/lib64/libidn2.so.0,/usr/lib64/libjansson.so.4,/usr/lib64/libjitterentropy.so.3,/usr/lib64/libjson-c.so.3,/usr/lib64/libk5crypto.so.3,/usr/lib64/libkeyutils.so.1,/usr/lib64/libkrb5.so.3,/usr/lib64/libkrb5support.so.0,/usr/lib64/liblber-2.4.so.2,/usr/lib64/libldap_r-2.4.so.2,/usr/lib64/libnghttp2.so.14,/usr/lib64/libpcre.so.1,/usr/lib64/libpsl.so.5,/usr/lib64/libsasl2.so.3,/usr/lib64/libssh.so.4,/usr/lib64/libssl.so.1.1,/usr/lib64/libunistring.so.2,/usr/lib64/libzstd.so.1,/lib64/libselinux.so.1,,/usr/lib64/libnl-3.so.200
+         $ echo $SINGULARITYENV_LD_LIBRARY_PATH
+         /opt/cray/pe/mpich/8.1.27/ofi/gnu/9.1/lib-abi-mpich:/opt/cray/pe/lib64:/opt/cray/libfabric/1.15.2.0/lib64:/opt/cray/xpmem/default/lib64:/usr/lib64:/opt/cray/pe/gcc-libs
 
    .. tab:: Sigma2 (Norway)
 

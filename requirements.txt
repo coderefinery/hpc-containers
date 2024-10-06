@@ -7,4 +7,5 @@ sphinx-autobuild < 2024.9
 git+https://github.com/rkdarst/sphinx-copybutton.git@exclude-unselectable-3
 sphinx-lesson
 sphinx-tabs
+sphinx-copybutton
 https://github.com/coderefinery/sphinx-coderefinery-branding/archive/master.zip
