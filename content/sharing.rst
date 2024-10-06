@@ -48,7 +48,7 @@ Image dependency
 
 .. code-block::
 
-Our python image
+  Our python image
    --> From: python:latest
      --> FROM: buildpack-deps:bookworm
        --> FROM buildpack-deps:bookworm-scm
@@ -57,7 +57,7 @@ Our python image
 
 .. admonition:: Take-away message
 
-Check if there is a suitable official base image for the applications you need, and build upon that. 
+  Check if there is a suitable official base image for the applications you need, and build upon that. 
 
 Popular base images
 +++++++++++++++++++++++++
@@ -91,6 +91,29 @@ Be specific
 
 - Use specific software version of everything
 - Show file with/without software versions and explain behaviour in both cases
+
+One of the main objectives of using images is that the users gets exactly what expect, and everything should just work as the container is self contained. But remember that upon pulling your container from some central repository, and that images are based on other images again, and in addition can contain additional software. All this will be fetched freshly. If all or some of the dependent images or softwares do not have any version specified, the latest version will be fetched. And now you can get into problems! Maybe the latest version of your base image is not compatible with the other software the image has included. Or which you are including. This can spoil the party massively! 
+
+Be as specific as you can! Always specify the software version you use. 
+
+So taking our python image as an example, you should do this - specify base image version, and specify numpy version: 
+
+
+.. code-block:: singularity
+
+   Bootstrap: docker
+   From: python:3.12.7-bookworm
+
+   %files
+       summation.py /opt
+
+   %runscript
+       echo "Got arguments: $*"
+       exec python /opt/summation.py "$@"
+
+   %post
+       pip install numpy==1.26.0
+
 
 
 Separate concerns
