@@ -6,4 +6,5 @@ sphinx-autobuild < 2024.9
 # Remove once new sphinx-copybutton is released ( > 0.5.0)
 git+https://github.com/rkdarst/sphinx-copybutton.git@exclude-unselectable-3
 sphinx-lesson
+sphinx-tabs
 https://github.com/coderefinery/sphinx-coderefinery-branding/archive/master.zip

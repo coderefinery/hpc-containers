@@ -56,6 +56,7 @@ levels, depending on your interest.
    container_images.rst
    building_images.rst
    binding_folders.rst
+   mpi.rst
 
 
 .. toctree::
