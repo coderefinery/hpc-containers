@@ -68,7 +68,10 @@ Image dependency
 Popular base images
 +++++++++++++++++++
 
-There probably exists a base image for your need, almost whatever it is. If you google e.g. "best docker containers" you will find useful lists of popular ones. Here is a customised selection of such a list - with some images we find very useful:
+There probably exists a base image for your need, almost whatever it is. If you
+web-search e.g. "best docker containers" you will find useful lists of popular
+ones. Here is a customised selection of such a list - with some images we find
+very useful:
 
 - `Alpine <https://hub.docker.com/_/alpine>`_ (slim Linux OS)
 
@@ -112,9 +115,11 @@ get into problems! Maybe the latest version of your base image is not
 compatible with the other software the image has included. Or which you are
 including. This can spoil the party massively!
 
+
 .. admonition:: Take-away message
 
   Be as specific as you can! Always specify software version.
+
 
 So taking our python image as an example, specify base image version, and specify numpy version:
 
