@@ -57,13 +57,13 @@ levels, depending on your interest.
    building_images.rst
    binding_folders.rst
    mpi.rst
+   sharing.rst
 
 
 .. toctree::
    :maxdepth: 1
    :caption: Extras
 
-   sharing
    gpus.rst
    services_apps.rst
    tips_tricks.rst
