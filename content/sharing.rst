@@ -3,8 +3,8 @@ Sharing reproducible containers
 
 .. objectives::
 
-- Objective 1 - Know of some key best practices for creating reproducible containers
-- Objective 2 - Know of some common version control services
+  - Know about good practices for creating reproducible containers
+  - Know about some popular services to share container definition files and images
 
 
 Reuse
