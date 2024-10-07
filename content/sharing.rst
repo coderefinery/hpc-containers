@@ -160,7 +160,91 @@ Use version control and public registries
 - Link the repo to the public registry
 
 
-Exercise
---------
+Exercises
+---------
 
-(work in progress - Radovan working on this part)
+.. exercise:: Exercise Sharing-1: Time-travel with containers
+
+   Imagine the following situation: A researcher has written and published their research code which
+   requires a number of libraries and system dependencies. They ran their code
+   on a Linux computer (Ubuntu). One very nice thing they did was to publish
+   also a container image with all dependencies included, as well as the
+   definition file (below) to create the container image.
+
+   Now we travel 3 years into the future and want to reuse their work and adapt
+   it for our data. The container registry where they uploaded the container
+   image however no longer exists. But luckily (!) we still have the definition
+   file (below). From this we should be able to create a new container image.
+
+   - Can you anticipate problems using the definition file here 3 years after its
+     creation? Which possible problems can you point out?
+   - Discuss possible take-aways for creating more reusable containers.
+
+   .. tabs::
+
+      .. tab:: Python project using virtual environment
+
+         .. literalinclude:: sharing/bad-example-python.def
+            :language: singularity
+            :linenos:
+
+         .. solution::
+
+            - Line 2: "ubuntu:latest" will mean something different 3 years in future.
+            - Lines 11-12: The compiler gcc and the library libgomp1 will have evolved.
+            - Line 30: The container uses requirements.txt to build the virtual environment but we don't see
+              here what libraries the code depends on.
+            - Line 33: Data is copied in from the hard disk of the person who created it. Hopefully we can find the data somewhere.
+            - Line 35: The library fancylib has been built outside the container and copied in but we don't see here how it was done.
+            - Python version will be different then and hopefully the code still runs then.
+            - Singularity/Apptainer will have also evolved by then. Hopefully this definition file then still works.
+            - No help text.
+            - No contact address to ask more questions about this file.
+            - (Can you find more? Please contribute more points.)
+
+            .. literalinclude:: sharing/bad-example-python.def
+               :language: singularity
+               :linenos:
+               :emphasize-lines: 2, 11-12, 30, 33, 35
+
+      .. tab:: C++ project
+
+         This definition files has potential problems 3 years later. Further
+         down on this page we show a better and real version.
+
+         .. literalinclude:: sharing/bad-example-cxx.def
+            :language: singularity
+            :linenos:
+
+         .. solution::
+
+            - Line 2: "ubuntu:latest" will mean something different 3 years in future.
+            - Lines 9: The libraries will have evolved.
+            - Line 11: We clone a Git repository recursively and that repository might evolve until we build the container image the next time.
+              here what libraries the code depends on.
+            - Line 18: The library fancylib has been built outside the container and copied in but we don't see here how it was done.
+            - Singularity/Apptainer will have also evolved by then. Hopefully this definition file then still works.
+            - No help text.
+            - No contact address to ask more questions about this file.
+            - (Can you find more? Please contribute more points.)
+
+            .. literalinclude:: sharing/bad-example-cxx.def
+               :language: singularity
+               :linenos:
+               :emphasize-lines: 2, 9, 11, 18
+
+
+.. exercise:: Exercise Sharing-2: Building a container on GitHub
+
+   You can build a container on GitHub (using GitHub Actions) or GitLab (using
+   GitLab CI) and host the image it on GitHub/GitLab. This has the following
+   advantages:
+    - You don't need to host it yourself.
+    - But the image stays close to its sources and is not on a different service.
+    - Anybody can inspect the recipe and how it was built.
+    - Every time you make a change to the recipe, it builds a new image.
+
+   If you want to try this out:
+    - Take `this repository <https://github.com/bast/html2pdf>`_ as starting point and inspiration.
+    - Don't focus too much on what this container does, but rather `how it is built <https://github.com/bast/html2pdf/tree/main/.github/workflows>`_.
+    - To build a new version, one needs to send a pull request which updates ``VERSION`` and modifies the definition file.

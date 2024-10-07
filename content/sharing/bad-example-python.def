@@ -1,0 +1,46 @@
+Bootstrap: docker
+From: ubuntu:latest
+
+%post
+    # Set environment variables
+    export VIRTUAL_ENV=/app/venv
+
+    # Install system dependencies and Python 3
+    apt-get update && \
+    apt-get install -y --no-install-recommends \
+        gcc \
+        libgomp1 \
+        python3 \
+        python3-venv \
+        python3-distutils \
+        python3-pip && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+    # Set up the virtual environment
+    python3 -m venv $VIRTUAL_ENV
+    . $VIRTUAL_ENV/bin/activate
+
+    # Install Python libraries
+    pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r /app/requirements.txt
+
+%files
+    # Copy project files
+    ./requirements.txt /app/requirements.txt
+    ./app.py /app/app.py
+    # Copy data
+    /home/myself/data /app/data
+    # Workaround to fix dependency on fancylib
+    /home/myself/fancylib /usr/lib/fancylib
+
+%environment
+    # Set the environment variables
+    export LANG=C.UTF-8 LC_ALL=C.UTF-8
+    export VIRTUAL_ENV=/app/venv
+
+%runscript
+    # Activate the virtual environment
+    . $VIRTUAL_ENV/bin/activate
+    # Run the application
+    python /app/app.py

@@ -1,0 +1,26 @@
+Bootstrap: docker
+From: ubuntu:latest
+
+%post
+    export DEBIAN_FRONTEND=noninteractive
+    apt-get update -y
+
+    apt install -y git build-essential pkg-config
+    apt install -y libz-dev libbz2-dev liblzma-dev libcurl4-openssl-dev libssl-dev libgsl-dev
+
+    git clone --recursive https://github.com/someuser/sometool.git
+    cd sometool
+
+    make
+
+%files
+    # Workaround to fix dependency on fancylib
+    /home/myself/fancylib /usr/lib/fancylib
+
+%environment
+    export LC_ALL=C
+
+%runscript
+    export PATH=/sometool:$PATH
+
+    $@
