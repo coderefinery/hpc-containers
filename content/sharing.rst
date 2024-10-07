@@ -17,7 +17,7 @@ Reuse
 
 As we have learned, building a container means that you pack the OS and all the applications you need into it. We have also learned that typically we don't do everything from scratch, we build upon base containers.
 
-An :doc:`example <building_images>` was using an official python image for our python container: 
+An :doc:`example <building_images>` was using an official python image for our python container:
 
 .. code-block:: singularity
 
@@ -35,9 +35,9 @@ An :doc:`example <building_images>` was using an official python image for our p
        pip install numpy
 
 
-Here we saw that we use the python base image (for instance from `<https://hub.docker.com/_/python>`_ and in addtion we install some more software: numpy (and we bind mount a custom file into the image). 
+Here we saw that we use the python base image (for instance from `<https://hub.docker.com/_/python>`_ and in addtion we install some more software: numpy (and we bind mount a custom file into the image).
 
-Building upon base-images is used extensively: The python image is not just python, it is again based on an another image (``FROM buildpack-deps:bookworm``) , which itself is based on another image and so on. 
+Building upon base-images is used extensively: The python image is not just python, it is again based on an another image (``FROM buildpack-deps:bookworm``) , which itself is based on another image and so on.
 
 .. figure:: img/dockerfile_python_image.png
 
@@ -57,12 +57,12 @@ Image dependency
 
 .. admonition:: Take-away message
 
-  Check if there is a suitable official base image for the applications you need, and build upon that. 
+  Check if there is a suitable official base image for the applications you need, and build upon that.
 
 Popular base images
 +++++++++++++++++++++++++
 
-There probably exists a base image for your need, almost whatever it is. If you google e.g. "best docker containers" you will find useful lists of popular ones. Here is a customised selection of such a list - with some images we find very useful: 
+There probably exists a base image for your need, almost whatever it is. If you google e.g. "best docker containers" you will find useful lists of popular ones. Here is a customised selection of such a list - with some images we find very useful:
 
 - `Alpine <https://hub.docker.com/_/alpine>`_ (slim Linux OS)
 
@@ -78,11 +78,11 @@ There probably exists a base image for your need, almost whatever it is. If you 
 
 - `Node <https://hub.docker.com/_/node>`_ (web development)
 
-- `MySQL <https://hub.docker.com/_/mysql>`_ (database) 
-    
+- `MySQL <https://hub.docker.com/_/mysql>`_ (database)
+
 - `Jupyter datascience-notebook <https://hub.docker.com/r/jupyter/datascience-notebook>`_
 
-Once you have found a suitable base image, you must think about what version to chose. You will see that each image has a selection of different versions, so which should you chose? More on that next. 
+Once you have found a suitable base image, you must think about what version to chose. You will see that each image has a selection of different versions, so which should you chose? More on that next.
 
 Be specific
 -----------------
@@ -92,15 +92,15 @@ Be specific
 - Use specific software version of everything
 - Show file with/without software versions and explain behaviour in both cases
 
-One of the main objectives of using images is that the users gets exactly what they expect, and everything should just work. The container is after all self-contained! 
+One of the main objectives of using images is that the users gets exactly what they expect, and everything should just work. The container is after all self-contained!
 
-But remember that upon pulling your container (from some central repository), the image is fetched "freshly". If all or some of the dependent layers do not have any version specified, the latest version will be fetched. And now you can get into problems! Maybe the latest version of your base image is not compatible with the other software the image has included. Or which you are including. This can spoil the party massively! 
+But remember that upon pulling your container (from some central repository), the image is fetched "freshly". If all or some of the dependent layers do not have any version specified, the latest version will be fetched. And now you can get into problems! Maybe the latest version of your base image is not compatible with the other software the image has included. Or which you are including. This can spoil the party massively!
 
 .. admonition:: Take-away message
 
-  Be as specific as you can! Always specify software version. 
+  Be as specific as you can! Always specify software version.
 
-So taking our python image as an example, specify base image version, and specify numpy version: 
+So taking our python image as an example, specify base image version, and specify numpy version:
 
 
 .. code-block:: singularity
@@ -126,8 +126,8 @@ Separate concerns
 (work in progress)
 - Only include things that are related to the computation and are general
 - Input-data is typically not general
-- User specific configuration 
- 
+- User specific configuration
+
 Use version control and public registries
 ----------------------------------------------
 
