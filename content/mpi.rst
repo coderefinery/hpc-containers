@@ -10,8 +10,8 @@ MPI programs and containers
 What to consider when creating a container for MPI programs?
 ------------------------------------------------------------
 
-Message Passing Interface (MPI) is a standard and a programming
-paradigm where programs can use MPI directives to send messages across
+Message Passing Interface (MPI) is a standardized API and a programming
+paradigm where programs can use MPI directives to send messages
 across thousands of processes. It is commonly used in traditional
 HPC computing.
 
@@ -20,7 +20,9 @@ are typically tied to the high-speed interconnect available in
 the computational cluster and to the queue system that the cluster
 uses.
 
-This can create the following problems:
+
+This can create the following problems when an MPI program
+is containerized:
 
 1. Launching of the MPI job can fail if the program does not
    communicate with the queue system.
@@ -335,6 +337,34 @@ Below are explanations on how the interconnect libraries were provided.
    .. tab:: Sigma2 (Norway)
 
       Interconnect support is not explicitly installed.
+
+ABI compatibility in MPI
+------------------------
+
+Different MPI installations do not have necessarily have
+application binary interface (ABI) compatibility. This means
+that software built with certain MPI installation does not
+necessarily run with another MPI installation.
+
+Quite often MPI programs are built with the same version
+of MPI that will be used to run the program. However, in
+containerized applications the runtime MPI version might change
+if an outside MPI is bound into the container.
+
+This can work as there is some ABI compatibility
+within an MPI family (OpenMPI, MPICH). For more info, see
+`OpenMPI's page on version compatibility <https://docs.open-mpi.org/en/v5.0.x/version-numbering.html>`__
+and
+`MPICH's ABI Compatibility Initiative <https://www.mpich.org/abi/>`__.
+
+There are also projects like
+`E4S Container Launcher <https://e4s-cl.readthedocs.io/en/latest/index.html>`__
+and
+`WI4MPI (Wrapper Interface for MPI) <https://github.com/cea-hpc/wi4mpi>`__
+that aim to bypass this problem by creating a wrapper interfaces
+that the program in the container can be built against. This
+wrapper can then use different MPI implementations during
+runtime.
 
 Review of this session
 ----------------------
