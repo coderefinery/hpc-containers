@@ -144,6 +144,7 @@ Separate concerns
 -----------------
 
 (work in progress)
+
 - Only include things that are related to the computation and are general
 - Input-data is typically not general
 - User specific configuration
@@ -151,6 +152,8 @@ Separate concerns
 
 Use version control and public registries
 -----------------------------------------
+
+(work in progress - Radovan working on this part)
 
 - GitLab/GitHub for definition files
 - Public registry for pre-built images
@@ -160,4 +163,4 @@ Use version control and public registries
 Exercise
 --------
 
-(work in progress)
+(work in progress - Radovan working on this part)
