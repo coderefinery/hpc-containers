@@ -311,16 +311,18 @@ Exercises
    You can build a container on GitHub (using GitHub Actions) or GitLab (using
    GitLab CI) and host the image it on GitHub/GitLab. This has the following
    advantages:
-    - You don't need to host it yourself.
-    - But the image stays close to its sources and is not on a different service.
-    - Anybody can inspect the recipe and how it was built.
-    - Every time you make a change to the recipe, it builds a new image.
+
+   - You don't need to host it yourself.
+   - But the image stays close to its sources and is not on a different service.
+   - Anybody can inspect the recipe and how it was built.
+   - Every time you make a change to the recipe, it builds a new image.
 
    If you want to try this out:
-    - Take `this repository <https://github.com/bast/html2pdf>`_ as starting point and inspiration.
-    - Don't focus too much on what this container does, but rather `how it is built <https://github.com/bast/html2pdf/tree/main/.github/workflows>`_.
-    - To build a new version, one needs to send a pull request which updates
-      the file ``VERSION`` and modifies the definition file.
-    - Using this approach, try to build a very simple container definition
-      directly on GitHub where the goal is to have both the definition file
-      and the image file in the same place.
+
+   - Take `this repository <https://github.com/bast/html2pdf>`_ as starting point and inspiration.
+   - Don't focus too much on what this container does, but rather `how it is built <https://github.com/bast/html2pdf/tree/main/.github/workflows>`_.
+   - To build a new version, one needs to send a pull request which updates
+     the file ``VERSION`` and modifies the definition file.
+   - Using this approach, try to build a very simple container definition
+     directly on GitHub where the goal is to have both the definition file
+     and the image file in the same place.
