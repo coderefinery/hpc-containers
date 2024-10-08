@@ -174,11 +174,62 @@ Separate concerns
 Use version control and public registries
 -----------------------------------------
 
-(work in progress - Radovan working on this part)
+.. admonition:: Key practices
 
-- GitLab/GitHub for definition files
-- Public registry for pre-built images
-- Link the repo to the public registry
+   - **Track the changes to the definition** file with version control. In practice: Put the definition file on GitHub or GitLab.
+   - Make the container image findable by others. In practice: Put the image on a **public registry**.
+   - **Make sure one can find and inspect the definition file** from the registry. In practice: Link the repo to the public registry.
+
+In principle a definition file is enough to build a container image and in
+theory we would not need to share pre-built images. But in practice it is very
+**useful to share the pre-built image as well**. This is because:
+
+- Building a container image can take time and resources.
+- If we were not careful specifying versions, the image might not build again
+  in the same way.
+- Some dependencies might not be available anymore.
+
+There are many popular services to share container images and almost every
+big-tech company offers one:
+
+- `Docker Hub <https://hub.docker.com/>`__: Default Docker registry with public/private repositories and CI/CD integration.
+- `Google Container Registry (GCR) <https://cloud.google.com/container-registry>`__: GCP service, tightly integrated with Google Cloud services and Kubernetes.
+- `Azure Container Registry (ACR) <https://azure.microsoft.com/en-us/services/container-registry/>`__: Fully managed, integrated with Azure services like AKS and DevOps.
+- `Quay.io <https://quay.io/>`__: Red Hat service, security scanning, OpenShift/Kubernetes integration, public/private repositories.
+- `JFrog Artifactory <https://jfrog.com/artifactory/>`__: Universal artifact repository supporting Docker and other formats, advanced security features.
+- `Harbor <https://goharbor.io/>`__: Open-source registry, role-based access control, vulnerability scanning, and image signing.
+- `DigitalOcean Container Registry <https://www.digitalocean.com/products/container-registry/>`__: Integrated with DigitalOcean Kubernetes.
+- `GitLab Container Registry <https://docs.gitlab.com/ee/user/packages/container_registry/>`__: Built into GitLab, works seamlessly with GitLab CI/CD pipelines.
+
+What many projects do (however, note the warning below):
+
+- Track their container definition files in a public repository on GitHub or GitLab.
+- From these repositories, they build the container images and push them to a public registry (above list).
+
+
+.. warning::
+
+   A public registry that is free today might not be free tomorrow. Make sure
+   you have a backup plan for your images and make sure the image can still be
+   found 5 years from now if the service provider changes their pricing model.
+
+.. admonition:: Recommendation to "guarantee" long-term availability
+
+   - There are no guarantees, however:
+   - One of the most stable services is `Zenodo <https://zenodo.org/>`__ which
+     is an excellent place to publish your container image as supporting
+     material for a publication and also get a DOI for it. It is unlikely to
+     change pricing for academic use.
+   - Make sure to also publish the definition file with it.
+
+
+It is possible to host both the definition file and the image on GitHub:
+
+    - You don't need to host it yourself.
+    - But the image stays close to its sources and is not on a different service.
+    - Anybody can inspect the recipe and how it was built.
+    - Every time you make a change to the recipe, it builds a new image.
+    - We can practice/demonstrate this in the exercise below.
 
 
 Exercises
