@@ -100,45 +100,65 @@ which should you chose? We will explore this in the next section.
 Be specific
 -----------
 
-(work in progress)
-
-- Use specific software version of everything
-- Show file with/without software versions and explain behaviour in both cases
-
 One of the main objectives of using images is that the users gets exactly what
 they expect, and everything should just work. The container is after all
 self-contained!
 
-But remember that upon pulling your container (from some central repository),
-the image is fetched "freshly". If all or some of the dependent layers do not
-have any version specified, the latest version will be fetched. And now you can
-get into problems! Maybe the latest version of your base image is not
-compatible with the other software the image has included. Or which you are
-including. This can spoil the party massively!
+During development you might want to have "latest" versions of software.  But
+"latest" is a moving target: "latest" today is not the same as "latest" in 2
+years.  And now you can get into problems! Maybe the latest version of your
+base image is not compatible with the other software the image has included.
+Or which you are including. This can spoil the party massively!
 
 
 .. admonition:: Take-away message
 
-  Be as specific as you can! Always specify software version.
+  When sharing/publishing a container, try to be as specific as you can! Always specify software versions.
 
 
-So taking our python image as an example, specify base image version, and specify numpy version:
+Taking our python image as an example, a more future-proof definition file would specify the base image version as well as the numpy version. Compare these two:
+
+.. tabs::
+
+   .. tab:: With specific versions
+
+      .. code-block:: singularity
+         :emphasize-lines: 2, 12
+
+         Bootstrap: docker
+         From: python:3.12.7-bookworm
+
+         %files
+             summation.py /opt
+
+         %runscript
+             echo "Got arguments: $*"
+             exec python /opt/summation.py "$@"
+
+         %post
+             pip install numpy==1.26.0
+
+   .. tab:: Versions are not specified
+
+      .. code-block:: singularity
+         :emphasize-lines: 2, 12
+
+         Bootstrap: docker
+         From: python:latest
+
+         %files
+             summation.py /opt
+
+         %runscript
+             echo "Got arguments: $*"
+             exec python /opt/summation.py "$@"
+
+         %post
+             pip install numpy
 
 
-.. code-block:: singularity
-
-   Bootstrap: docker
-   From: python:3.12.7-bookworm
-
-   %files
-       summation.py /opt
-
-   %runscript
-       echo "Got arguments: $*"
-       exec python /opt/summation.py "$@"
-
-   %post
-       pip install numpy==1.26.0
+Further below we have an exercise where we can practice recognizing future
+problems in container definition files.
 
 
 Separate concerns
