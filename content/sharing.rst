@@ -3,21 +3,22 @@ Sharing reproducible containers
 
 .. objectives::
 
-  - Know about good practices for creating reproducible containers
-  - Know about some popular services to share container definition files and images
+  - Know about **good practices** for creating reproducible containers
+  - Know about some **popular services** to share container definition files and images
 
 
 Reuse
 -----
 
-(work in progress - Maiken working on this part)
+
+As we have learned, building a container means that you pack the OS and all
+the applications you need into a file. We have also learned that typically we
+don't do everything from scratch, we **build upon base containers**.
+
+This means that when building containers we try to:
 
 - Use available base containers
-- Add your customisation on top of that
-
-As we have learned, building a container means that you pack the OS and all the
-applications you need into it. We have also learned that typically we don't do
-everything from scratch, we build upon base containers.
+- Add customisation on top of that
 
 An :doc:`example <building_images>` was using an official python image for our python container:
 
@@ -37,11 +38,11 @@ An :doc:`example <building_images>` was using an official python image for our p
        pip install numpy
 
 
-Here we saw that we use the python base image (for instance from
-`<https://hub.docker.com/_/python>`_ and in addition we install some more
+Here we use the python base image (for instance from
+`<https://hub.docker.com/_/python>`_) and in addition we install some more
 software: numpy (and we bind mount a custom file into the image).
 
-Building upon base-images is used extensively: The python image is not just python, it is again based on an another image (``FROM buildpack-deps:bookworm``) , which itself is based on another image and so on.
+Building upon base-images is used extensively: The python image is not just python, it is again based on an another image (``FROM buildpack-deps:bookworm``) , which itself is based on another image, and so on ...
 
 .. figure:: img/dockerfile_python_image.png
 
@@ -93,7 +94,7 @@ very useful:
 
 Once you have found a suitable base image, you must think about what version to
 chose. You will see that each image has a selection of different versions, so
-which should you chose? More on that next.
+which should you chose? We will explore this in the next section.
 
 
 Be specific
