@@ -62,7 +62,9 @@ Image dependency
              --> FROM scratch
 
 
-.. video:: img/base_image_dependencytree.mp4
+<video>
+   <source src="img/base_image_dependencytree.mp4" type="video/mp4">
+</video>
 
 .. admonition:: Take-away message
 
