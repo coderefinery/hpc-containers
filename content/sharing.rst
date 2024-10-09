@@ -42,14 +42,29 @@ Here we use the python base image (for instance from
 `<https://hub.docker.com/_/python>`_) and in addition we install some more
 software: numpy (and we bind mount a custom file into the image).
 
-Building upon base-images is used extensively: The python image is not just python, it is again based on an another image (``FROM buildpack-deps:bookworm``) , which itself is based on another image, and so on ...
+Building upon base-images is used extensively: The python image is not just python, it is again based on an another image, which itself is based on another image, and so on.
 
-.. figure:: img/dockerfile_python_image.png
+To find the image dependency, you will need to do a bit of detective work, finding the image in a registry, and inspecting its Dockerfile which hopefully is linked from the registry. If there is no Dockerfile linked from the registry page, you may be out of luck. 
+
+Example image dependency 
++++++++++++++++++++++++++
+
+Let's check the `Dockerhub python registry <https://hub.docker.com/_/python>`_. We can click on the link of the latest bookworm tag in the  and it leads us to its `Dockerfile on Github <https://github.com/docker-library/python/blob/7c8595e8e2b1c8bca0b6d9d146675b94c2a37ec7/3.13/bookworm/Dockerfile>`_ . Here we can see that Dockerfile is based on a base-image `buildpack-deps:bookworm`. We can do the same exercise for the image `buildpack-deps:bookworm` by finding the image in a registry like Dockerhub, navigating to the Dockerfile linked from that registry, and so on. 
 
 
-If the Dockerfiles of the images are linked in the registry we can trail though the dependencies of the base images used by the python image. What we find if we select the latest bookworm tag is the following: 
 
-Image dependency
+.. tabs::
+
+   .. tab:: DockerHub python
+
+      .. figure:: img/dockerhub_python.png
+
+   .. tab:: Dockerfile python
+
+      .. figure:: img/dockerfile_python_image.png
+
+
+After all that this is the image dependency tree we find for the python docker image: 
 
 .. code-block::
 
@@ -61,11 +76,7 @@ Image dependency
            --> FROM debian:bookworm
              --> FROM scratch
 
-..raw:: html
 
-  <video>
-     <source src="img/base_image_dependencytree.mp4" type="video/mp4">
-  </video>
 
 .. admonition:: Take-away message
 
