@@ -61,10 +61,11 @@ Image dependency
            --> FROM debian:bookworm
              --> FROM scratch
 
+..raw:: html
 
-<video>
-   <source src="img/base_image_dependencytree.mp4" type="video/mp4">
-</video>
+  <video>
+     <source src="img/base_image_dependencytree.mp4" type="video/mp4">
+  </video>
 
 .. admonition:: Take-away message
 
