@@ -10,7 +10,6 @@ Sharing reproducible containers
 Reuse
 -----
 
-
 As we have learned, building a container means that you pack the OS and all
 the applications you need into a file. We have also learned that typically we
 don't do everything from scratch, we **build upon base containers**.
@@ -38,8 +37,7 @@ An :doc:`example <building_images>` was using an official python image for our p
        pip install numpy
 
 
-Here we use the python base image (for instance from
-`<https://hub.docker.com/_/python>`_) and in addition we install some more
+Here we use a `python base image <https://hub.docker.com/_/python>`_ and in addition we install some more
 software: numpy (and we bind mount a custom file into the image).
 
 Building upon base-images is used extensively: The python image is not just python, it is again based on an another image, which itself is based on another image, and so on.
@@ -49,9 +47,7 @@ To find the image dependency, you will need to do a bit of detective work, findi
 Example image dependency 
 +++++++++++++++++++++++++
 
-Let's check the `Dockerhub python registry <https://hub.docker.com/_/python>`_. We can click on the link of the latest bookworm tag in the  and it leads us to its `Dockerfile on Github <https://github.com/docker-library/python/blob/7c8595e8e2b1c8bca0b6d9d146675b94c2a37ec7/3.13/bookworm/Dockerfile>`_ . Here we can see that Dockerfile is based on a base-image `buildpack-deps:bookworm`. We can do the same exercise for the image `buildpack-deps:bookworm` by finding the image in a registry like Dockerhub, navigating to the Dockerfile linked from that registry, and so on. 
-
-
+Let's check the `Dockerhub python registry <https://hub.docker.com/_/python>`_. We can click on the link of the latest bookworm tag (see DockerHub python tab below) which leads us to its `Dockerfile on Github <https://github.com/docker-library/python/blob/7c8595e8e2b1c8bca0b6d9d146675b94c2a37ec7/3.13/bookworm/Dockerfile>`_  (as seen in the Dockerfile python tab). 
 
 .. tabs::
 
@@ -63,12 +59,17 @@ Let's check the `Dockerhub python registry <https://hub.docker.com/_/python>`_. 
 
       .. figure:: img/dockerfile_python_image.png
 
+Inspecting this Dockerfile, we see that it again is based on a another image, namely ``buildpack-deps:bookworm``. 
+
+We can do the same exercise for the image ``buildpack-deps:bookworm`` by finding the image in a registry like Dockerhub, navigating to the Dockerfile linked from that registry, and so on. 
+
+
+
 
 After all that this is the image dependency tree we find for the python docker image: 
 
 .. code-block::
 
-  Our python image
    --> From: python:latest
      --> FROM: buildpack-deps:bookworm
        --> FROM buildpack-deps:bookworm-scm
@@ -82,6 +83,9 @@ After all that this is the image dependency tree we find for the python docker i
 
   Check if there is a suitable official base image for the applications you need, and build upon that.
 
+
+
+  
 
 Popular base images
 +++++++++++++++++++
@@ -181,11 +185,69 @@ problems in container definition files.
 Separate concerns
 -----------------
 
-(work in progress)
+Purpose
+++++++++++
 
-- Only include things that are related to the computation and are general
-- Input-data is typically not general
-- User specific configuration
+When creating you image definition file - have a think about what the image should contain based on what purpose it has. Do not be tempted to add software just because it is convenient for general use. 
+
+For instance: an image that is used to run some specific scientific analysis on a specific input type of data may not need your favourite text editor inside. Or that extra python package just in case. Slim the image down to just what it needs for the purpose it fulfills. The benefit will be at least two-fold: the image will be lighter meaning it will be quicker to download and have smaller carbon-footprint. But in addition there is less software to potentially get into software dependency problems with. Another benefit: it will be clearer for the user what is the purpose of the image, and how to use it. 
+
+Data
++++++++++++++++++++
+The main purpose of a software image is exactly that - to provide software, not datasets. There are several reasons why it is not a good idea to include (potentially large) datasets, here are a few: 
+
+- The image could become very heavy
+- The data may better be stored in a suited data registry
+- The data may be different from user to user
+- The data may be sensitive and should only reside in a private and secure computing environment
+
+Instead of shipping the data with the image, let the user bind mount it into the container. Check out the :doc:`Binding folders into your container lesson <binding_folders>` for details. 
+
+Compare the two apptainer definition files and how to run the resulting ``my_container.sif`` container. The left tab also exemplifies bind-mounting a folder for output data, which is useful in order to access the resulting output data directly from the host server. 
+
+.. tabs::
+
+   .. tab:: Image including data
+
+      .. code-block:: singularity
+         :emphasize-lines: 6
+
+         Bootstrap: docker
+         From: python:3.9-slim
+
+         %files
+            process_data.py /app/process_data.py
+            input_data /app/input_data
+
+         %post
+            mkdir -p /app/output_data
+            chmod 777 /app/output_data
+
+         %runscript
+            python /app/process_data.py /app/input_data /app/output_data
+
+         %help
+            Usage: apptainer run --writable-tmpfs this_container.sif
+
+   .. tab:: Image not including data - using bind-mounts
+
+      .. code-block:: singularity
+
+         Bootstrap: docker
+         From: python:3.9-slim
+
+         %files
+            process_data.py /app/process_data.py
+
+         %post
+            mkdir /app/input_data
+            mkdir /app/output_data
+
+         %runscript
+            python /app/process_data.py /app/input_data /app/output_data
+
+         %help
+            Usage: apptainer run --bind /path/to/host/input:/app/input_data,/path/to/host/output:/app/output_data this_container.sif
 
 
 Use version control and public registries
