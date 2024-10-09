@@ -282,9 +282,16 @@ In order to get the fast interconnects to work with the hybrid model
 one can either:
 
 1. Install the interconnect drivers into the image and build the MPI to
-   use them.
+   use them. This is the normal Hybrid approach described in Figure 3.
 2. Mount cluster's MPI and other network libraries into the image and use
    them instead of the container's MPI while running the MPI program.
+   This is described in Figure 4.
+
+.. figure:: img/mpi_job_structure_bound.png
+   :width: 100%
+
+   Figure 4: Container with bound system MPI and network libraries
+
 
 Below are explanations on how the interconnect libraries were provided.
 

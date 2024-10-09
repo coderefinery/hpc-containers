@@ -57,6 +57,7 @@ levels, depending on your interest.
    building_images.rst
    binding_folders.rst
    mpi.rst
+   gpus.rst
    sharing.rst
 
 
@@ -64,7 +65,6 @@ levels, depending on your interest.
    :maxdepth: 1
    :caption: Extras
 
-   gpus.rst
    services_apps.rst
    tips_tricks.rst
 
