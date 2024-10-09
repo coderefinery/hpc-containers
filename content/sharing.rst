@@ -47,8 +47,7 @@ Building upon base-images is used extensively: The python image is not just pyth
 .. figure:: img/dockerfile_python_image.png
 
 
-We can trail though the Dockerfiles hopefully linked to via the image registry
-page and we find the following dependency:
+If the Dockerfiles of the images are linked in the registry we can trail though the dependencies of the base images used by the python image. What we find if we select the latest bookworm tag is the following: 
 
 Image dependency
 
@@ -60,6 +59,10 @@ Image dependency
        --> FROM buildpack-deps:bookworm-scm
          --> FROM buildpack-deps:bookworm-curl
            --> FROM debian:bookworm
+             --> FROM scratch
+
+
+.. video:: img/base_image_dependencytree.mp4
 
 .. admonition:: Take-away message
 
