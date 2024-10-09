@@ -210,7 +210,7 @@ Compare the two apptainer definition files and how to run the resulting ``my_con
    .. tab:: Image including data
 
       .. code-block:: singularity
-         :emphasize-lines: 6
+         :emphasize-lines: 6,10,16
 
          Bootstrap: docker
          From: python:3.9-slim
@@ -220,7 +220,7 @@ Compare the two apptainer definition files and how to run the resulting ``my_con
             input_data /app/input_data
 
          %post
-            mkdir -p /app/output_data
+            mkdir /app/output_data
             chmod 777 /app/output_data
 
          %runscript
@@ -232,6 +232,7 @@ Compare the two apptainer definition files and how to run the resulting ``my_con
    .. tab:: Image not including data - using bind-mounts
 
       .. code-block:: singularity
+         :emphasize-lines: 9,15
 
          Bootstrap: docker
          From: python:3.9-slim
@@ -240,8 +241,8 @@ Compare the two apptainer definition files and how to run the resulting ``my_con
             process_data.py /app/process_data.py
 
          %post
-            mkdir /app/input_data
             mkdir /app/output_data
+            mkdir /app/input_data
 
          %runscript
             python /app/process_data.py /app/input_data /app/output_data
