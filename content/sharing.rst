@@ -8,6 +8,17 @@ Sharing reproducible containers
 
 In this lesson we will go through a handful of guidelines and tips that will help you to create reproducible containers which can be shared today and hopefully years into the future. 
 
+We will encourage you to
+
+- :ref:`Reuse <reuse_label>`
+- :ref:`Be specific <be_specific_label>`
+- :ref:`Separate concerns <separate_label>`
+- :ref:`Document <document_label>`
+- :ref:`Use version control and public registries <version_control_label>`
+
+And finally we will give you an exercise to practice your new skills. 
+
+.. _reuse_label: 
 Reuse
 -----
 
@@ -115,6 +126,8 @@ chose. You will see that each image has a selection of different versions, so
 which should you chose? We will explore this in the next section.
 
 
+.. _be_specific_label:
+
 Be specific
 -----------
 
@@ -178,6 +191,8 @@ Taking our python image as an example, a more future-proof definition file would
 Further below we have an exercise where we can practice recognizing future
 problems in container definition files.
 
+
+.. _separate_label: 
 
 Separate concerns
 -----------------
@@ -262,7 +277,10 @@ That said, there may be reasons why some particular data is better copied into t
 
   - Avoid copying data into the container unless there are obvious benefits
 
-Documentating your image
+
+.. _document_label:
+
+Document your image
 -----------------------------------
 In the example above you can see that some documentation is added in the image itself under the ``%help`` block.  This is not only important for sharing, but also for yourself to help remember how to use the container. See more details in the :ref:`Adding documentation to your image <documentation>`. 
 
@@ -274,6 +292,8 @@ In the example above you can see that some documentation is added in the image i
   - Minimally how to use the container via the ``%help`` block
   - In addition author, version, description via the ``%label`` block
 
+
+.. _version_control_label:
 
 Use version control and public registries
 -----------------------------------------
