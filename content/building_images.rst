@@ -298,6 +298,7 @@ For more info on how to set environment variables when running containers,
 see `this page <https://apptainer.org/docs/user/latest/environment_and_metadata.html>`__
 from Apptainer's documentation.
 
+.. _documentation:
 
 Adding documentation to your image
 ----------------------------------
