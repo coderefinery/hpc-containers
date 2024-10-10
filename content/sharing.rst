@@ -6,6 +6,7 @@ Sharing reproducible containers
   - Know about **good practices** for creating reproducible containers
   - Know about some **popular services** to share container definition files and images
 
+In this lesson we will go through a handful of guidelines and tips that will help you to create reproducible containers which can be shared today and hopefully years into the future. 
 
 Reuse
 -----
@@ -64,9 +65,7 @@ Inspecting this Dockerfile, we see that it again is based on a another image, na
 We can do the same exercise for the image ``buildpack-deps:bookworm`` by finding the image in a registry like Dockerhub, navigating to the Dockerfile linked from that registry, and so on. 
 
 
-
-
-After all that this is the image dependency tree we find for the python docker image: 
+After all that, this is the image dependency tree we find for the original python docker base image: 
 
 .. code-block::
 
@@ -82,8 +81,6 @@ After all that this is the image dependency tree we find for the python docker i
 .. admonition:: Take-away message
 
   Check if there is a suitable official base image for the applications you need, and build upon that.
-
-
 
   
 
@@ -190,7 +187,9 @@ Purpose
 
 When creating you image definition file - have a think about what the image should contain based on what purpose it has. Do not be tempted to add software just because it is convenient for general use. 
 
-For instance: an image that is used to run some specific scientific analysis on a specific input type of data may not need your favourite text editor inside. Or that extra python package just in case. Slim the image down to just what it needs for the purpose it fulfills. The benefit will be at least two-fold: the image will be lighter meaning it will be quicker to download and have smaller carbon-footprint. But in addition there is less software to potentially get into software dependency problems with. Another benefit: it will be clearer for the user what is the purpose of the image, and how to use it. 
+For instance: an image that is used to run some specific scientific analysis on a specific input type of data may not need your favourite text editor inside. Or that extra python package just in case. 
+
+Slim the image down to just what it needs for the purpose it fulfills. The benefit will be at least two-fold: the image will be lighter meaning it will be quicker to download and have smaller carbon-footprint. But in addition there is less software to potentially get into software dependency problems with. Another benefit: it will be clearer for the user what is the purpose of the image, and how to use it. 
 
 .. admonition:: Stay to the point
 
