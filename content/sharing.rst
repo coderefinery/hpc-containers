@@ -50,7 +50,7 @@ An :doc:`example <building_images>` was using an official python image for our p
 
 
 Here we use a `python base image <https://hub.docker.com/_/python>`_ and in addition we install some more
-software: numpy (and we bind mount a custom file into the image).
+software: numpy (and we copy our custom python script into the image).
 
 Building upon base-images is used extensively: The python image is not just python, it is again based on an another image, which itself is based on another image, and so on.
 
