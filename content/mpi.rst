@@ -382,14 +382,18 @@ on materials modeling.
 Let's build a container with LAMMPS in it:
 
 
+:download:`lammps-openmpi.def </examples/lammps-openmpi.def>`:
+
 .. literalinclude:: /examples/lammps-openmpi.def
    :language: singularity
 
 Let's also create a submission script that runs a LAMMPS example
 where an indent will pushes against a material:
 
+:download:`run_lammps_indent.sh </examples/run_lammps_indent.sh>`:
+
 .. literalinclude:: /examples/run_lammps_indent.sh
-   :language: singularity
+   :language: slurm
 
 Now this exact same container can be run in both Triton / Puhti that have
 OpenMPI installed because both clusters use Slurm and InfiniBand
@@ -398,6 +402,14 @@ interconnects.
 .. tabs::
 
    .. tab:: Triton (Aalto)
+
+      To build the image:
+
+      .. code-block:: console
+
+         $ srun --mem=16G --cpus-per-task=4 --time=01:00:00 apptainer build lammps-openmpi.sif lammps-openmpi.def
+
+      To run the example:
 
       .. code-block:: console
 
@@ -435,6 +447,14 @@ interconnects.
          Total wall time: 0:00:01
 
    .. tab:: Puhti (CSC)
+
+      To build the image:
+
+      .. code-block:: console
+
+         $ apptainer build lammps-openmpi.sif lammps-openmpi.def
+
+      To run the example:
 
       .. code-block:: console
 

@@ -13,7 +13,5 @@ cd indent
 # Load OpenMPI module
 module load openmpi
 
-export PMIX_MCA_gds=hash
-
 # Run simulation
 srun apptainer run ../lammps-openmpi.sif -in in.indent

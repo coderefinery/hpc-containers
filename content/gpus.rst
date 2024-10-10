@@ -22,9 +22,11 @@ When using NVIDIA's GPUs that use the CUDA-framework the flag is ``--nv``.
 
 As an example, let's get a CUDA-enabled PyTorch-image:
 
-.. code-block:: console
+:download:`accelerate_cuda.def </examples/accelerate_cuda.def>`:
 
-   $ apptainer pull pytorch-cuda.sif docker://docker.io/pytorch/pytorch:2.2.2-cuda12.1-cudnn8-runtime
+.. literalinclude:: /examples/accelerate-cuda.def
+   :language: singularity
+
 
 Now when we launch the image, we can give the image GPU access with
 
@@ -84,6 +86,57 @@ Now when we launch the image, we can give the image GPU access with
 
       $ apptainer exec --rocm pytorch-rocm.sif python -c 'import torch; print(torch.cuda.is_available())'
       True
+
+
+Example container: Model training with accelerate
+*************************************************
+
+`Accelerate <https://huggingface.co/docs/accelerate/en/index>`__
+is a library designed for running distributed PyTorch code.
+
+Let's create a container that can run a simple training example
+that can utilizes multiple GPUs.
+
+Container starts from an existing container with PyTorch installed
+and installs a few missing Python packages:
+
+:download:`accelerate_cuda.def </examples/accelerate_cuda.def>`:
+
+.. literalinclude:: /examples/accelerate_cuda.def
+   :language: singularity
+
+Submission script that launches the container looks like this:
+
+:download:`run_accelerate_parallel.sh </examples/run_accelerate_parallel.sh>`:
+
+.. literalinclude:: /examples/run_accelerate_parallel.sh
+   :language: slurm
+
+.. tabs::
+
+   .. tab:: Triton (Aalto)
+
+      To build the image:
+
+      .. code-block:: console
+
+         $ srun --mem=32G --cpus-per-task=4 --time=01:00:00 apptainer build accelerate_cuda.sif accelerate_cuda.def
+
+      To run the example:
+
+      .. code-block:: console
+
+         $ sbatch run_accelerate_parallel.sh
+         $ cat accelerate_run.out 
+         Some weights of BertForSequenceClassification were not initialized from the model checkpoint at bert-base-cased and are newly initialized: ['classifier.bias', 'classifier.weight']
+         You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+         You're using a BertTokenizerFast tokenizer. Please note that with a fast tokenizer, using the `__call__` method is faster than using a method to encode the text followed by a call to the `pad` method to get a padded encoding.
+         epoch 0: {'accuracy': 0.7598039215686274, 'f1': 0.8032128514056225}
+         epoch 1: {'accuracy': 0.8480392156862745, 'f1': 0.8931034482758621}
+         epoch 2: {'accuracy': 0.8406862745098039, 'f1': 0.888507718696398}
+
+Review of this session
+**********************
 
 .. admonition:: Key points to remember
 
