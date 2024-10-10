@@ -192,8 +192,14 @@ When creating you image definition file - have a think about what the image shou
 
 For instance: an image that is used to run some specific scientific analysis on a specific input type of data may not need your favourite text editor inside. Or that extra python package just in case. Slim the image down to just what it needs for the purpose it fulfills. The benefit will be at least two-fold: the image will be lighter meaning it will be quicker to download and have smaller carbon-footprint. But in addition there is less software to potentially get into software dependency problems with. Another benefit: it will be clearer for the user what is the purpose of the image, and how to use it. 
 
+.. admonition:: Stay to the point
+
+  - Try to make your image as specific as possible
+  - Only add software that is needed for the specific purpose of the container
+
 Data
-+++++++++++++++++++
++++++++
+
 The main purpose of a software image is exactly that - to provide software, not datasets. There are several reasons why it is not a good idea to include (potentially large) datasets, here are a few: 
 
 - The image could become very heavy
@@ -250,12 +256,19 @@ Compare the two apptainer definition files and how to run the resulting ``my_con
          %help
             Usage: apptainer run --bind /path/to/host/input:/app/input_data,/path/to/host/output:/app/output_data this_container.sif
 
+
+That said, there may be reasons why some particular data is better copied into the container. For instance some reference data that stays unchanged and that is needed for all analysis. 
+
+.. admonition:: Data key practices
+
+  - Avoid copying data into the container unless there are obvious benefits
+
 Documentating your image
 -----------------------------------
 In the example above you can see that some documentation is added in the image itself under the ``%help`` block.  This is not only important for sharing, but also for yourself to help remember how to use the container. See more details in the :ref:`Adding documentation to your image <documentation>`. 
 
 
-.. admonition:: Document your image
+.. admonition:: Documentation key practices
 
   Always add documentation to your image. 
 
