@@ -1,1 +1,1 @@
-This lesson is part of [Tuesday Tools & Techniques for High Performance Computing](https://scicomp.aalto.fi/training/scip/ttt4hpc-2024/)
+This lesson is part of [Tuesday Tools & Techniques for High Performance Computing](https://scicomp.aalto.fi/training/scip/ttt4hpc-2024/) more specifically the container episode: [Containers on HPC with Apptainer](https://coderefinery.github.io/hpc-containers/)
