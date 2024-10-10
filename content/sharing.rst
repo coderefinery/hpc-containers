@@ -203,7 +203,7 @@ The main purpose of a software image is exactly that - to provide software, not 
 
 Instead of shipping the data with the image, let the user bind mount it into the container. Check out the :doc:`Binding folders into your container lesson <binding_folders>` for details. 
 
-Compare the two apptainer definition files and how to run the resulting ``my_container.sif`` container. The left tab also exemplifies bind-mounting a folder for output data, which is useful in order to access the resulting output data directly from the host server. 
+Compare the two apptainer definition files and how to run the resulting ``my_container.sif`` container. The right tab also exemplifies bind-mounting a folder for output data, which is useful in order to access the resulting output data directly from the host server. 
 
 .. tabs::
 
@@ -249,6 +249,17 @@ Compare the two apptainer definition files and how to run the resulting ``my_con
 
          %help
             Usage: apptainer run --bind /path/to/host/input:/app/input_data,/path/to/host/output:/app/output_data this_container.sif
+
+Documentating your image
+-----------------------------------
+In the example above you can see that some documentation is added in the image itself under the ```%help``` block.  This is not only important for sharing, but also for yourself to help remember how to use the container. See more details in the :ref:`Adding documentation to your image <documentation>`. 
+
+
+.. admonition:: Document your image
+
+  Always add documentation to your image. 
+  - Minimally how to use the container via the ```%help``` block
+  - In addition author, version, description via the ```%label``` block
 
 
 Use version control and public registries
