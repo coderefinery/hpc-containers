@@ -252,14 +252,15 @@ Compare the two apptainer definition files and how to run the resulting ``my_con
 
 Documentating your image
 -----------------------------------
-In the example above you can see that some documentation is added in the image itself under the ```%help``` block.  This is not only important for sharing, but also for yourself to help remember how to use the container. See more details in the :ref:`Adding documentation to your image <documentation>`. 
+In the example above you can see that some documentation is added in the image itself under the ``%help`` block.  This is not only important for sharing, but also for yourself to help remember how to use the container. See more details in the :ref:`Adding documentation to your image <documentation>`. 
 
 
 .. admonition:: Document your image
 
   Always add documentation to your image. 
-  - Minimally how to use the container via the ```%help``` block
-  - In addition author, version, description via the ```%label``` block
+
+  - Minimally how to use the container via the ``%help`` block
+  - In addition author, version, description via the ``%label`` block
 
 
 Use version control and public registries
@@ -317,7 +318,7 @@ What many projects do (however, note the warning below):
 It is possible to host both the definition file and the image on GitHub:
 
     - You don't need to host it yourself.
-    - But the image stays close to its sources and is not on a different service.
+    - The image stays close to its sources and is not on a different service.
     - Anybody can inspect the recipe and how it was built.
     - Every time you make a change to the recipe, it builds a new image.
     - We can practice/demonstrate this in the exercise below.
@@ -400,11 +401,11 @@ Exercises
 .. exercise:: Exercise Sharing-2: Building a container on GitHub
 
    You can build a container on GitHub (using GitHub Actions) or GitLab (using
-   GitLab CI) and host the image it on GitHub/GitLab. This has the following
+   GitLab CI) and host the image on GitHub/GitLab. This has the following
    advantages:
 
    - You don't need to host it yourself.
-   - But the image stays close to its sources and is not on a different service.
+   - The image stays close to its sources and is not on a different service.
    - Anybody can inspect the recipe and how it was built.
    - Every time you make a change to the recipe, it builds a new image.
 
