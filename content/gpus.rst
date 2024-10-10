@@ -48,12 +48,6 @@ Now when we launch the image, we can give the image GPU access with
       $ apptainer exec --nv pytorch-cuda.sif python -c 'import torch; print(torch.cuda.is_available())'
       True
 
-.. admonition:: Key points to remember
-
-   - Code inside the container image needs to support GPU calculations.
-   - Container image should have a working CUDA toolkit installed.
-   - Use ``--nv``-flag to mount the device drivers inside of the image.
-
 
 Using AMD's GPUs
 ****************
@@ -141,5 +135,5 @@ Review of this session
 .. admonition:: Key points to remember
 
    - Code inside the container image needs to support GPU calculations.
-   - Container image should have a working ROCm toolkit installed.
-   - Use ``--rocm``-flag to mount the device drivers inside of the image.
+   - Container image should have a working CUDA / ROCm toolkit installed.
+   - Use ``--nv`` / ``--rocm``-flag to mount the device drivers inside of the image.
