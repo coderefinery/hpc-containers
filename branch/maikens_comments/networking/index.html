@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Networking in Containers &mdash; Container on HPC with Apptainer  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_lesson.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/term_role_formatting.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_rtd_theme_ext_color_contrast.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/tabs.css" />
+
+  
+    <link rel="shortcut icon" href="../_static/coderefinery.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script src="../_static/minipres.js"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../" class="icon icon-home">
+            Container on HPC with Apptainer
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">The lesson</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro_and_motivation/">Intro to containers (on HPC)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basics_running_containers/">Basics of running containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../container_images/">Intro to container images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../building_images/">Building Apptainer images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../binding_folders/">Binding folders into your container</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Extras</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gpus/">Running containers that use GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../services_apps/">Services and apps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tips_tricks/">Tips, tricks and frequently asked questions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Exercises</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../verify_installation/">Verify Apptainer Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../first_build/">Building Your First Container</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">Container on HPC with Apptainer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Networking in Containers</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/coderefinery/ttt4hpc_containers/blob/main/ttt4hpc_containers/content/networking.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="networking-in-containers">
+<h1>Networking in Containers<a class="headerlink" href="#networking-in-containers" title="Permalink to this heading"></a></h1>
+<div class="admonition-objectives objectives admonition" id="objectives-0">
+<p class="admonition-title">Objectives</p>
+<ul class="simple">
+<li><p>Understand the impact of network configurations on containerized applications in HPC environments.</p></li>
+<li><p>Learn to configure and test network settings within an Apptainer container.</p></li>
+<li><p>Acquire the ability to ensure network connectivity and proper configuration for applications running inside containers.</p></li>
+</ul>
+<p>This demo focuses on the configuration and testing of network settings within an Apptainer container. Networking is a critical component of containerized applications, particularly when these applications need to communicate with external resources or other applications within a cluster. Proper network configuration helps ensure that containers are both secure and functional, aligning with the network policies of the HPC environment.</p>
+</div>
+<div class="admonition-prerequisites prerequisites admonition" id="prerequisites-0">
+<p class="admonition-title">Prerequisites</p>
+<ul class="simple">
+<li><p>Access to an HPC system with Apptainer installed.</p></li>
+<li><p>Basic knowledge of networking concepts such as IP addressing, DNS, and port mapping.</p></li>
+<li><p>Permissions to modify network settings on the host, if necessary.</p></li>
+</ul>
+</div>
+<p>Networking within containers can be complex due to the isolation provided by the container environment. This isolation, while beneficial for security and resource management, can complicate network communication unless properly configured. In this demo, you’ll learn how to set up and verify network configurations that allow your containerized applications to communicate effectively and securely.</p>
+<p>First, let’s define a container that includes networking tools for testing connectivity and configurations.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create an Apptainer definition file with network tools</span>
+Bootstrap:<span class="w"> </span>library
+From:<span class="w"> </span>ubuntu:20.04
+
+%post
+<span class="w">    </span>apt-get<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>iproute2<span class="w"> </span>net-tools<span class="w"> </span>inetutils-ping
+
+%runscript
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Checking network configuration...&quot;</span>
+<span class="w">    </span>ifconfig
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Pinging google.com to test DNS resolution and internet connectivity...&quot;</span>
+<span class="w">    </span>ping<span class="w"> </span>-c<span class="w"> </span><span class="m">4</span><span class="w"> </span>google.com
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Build the container with networking capabilities</span>
+apptainer<span class="w"> </span>build<span class="w"> </span>net_container.sif<span class="w"> </span>net.def
+</pre></div>
+</div>
+<p>This block compiles the <code class="docutils literal notranslate"><span class="pre">net_container.sif</span></code> container from the <code class="docutils literal notranslate"><span class="pre">net.def</span></code> file, which includes necessary tools such as <code class="docutils literal notranslate"><span class="pre">ifconfig</span></code> for checking IP addresses, <code class="docutils literal notranslate"><span class="pre">net-tools</span></code> for various network operations, and <code class="docutils literal notranslate"><span class="pre">ping</span></code> to test connectivity.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run the container to test network settings</span>
+apptainer<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>net_container.sif<span class="w"> </span>/bin/bash
+</pre></div>
+</div>
+<p>This command launches the container, allowing you to interact with the shell and manually execute commands to inspect and test the network settings as defined in the <code class="docutils literal notranslate"><span class="pre">%runscript</span></code> section. You can verify the network interface configurations and test internet connectivity via DNS resolution.</p>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this heading"></a></h2>
+<p>In this tutorial, you’ve learned how to configure and test network settings within an Apptainer container. Understanding and managing network configurations is essential for the deployment of containerized applications in HPC environments, especially those that require external network communication or are part of a larger distributed system. By ensuring that your containers are properly configured to handle network traffic, you enhance their utility and integration into broader computing frameworks.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024-, The contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

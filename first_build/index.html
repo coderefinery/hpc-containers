@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Building Your First Container &mdash; Container on HPC with Apptainer  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_lesson.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/term_role_formatting.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_rtd_theme_ext_color_contrast.css" />
+
+  
+    <link rel="shortcut icon" href="../_static/coderefinery.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script src="../_static/minipres.js"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="Python environment in a container" href="../python_exercise/" />
+    <link rel="prev" title="Verify Apptainer Installation" href="../verify_installation/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../" class="icon icon-home">
+            Container on HPC with Apptainer
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">The lesson</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro_and_motivation/">Intro to containers (on HPC)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basics_running_containers/">Basics of running containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../container_images/">Intro to container images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../building_images/">Building Apptainer images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../binding_folders/">Binding folders into your container</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mpi/">MPI programs and containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gpus/">Running containers that use GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sharing/">Sharing reproducible containers</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Extras</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../services_apps/">Services and apps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tips_tricks/">Tips, tricks and frequently asked questions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Exercises</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../verify_installation/">Verify Apptainer Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Building Your First Container</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#summary">Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../python_exercise/">Python environment in a container</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">Container on HPC with Apptainer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Building Your First Container</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/coderefinery/ttt4hpc_containers/blob/main/content/first_build.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="building-your-first-container">
+<h1>Building Your First Container<a class="headerlink" href="#building-your-first-container" title="Permalink to this heading"></a></h1>
+<div class="admonition-objectives objectives admonition" id="objectives-0">
+<p class="admonition-title">Objectives</p>
+<ul class="simple">
+<li><p>Understand the basic concept and utility of containerization in HPC environments.</p></li>
+<li><p>Learn to create an Apptainer container using a definition file.</p></li>
+<li><p>Apply this knowledge to build reproducible computing environments.</p></li>
+</ul>
+<p>In this demo, you will learn how to build your first container using Apptainer, starting from a simple definition file. Containers are crucial for creating reproducible, portable, and scalable environments that are isolated from the underlying infrastructure. This hands-on example will guide you through the process of defining and building a basic container, which is a foundational skill in using containers effectively in high-performance computing.</p>
+</div>
+<div class="admonition-prerequisites prerequisites admonition" id="prerequisites-0">
+<p class="admonition-title">Prerequisites</p>
+<ul class="simple">
+<li><p>No prerequisites for following the demo</p></li>
+</ul>
+</div>
+<p>Building your first container is a significant first step to test the technology and make sure it works in the cluster(s) you use. This example is based on the typical case when you need to install and run a specific tool which cannot be easily installed by your HPC cluster admins. This can happen if certain tools are really tight to some specific system-wide dependencies (e.g. certain versions of libraries, compilers, operating system).</p>
+<p>For the sake of learning, assume that the three tools <code class="docutils literal notranslate"><span class="pre">fortune</span></code>, <code class="docutils literal notranslate"><span class="pre">cowsay</span></code>, and <code class="docutils literal notranslate"><span class="pre">lolcat</span></code> cannot be installed by your cluster admins, and have strict requirements that you cannot just install them by yourself without root privileges.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example definition file content for Apptainer</span>
+Bootstrap:<span class="w"> </span>docker
+From:<span class="w"> </span>ubuntu:24.04
+
+%post
+<span class="w">    </span>apt-get<span class="w"> </span>-y<span class="w"> </span>update
+<span class="w">    </span>apt-get<span class="w"> </span>-y<span class="w"> </span>install<span class="w"> </span>fortune<span class="w"> </span>cowsay<span class="w"> </span>lolcat
+
+%environment
+<span class="w">    </span><span class="nb">export</span><span class="w"> </span><span class="nv">LC_ALL</span><span class="o">=</span>C
+<span class="w">    </span><span class="nb">export</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span>/usr/games:<span class="nv">$PATH</span>
+
+%runscript
+<span class="w">    </span>fortune<span class="w"> </span><span class="p">|</span><span class="w"> </span>cowsay<span class="w"> </span><span class="p">|</span><span class="w"> </span>lolcat
+
+<span class="c1"># Save the above content into a file named &#39;mydefinition.def&#39;</span>
+</pre></div>
+</div>
+<p>Next we need to build the container image.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Build an Apptainer container from a definition file</span>
+apptainer<span class="w"> </span>build<span class="w"> </span>mycontainer.sif<span class="w"> </span>mydefinition.def
+</pre></div>
+</div>
+<p>This command constructs a container named ‘mycontainer.sif’ from the definition file ‘mydefinition.def’. The <code class="docutils literal notranslate"><span class="pre">.sif</span></code> file format is a portable container format used by Apptainer. This step is essential as it compiles all the necessary components and software specified in your definition file into a single executable container.</p>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this heading"></a></h2>
+<p>This example showed you how to build a basic container using Apptainer from a definition file. You’ve learned a critical skill in containerization, enabling you to create reproducible and portable environments for a wide range of scientific applications. This capability is foundational in leveraging the full potential of HPC resources while ensuring consistency across different computing environments.</p>
+<div class="admonition-build-a-simple-container-and-test-it exercise important admonition" id="exercise-0">
+<p class="admonition-title">Build a simple container and test it</p>
+<p>Build a simple container on your cluster. You do not have to use the example above. Test the following:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Start a terminal shell on the container and run a command such as <code class="docutils literal notranslate"><span class="pre">date</span></code></p></li>
+<li><p>Test the <cite>runscript</cite> part for the container above. How do you run it and what is the output?</p></li>
+<li><p>Add the <cite>%labels</cite> and <cite>%help</cite> block and test them as explained in the “Building Apptainer Images” section</p></li>
+<li><p>Copy paste all terminal commands and output from the three point above into a text file that you can submit as homework.</p></li>
+</ol>
+</div></blockquote>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../verify_installation/" class="btn btn-neutral float-left" title="Verify Apptainer Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../python_exercise/" class="btn btn-neutral float-right" title="Python environment in a container" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024-, The contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Intro to container images &mdash; Container on HPC with Apptainer  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_lesson.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/term_role_formatting.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_rtd_theme_ext_color_contrast.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/tabs.css" />
+
+  
+    <link rel="shortcut icon" href="../_static/coderefinery.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script src="../_static/minipres.js"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="Building Apptainer images" href="../building_images/" />
+    <link rel="prev" title="Basics of running containers" href="../basics_running_containers/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../" class="icon icon-home">
+            Container on HPC with Apptainer
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">The lesson</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro_and_motivation/">Intro to containers (on HPC)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basics_running_containers/">Basics of running containers</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Intro to container images</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#traditional-container-images-docker-etc">Traditional container images (Docker etc.)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#apptainer-container-images">Apptainer container images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#image-sources">Image sources</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../building_images/">Building Apptainer images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../binding_folders/">Binding folders into your container</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Extras</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gpus/">Running containers that use GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../services_apps/">Services and apps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tips_tricks/">Tips, tricks and frequently asked questions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Exercises</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../verify_installation/">Verify Apptainer Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../first_build/">Building Your First Container</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">Container on HPC with Apptainer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Intro to container images</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/coderefinery/ttt4hpc_containers/blob/main/ttt4hpc_containers/content/container_images.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="intro-to-container-images">
+<h1>Intro to container images<a class="headerlink" href="#intro-to-container-images" title="Permalink to this heading"></a></h1>
+<div class="admonition-objectives objectives admonition" id="objectives-0">
+<p class="admonition-title">Objectives</p>
+<ul class="simple">
+<li><p>Learn what container image means</p></li>
+</ul>
+</div>
+<section id="traditional-container-images-docker-etc">
+<h2>Traditional container images (Docker etc.)<a class="headerlink" href="#traditional-container-images-docker-etc" title="Permalink to this heading"></a></h2>
+<p>When containers launch they need a file system with a linux operating system.
+This filesystem is provided by a <strong>container image</strong>.</p>
+<p>This naming comes from an analogy with a traditional image or a painting.</p>
+<figure class="align-default" id="id1">
+<a class="reference internal image-reference" href="https://upload.wikimedia.org/wikipedia/commons/6/6d/Saint_Jerome_Leonardo_-_image_only_%28Q972196%29.jpg"><img alt="https://upload.wikimedia.org/wikipedia/commons/6/6d/Saint_Jerome_Leonardo_-_image_only_%28Q972196%29.jpg" src="https://upload.wikimedia.org/wikipedia/commons/6/6d/Saint_Jerome_Leonardo_-_image_only_%28Q972196%29.jpg" style="width: 60%;" /></a>
+<figcaption>
+<p><span class="caption-text">Figure 1: Saint Jerome in the Wilderness by Leonardo da Vinci</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>Let’s consider the image above. It is an unfinished painting by Leonardo da Vinci.</p>
+<p>From the unfinished nature of this painting you can see the following:</p>
+<ul class="simple">
+<li><p>Some areas of the background panel are not touched at all (e.g. hands).</p></li>
+<li><p>The base background is in some places covered by sketches (e.g the lion) and in most places by the background colors.</p></li>
+<li><p>The background colors are sometimes covered in sketches as well (e.g. top left).</p></li>
+</ul>
+<p>From these things we can gather that the image is constructed from <strong>layers</strong> where
+paint or sketches <strong>cover what is hidden underneath</strong>.</p>
+<p>This analogy happens with traditional container images as well (e.g. docker images):
+<strong>container images consist of multiple layers where top layers can hide preceding layers</strong>.</p>
+<p>A typical image might look something like this:</p>
+<figure class="align-default" id="id2">
+<img alt="../_images/image_explanation.png" src="../_images/image_explanation.png" />
+<figcaption>
+<p><span class="caption-text">Figure 2: Typical container image consists of individual layers</span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>In practice this overwriting behaviour is done by using a file format called SquashFS,
+where file systems are stored in one single layer.</p>
+<p>In a traditional image the image is built in this fashion:</p>
+<ol class="arabic simple">
+<li><p>The build starts from a base image. This is often an OS image, but it does not have to
+be. It can be some other image that has a OS image as its base image.</p></li>
+<li><p>This layer is started up in a container.</p></li>
+<li><p>Modifications are done. For example, an application is installed.</p></li>
+<li><p>The <strong>difference of what files were modified is stored into a new layer</strong>.</p></li>
+<li><p>This new image with the modifications is now used as a base image.</p></li>
+<li><p>More modifications are done unless there are no more modifications to do.</p></li>
+<li><p>The last layer is <strong>tagged</strong> with some human readable name.</p></li>
+<li><p>When image is published to other users, it is sent to some container registry.</p></li>
+</ol>
+<p>The file that contains the commands that need to be run to build the image
+is called a <a class="reference external" href="https://docs.docker.com/reference/dockerfile/">Dockerfile</a>.
+This is true for systems other that Docker as well.</p>
+<p>This way of working with <strong>differences of layers</strong> reduces the space needed to
+store the images and the network capacity needed to transfer the images.</p>
+<p>When a container is launched these layers are fetched and organized on top of each
+other and when a program tries to find a file, it will go through the layers until it
+finds it. This is analogous to light bouncing off from the top layer of paint on a
+painting. Paint below the top layer is hidden.</p>
+<div class="admonition-key-points-to-remember admonition">
+<p class="admonition-title">Key points to remember</p>
+<ul class="simple">
+<li><p>Traditional containers are built layer by layer.</p></li>
+<li><p>Traditional containers are built from Dockerfiles.</p></li>
+<li><p>Traditional container images are transferred via registries using
+client tools or as <code class="docutils literal notranslate"><span class="pre">.tar</span></code>-files.</p></li>
+</ul>
+</div>
+</section>
+<section id="apptainer-container-images">
+<h2>Apptainer container images<a class="headerlink" href="#apptainer-container-images" title="Permalink to this heading"></a></h2>
+<p>Apptainer works a bit differently than traditional container setups.</p>
+<p>Apptainer stores the container image in one file in
+<strong>Singularity image format</strong> or <strong>.sif</strong>. This file is a SquashFS file with
+additional metadata included.</p>
+<p>This means that <strong>Apptainer does not store image as multiple layers</strong>.
+Instead it writes all of the layers into one single layer. This is analogous
+to printing an image of a painting on a piece of paper. The hidden layers
+of paint are not replicated and only the topmost layer is visible.</p>
+<figure class="align-default" id="id3">
+<img alt="../_images/image_explanation_apptainer.png" src="../_images/image_explanation_apptainer.png" />
+<figcaption>
+<p><span class="caption-text">Figure 3: Apptainer container image is a single unchanging image layer</span><a class="headerlink" href="#id3" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>This way of working has some upsides and some downsides.</p>
+<p>Upsides include:</p>
+<ul class="simple">
+<li><p>The image is more portable. One image can be easily transferred across
+systems using normal file copying tools.</p></li>
+<li><p>The image is more reproducible. The metadata stored in the file gives
+information on when the image was created and what commands were used
+to create it.</p></li>
+<li><p>The image is easier to archive. One just needs to keep track of a single
+file.</p></li>
+</ul>
+<p>Downsides include:</p>
+<ul class="simple">
+<li><p>Image creation takes longer as all operations need to be done in one go.
+Traditional container images can be built layer by layer.</p></li>
+<li><p>Images cannot be stored in traditional registries like Docker Hub.</p></li>
+</ul>
+<p>Apptainer images can use Docker images as their starting point.
+Additional build steps and runtime behaviour can be specified in a
+<a class="reference external" href="https://apptainer.org/docs/user/latest/definition_files.html">definition file (.def)</a>.</p>
+<div class="admonition-key-points-to-remember admonition">
+<p class="admonition-title">Key points to remember</p>
+<ul class="simple">
+<li><p>Apptainer images are a single image layer which is stored in a .sif-file.</p></li>
+<li><p>When built from traditional image, Apptainer images squash all layers to a single one.</p></li>
+<li><p>Apptainer images are built from definition file (.def).</p></li>
+<li><p>Apptainer images are transferred as normal files.</p></li>
+</ul>
+</div>
+</section>
+<section id="image-sources">
+<h2>Image sources<a class="headerlink" href="#image-sources" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Leonardo da Vinci, <a class="reference external" href="https://creativecommons.org/publicdomain/zero/1.0/">CC0</a>, via <a class="reference external" href="https://commons.wikimedia.org/wiki/File:Saint_Jerome_Leonardo_-_image_only_(Q972196).jpg">Wikimedia Commons</a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../basics_running_containers/" class="btn btn-neutral float-left" title="Basics of running containers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../building_images/" class="btn btn-neutral float-right" title="Building Apptainer images" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024-, The contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

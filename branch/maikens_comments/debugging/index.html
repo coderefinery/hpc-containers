@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Debugging Containers &mdash; Container on HPC with Apptainer  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_lesson.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/term_role_formatting.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_rtd_theme_ext_color_contrast.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/tabs.css" />
+
+  
+    <link rel="shortcut icon" href="../_static/coderefinery.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script src="../_static/minipres.js"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../" class="icon icon-home">
+            Container on HPC with Apptainer
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">The lesson</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro_and_motivation/">Intro to containers (on HPC)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basics_running_containers/">Basics of running containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../container_images/">Intro to container images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../building_images/">Building Apptainer images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../binding_folders/">Binding folders into your container</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Extras</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gpus/">Running containers that use GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../services_apps/">Services and apps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tips_tricks/">Tips, tricks and frequently asked questions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Exercises</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../verify_installation/">Verify Apptainer Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../first_build/">Building Your First Container</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">Container on HPC with Apptainer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Debugging Containers</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/coderefinery/ttt4hpc_containers/blob/main/ttt4hpc_containers/content/debugging.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="debugging-containers">
+<h1>Debugging Containers<a class="headerlink" href="#debugging-containers" title="Permalink to this heading"></a></h1>
+<div class="admonition-objectives objectives admonition" id="objectives-0">
+<p class="admonition-title">Objectives</p>
+<ul class="simple">
+<li><p>Understand the importance of being able to debug applications within container environments.</p></li>
+<li><p>Learn to enter an Apptainer container using a shell for debugging purposes.</p></li>
+<li><p>Develop practical troubleshooting skills for containerized applications in an HPC setting.</p></li>
+</ul>
+<p>This demo will instruct on how to access an Apptainer container with a shell interface to perform debugging and troubleshooting tasks. Debugging within containers is crucial because it allows developers and administrators to directly interact with the running environment and resolve issues that may not be apparent from outside the container.</p>
+</div>
+<div class="admonition-prerequisites prerequisites admonition" id="prerequisites-0">
+<p class="admonition-title">Prerequisites</p>
+<ul class="simple">
+<li><p>Access to an HPC system with Apptainer installed.</p></li>
+<li><p>A container with a misbehaving application or one prepared for debugging.</p></li>
+<li><p>Basic familiarity with command-line interface operations and debugging tools.</p></li>
+</ul>
+</div>
+<p>Containers encapsulate dependencies and environments but can sometimes obscure problems from the host system. By entering the container itself, you can use standard debugging tools and inspect the state of the application as it runs within its isolated environment.</p>
+<p>First, we’ll set up a simple container that includes tools and an application setup conducive to debugging. Then, we’ll demonstrate how to enter this container to troubleshoot issues.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example Apptainer definition file for a debuggable environment</span>
+Bootstrap:<span class="w"> </span>library
+From:<span class="w"> </span>ubuntu:20.04
+
+%post
+<span class="w">    </span>apt-get<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>python3<span class="w"> </span>python3-pip<span class="w"> </span>gdb<span class="w"> </span>vim
+<span class="w">    </span>pip3<span class="w"> </span>install<span class="w"> </span>flask
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;from flask import Flask&quot;</span><span class="w"> </span>&gt;<span class="w"> </span>/app.py
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;app = Flask(__name__)&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>/app.py
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;@app.route(&#39;/&#39;)&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>/app.py
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;def hello():&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>/app.py
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;    raise Exception(&#39;Intentional Error for Debugging&#39;)&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>/app.py
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;if __name__ == &#39;__main__&#39;:&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>/app.py
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;    app.run(host=&#39;0.0.0.0&#39;, port=5000, debug=True)&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>/app.py
+
+%environment
+<span class="w">    </span><span class="nb">export</span><span class="w"> </span><span class="nv">FLASK_APP</span><span class="o">=</span>/app.py
+
+%runscript
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Running Flask app with intentional errors for debugging...&quot;</span>
+<span class="w">    </span>python3<span class="w"> </span>/app.py
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Build the container for debugging</span>
+apptainer<span class="w"> </span>build<span class="w"> </span>debug_container.sif<span class="w"> </span>debug.def
+</pre></div>
+</div>
+<p>This block constructs the <code class="docutils literal notranslate"><span class="pre">debug_container.sif</span></code> from the <code class="docutils literal notranslate"><span class="pre">debug.def</span></code> file, which sets up a Flask application programmed to raise an exception. This setup is useful for demonstrating how to handle errors within a live application.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Enter the container with a shell to start debugging</span>
+apptainer<span class="w"> </span>shell<span class="w"> </span>debug_container.sif
+</pre></div>
+</div>
+<p>This command launches a shell within the <code class="docutils literal notranslate"><span class="pre">debug_container.sif</span></code>, allowing you to interact directly with the container’s environment. Inside the container, you can run the application, use tools like <code class="docutils literal notranslate"><span class="pre">gdb</span></code> or <code class="docutils literal notranslate"><span class="pre">vim</span></code> to inspect and modify files, or check logs to diagnose issues.</p>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this heading"></a></h2>
+<p>In this tutorial, you’ve learned how to enter an Apptainer container with a shell for the purpose of debugging applications. This skill is essential for software development and system administration in containerized environments, particularly in HPC where applications may behave differently due to complex interactions with underlying hardware and software layers. By mastering container debugging, you can significantly improve the reliability and performance of your applications.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024-, The contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

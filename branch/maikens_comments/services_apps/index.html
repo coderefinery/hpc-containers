@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Services and apps &mdash; Container on HPC with Apptainer  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_lesson.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/term_role_formatting.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_rtd_theme_ext_color_contrast.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/tabs.css" />
+
+  
+    <link rel="shortcut icon" href="../_static/coderefinery.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script src="../_static/minipres.js"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="Tips, tricks and frequently asked questions" href="../tips_tricks/" />
+    <link rel="prev" title="Running containers that use GPUs" href="../gpus/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../" class="icon icon-home">
+            Container on HPC with Apptainer
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">The lesson</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro_and_motivation/">Intro to containers (on HPC)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basics_running_containers/">Basics of running containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../container_images/">Intro to container images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../building_images/">Building Apptainer images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../binding_folders/">Binding folders into your container</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Extras</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gpus/">Running containers that use GPUs</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Services and apps</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#what-are-services">What are services?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#what-are-apps">What are apps?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-postgresql-container">Example: PostgreSQL container</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tips_tricks/">Tips, tricks and frequently asked questions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Exercises</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../verify_installation/">Verify Apptainer Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../first_build/">Building Your First Container</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">Container on HPC with Apptainer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Services and apps</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/coderefinery/ttt4hpc_containers/blob/main/ttt4hpc_containers/content/services_apps.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="services-and-apps">
+<h1>Services and apps<a class="headerlink" href="#services-and-apps" title="Permalink to this heading"></a></h1>
+<section id="what-are-services">
+<h2>What are services?<a class="headerlink" href="#what-are-services" title="Permalink to this heading"></a></h2>
+<p>You can use Apptainer to launch services that run in
+the background. Service might be, for example, a database
+application that your code uses to fetch subsets from a
+larger dataset.</p>
+<p>Creating containers for these kinds of services can
+often be quite complicated as they might need specific
+folders to be created or specific environment variables
+to be set.</p>
+</section>
+<section id="what-are-apps">
+<h2>What are apps?<a class="headerlink" href="#what-are-apps" title="Permalink to this heading"></a></h2>
+<p>When we’re launching a complicated services or making
+containers with more than one application we might also
+want to specify multiple run scripts and entrypoints to
+the container.</p>
+<p>This can be done in Apptainer containers by specifying
+multiple apps in the definition file.</p>
+</section>
+<section id="example-postgresql-container">
+<h2>Example: PostgreSQL container<a class="headerlink" href="#example-postgresql-container" title="Permalink to this heading"></a></h2>
+<p>The following example uses a
+<a class="reference external" href="https://hub.docker.com/_/postgres/">PostgreSQL image</a> to
+set up a PostgreSQL server. Launching the server requires
+that certain directory mounts and environment variables are set.</p>
+<p>These have been found by looking at the
+<a class="reference external" href="https://github.com/docker-library/postgres/blob/master/docker-entrypoint.sh">docker-entrypoint.sh</a>-script
+that would start the image when using Docker.</p>
+<p>In the case of PostgreSQL, we’ll most likely
+want to use the PostgreSQL client to modify our databases.
+We can do this by specifying an app for it.</p>
+<p>Let’s look at the definition file:</p>
+<div class="highlight-singularity notranslate"><div class="highlight"><pre><span></span><span class="k">Bootstrap</span>:<span class="w"> </span>docker
+<span class="k">From</span>:<span class="w"> </span>postgres:<span class="m">16</span>
+
+<span class="gh">%environment</span>
+<span class="w">    </span><span class="nb">export</span><span class="w"> </span><span class="nv">LC_ALL</span><span class="o">=</span>C
+<span class="w">    </span><span class="nb">export</span><span class="w"> </span><span class="nv">LANG</span><span class="o">=</span>C
+<span class="w">    </span><span class="nb">export</span><span class="w"> </span><span class="nv">LANGUAGE</span><span class="o">=</span>C
+
+<span class="gh">%startscript</span>
+<span class="w">    </span><span class="nb">export</span><span class="w"> </span><span class="nv">POSTGRES_USER</span><span class="o">=</span><span class="nv">$PGUSER</span>
+<span class="w">    </span><span class="nb">export</span><span class="w"> </span><span class="nv">POSTGRES_PASSWORD</span><span class="o">=</span><span class="nv">$PGPASSWORD</span>
+<span class="w">    </span><span class="nb">export</span><span class="w"> </span><span class="nv">PGHOST</span><span class="o">=</span><span class="nv">$HOSTNAME</span>
+<span class="w">    </span><span class="nb">export</span><span class="w"> </span><span class="nv">PGPORT</span><span class="o">=</span><span class="si">${</span><span class="nv">PGPORT</span><span class="k">:-</span><span class="nv">19200</span><span class="si">}</span>
+
+<span class="w">    </span><span class="c1"># Run the entry script for PostgreSQL Docker image</span>
+<span class="w">    </span><span class="nb">exec</span><span class="w"> </span>docker-entrypoint.sh<span class="w"> </span>postgres<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span>
+
+<span class="gh">%help</span>
+
+<span class="w">    </span>This<span class="w"> </span>is<span class="w"> </span>a<span class="w"> </span>postgres<span class="w"> </span>container.
+
+<span class="w">    </span>The<span class="w"> </span>following<span class="w"> </span>data<span class="w"> </span>locations<span class="w"> </span>need<span class="w"> </span>to<span class="w"> </span>be<span class="w"> </span>mounted<span class="w"> </span>into<span class="w"> </span>the<span class="w"> </span>container:
+
+<span class="w">    </span>-<span class="w"> </span>Data<span class="w"> </span>location<span class="w"> </span><span class="k">for</span><span class="w"> </span>the<span class="w"> </span>postgres:<span class="w"> </span>/var/lib/postgresql/data
+<span class="w">    </span>-<span class="w"> </span>Location<span class="w"> </span><span class="k">for</span><span class="w"> </span>the<span class="w"> </span>runfiles<span class="w"> </span><span class="k">for</span><span class="w"> </span>postgres:<span class="w"> </span>/var/run/postgresql
+
+<span class="w">    </span>The<span class="w"> </span>start<span class="w"> </span>script<span class="w"> </span>needs<span class="w"> </span>the<span class="w"> </span>following<span class="w"> </span>arguments:
+
+<span class="w">    </span>-<span class="w"> </span>postgres<span class="w"> </span>user<span class="w"> </span>name
+<span class="w">    </span>-<span class="w"> </span>postgres<span class="w"> </span>user<span class="w"> </span>password
+
+<span class="w">    </span>Usage:
+
+<span class="w">        </span>mkdir<span class="w"> </span>postgres_data
+<span class="w">        </span>mkdir<span class="w"> </span>postgres_run
+
+<span class="w">        </span><span class="nb">export</span><span class="w"> </span><span class="nv">PGUSER</span><span class="o">=</span>postgres_user
+<span class="w">        </span><span class="nb">export</span><span class="w"> </span><span class="nv">PGPASSWORD</span><span class="o">=</span>postgres_password
+<span class="w">        </span>apptainer<span class="w"> </span>instance<span class="w"> </span>start<span class="w"> </span>--bind<span class="w"> </span>postgres_data:/var/lib/postgresql/data<span class="w"> </span>--bind<span class="w"> </span>postgres_run:/var/run/postgresql<span class="w"> </span>postgres_container.sif<span class="w"> </span>postgres_server
+
+<span class="w">        </span>apptainer<span class="w"> </span>instance<span class="w"> </span>list
+
+<span class="gh">%apprun</span><span class="w"> </span>psql
+<span class="w">    </span><span class="nb">export</span><span class="w"> </span><span class="nv">POSTGRES_USER</span><span class="o">=</span><span class="nv">$PGUSER</span>
+<span class="w">    </span><span class="nb">export</span><span class="w"> </span><span class="nv">POSTGRES_PASSWORD</span><span class="o">=</span><span class="nv">$PGPASSWORD</span>
+<span class="w">    </span><span class="nb">export</span><span class="w"> </span><span class="nv">PGHOST</span><span class="o">=</span><span class="nv">$HOSTNAME</span>
+<span class="w">    </span><span class="nb">export</span><span class="w"> </span><span class="nv">PGPORT</span><span class="o">=</span><span class="si">${</span><span class="nv">PGPORT</span><span class="k">:-</span><span class="nv">19200</span><span class="si">}</span>
+<span class="w">    </span><span class="nb">exec</span><span class="w"> </span>psql<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span>
+
+<span class="gh">%apphelp</span><span class="w"> </span>psql
+<span class="w">    </span>Run<span class="w"> </span>psql-client<span class="w"> </span><span class="k">in</span><span class="w"> </span>image
+
+<span class="w">    </span>PostgreSQL<span class="w"> </span>instance<span class="w"> </span>needs<span class="w"> </span>to<span class="w"> </span>be<span class="w"> </span>started<span class="w"> </span>beforehand
+
+<span class="w">    </span>Usage:
+
+<span class="w">        </span><span class="nb">export</span><span class="w"> </span><span class="nv">PGUSER</span><span class="o">=</span>postgres_user
+<span class="w">        </span><span class="nb">export</span><span class="w"> </span><span class="nv">PGPASSWORD</span><span class="o">=</span>postgres_password
+<span class="w">        </span>apptainer<span class="w"> </span>run<span class="w"> </span>--app<span class="w"> </span>psql<span class="w"> </span>instance://postgres_server<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;create database test;&#39;</span>
+<span class="w">        </span>apptainer<span class="w"> </span>run<span class="w"> </span>--app<span class="w"> </span>psql<span class="w"> </span>instance://postgres_server<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;\l&#39;</span>
+</pre></div>
+</div>
+<p>The definition file has couple of new blocks:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">%startscript</span></code>: This block defines what commands will be run when we start up the service.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">%apprun</span></code>: This block allows us to specify individual applications in our image. In this
+case we have an application called <code class="docutils literal notranslate"><span class="pre">psql</span></code> for the PostgreSQL client. This block specifies
+how we run this specific application.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">%apphelp</span></code>: Each app in a container can have it’s own help section as well as other
+setup sections. See documentation for all possibilities.</p></li>
+</ul>
+<p>For more information on how to specify multiple apps in a container, see
+<a class="reference external" href="https://apptainer.org/docs/user/latest/definition_files.html#scif-app-sections">this documentation page</a>.</p>
+<p>After building the image we can start the database with:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>mkdir<span class="w"> </span>postgres_data
+<span class="gp">$ </span>mkdir<span class="w"> </span>postgres_run
+<span class="gp">$ </span><span class="nb">export</span><span class="w"> </span><span class="nv">POSTGRES_USER</span><span class="o">=</span>postgres_user
+<span class="gp">$ </span><span class="nb">export</span><span class="w"> </span><span class="nv">POSTGRES_PASSWORD</span><span class="o">=</span>postgres_password
+<span class="gp">$ </span>apptainer<span class="w"> </span>instance<span class="w"> </span>start<span class="w"> </span>--bind<span class="w"> </span>postgres_data:/var/lib/postgresql/data<span class="w"> </span>--bind<span class="w"> </span>postgres_run:/var/run/postgresql<span class="w"> </span>postgres_container.sif<span class="w"> </span>postgres_server
+</pre></div>
+</div>
+<figure class="align-default" id="id1">
+<img alt="../_images/instance_example.png" src="../_images/instance_example.png" />
+<figcaption>
+<p><span class="caption-text">Figure 1: Starting container as an instance</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>Now that we have started the instance we can check that the instance is running with:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>apptainer<span class="w"> </span>instance<span class="w"> </span>list
+</pre></div>
+</div>
+<p>Let’s use the <code class="docutils literal notranslate"><span class="pre">psql</span></code>-app that we have specified. We can use it to make a
+connection to the server and to create a new database. Let’s also list the
+newly created database:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span><span class="w"> </span><span class="nv">PGUSER</span><span class="o">=</span>postgres_user
+<span class="gp">$ </span><span class="nb">export</span><span class="w"> </span><span class="nv">PGPASSWORD</span><span class="o">=</span>postgres_password
+<span class="gp">$ </span>apptainer<span class="w"> </span>run<span class="w"> </span>--app<span class="w"> </span>psql<span class="w"> </span>instance://postgres_server<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;create database test;&#39;</span>
+<span class="gp">$ </span>apptainer<span class="w"> </span>run<span class="w"> </span>--app<span class="w"> </span>psql<span class="w"> </span>instance://postgres_server<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;\l&#39;</span>
+</pre></div>
+</div>
+<figure class="align-default" id="id2">
+<img alt="../_images/app_run_example.png" src="../_images/app_run_example.png" />
+<figcaption>
+<p><span class="caption-text">Figure 2: Running an app from a container</span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>You’ll notice that we did not start a new container. Instead ran the application in
+the running instance by specifying <code class="docutils literal notranslate"><span class="pre">instance://postgres_server</span></code> instead of the
+<code class="docutils literal notranslate"><span class="pre">.sif</span></code>-image. You’ll also note that we did not need to specify the bind-mounts
+again: once the instance is started, bind mounts are made and they are there until
+the instance is stopped.</p>
+<p>We can then shut down the server with:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>apptainer<span class="w"> </span>instance<span class="w"> </span>stop<span class="w"> </span>postgres_server
+</pre></div>
+</div>
+<div class="admonition-key-points-to-remember admonition">
+<p class="admonition-title">Key points to remember</p>
+<ul class="simple">
+<li><p>You can start containers as instances.</p></li>
+<li><p>You can use <code class="docutils literal notranslate"><span class="pre">%startscript</span></code>-block to specify how an instance should start.</p></li>
+<li><p>You can create multiple apps in a container with <code class="docutils literal notranslate"><span class="pre">%app*</span></code>-blocks</p></li>
+<li><p>Started instances with bind mounts have them until instance is stopped.
+This is very useful if you plan on running multiple commands against a
+single container.</p></li>
+</ul>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../gpus/" class="btn btn-neutral float-left" title="Running containers that use GPUs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../tips_tricks/" class="btn btn-neutral float-right" title="Tips, tricks and frequently asked questions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024-, The contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

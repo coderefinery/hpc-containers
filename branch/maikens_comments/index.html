@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Containers on HPC with Apptainer &mdash; Container on HPC with Apptainer  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+      <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+      <link rel="stylesheet" type="text/css" href="_static/sphinx_lesson.css" />
+      <link rel="stylesheet" type="text/css" href="_static/term_role_formatting.css" />
+      <link rel="stylesheet" type="text/css" href="_static/sphinx_rtd_theme_ext_color_contrast.css" />
+      <link rel="stylesheet" type="text/css" href="_static/tabs.css" />
+
+  
+    <link rel="shortcut icon" href="_static/coderefinery.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/clipboard.min.js"></script>
+        <script src="_static/copybutton.js"></script>
+        <script src="_static/minipres.js"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="_static/togglebutton.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex/" />
+    <link rel="search" title="Search" href="search/" />
+    <link rel="next" title="Intro to containers (on HPC)" href="intro_and_motivation/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="#" class="icon icon-home">
+            Container on HPC with Apptainer
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">The lesson</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="intro_and_motivation/">Intro to containers (on HPC)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basics_running_containers/">Basics of running containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="container_images/">Intro to container images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="building_images/">Building Apptainer images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="binding_folders/">Binding folders into your container</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Extras</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="gpus/">Running containers that use GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="services_apps/">Services and apps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tips_tricks/">Tips, tricks and frequently asked questions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Exercises</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="verify_installation/">Verify Apptainer Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="first_build/">Building Your First Container</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">Container on HPC with Apptainer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Containers on HPC with Apptainer</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/coderefinery/ttt4hpc_containers/blob/main/ttt4hpc_containers/content/index.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="containers-on-hpc-with-apptainer">
+<h1>Containers on HPC with Apptainer<a class="headerlink" href="#containers-on-hpc-with-apptainer" title="Permalink to this heading"></a></h1>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This is under construction.</p>
+</div>
+<div class="admonition-course-instance-in-may-2024 admonition">
+<p class="admonition-title">Course instance in May 2024</p>
+<p>You can follow the dates this course is given on the <a class="reference external" href="https://scicomp.aalto.fi/training/scip/workflows-2023/">course page</a>.
+Dates are not yet known and registration is not yet open, though.</p>
+</div>
+<p>Improve your cluster workflows!  You’ve had a basic course on working
+with a cluster - but what do people <em>actually</em> do? This course shows
+practical examples and tips which may help you, but aren’t usually
+covered in either basic or advanced courses.</p>
+<p>We won’t go so deep into each topic that you know everything about it,
+but you learn what is possible, see some examples, and know where to
+follow up on the tools that are right for <em>you</em>.  The format is
+designed to be “fireside chat with experts”, a combination of demos,
+type-along, and independent exercises.  You can engage at different
+levels, depending on your interest.</p>
+<div class="admonition-prerequisites prerequisites admonition" id="prerequisites-0">
+<p class="admonition-title">Prerequisites</p>
+<ul class="simple">
+<li><p>Basic HPC usage course (if you don’t have, many of the things we
+talk about won’t make sense, but you might pick up something
+anyway).</p></li>
+<li><p>A bit of experience using a HPC cluster (technically optional,
+but will allow you to engage with the material at a deeper
+level).</p></li>
+<li><p>Access to some HPC computer cluster to do most exercises.
+(Slurm-based, but most are these days).  (If you don’t have, you
+can’t do all exercises - but still might learn something!)</p></li>
+</ul>
+</div>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>15 min</p></td>
+<td><p><a class="reference internal" href="intro_and_motivation/"><span class="doc">Intro to containers (on HPC)</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>20 min</p></td>
+<td><p><a class="reference internal" href="basics_running_containers/"><span class="doc">Basics of running containers</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>15 min</p></td>
+<td><p><a class="reference internal" href="container_images/"><span class="doc">Intro to container images</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>10 min</p></td>
+<td><p>Break</p></td>
+</tr>
+<tr class="row-odd"><td><p>25 min</p></td>
+<td><p><a class="reference internal" href="building_images/"><span class="doc">Building Apptainer images</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>15 min</p></td>
+<td><p><a class="reference internal" href="binding_folders/"><span class="doc">Binding folders into your container</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>05 min</p></td>
+<td><p>Open discussion and where to go next</p></td>
+</tr>
+</tbody>
+</table>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">The lesson</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="intro_and_motivation/">Intro to containers (on HPC)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basics_running_containers/">Basics of running containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="container_images/">Intro to container images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="building_images/">Building Apptainer images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="binding_folders/">Binding folders into your container</a></li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Extras</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="gpus/">Running containers that use GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="services_apps/">Services and apps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tips_tricks/">Tips, tricks and frequently asked questions</a></li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Exercises</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="verify_installation/">Verify Apptainer Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="first_build/">Building Your First Container</a></li>
+</ul>
+</div>
+<section id="who-is-the-course-for">
+<span id="learner-personas"></span><h2>Who is the course for?<a class="headerlink" href="#who-is-the-course-for" title="Permalink to this heading"></a></h2>
+<p>This course is for people using clusters or other larger computing
+resources.  It’s not a basic course, but also not extremely advanced.
+It lets you see some examples and know what people actually do, and
+then you can follow up with more reading, courses, or direct help
+later on.</p>
+<p>Some learner personas:</p>
+<ul>
+<li><p>You’ve just taken a basic HPC course, and while you mostly
+understand how the basic pices work, you are left wondering <em>“How
+does this all fit together?  How do people combine all of these
+tools into an actual whole workflow?”</em>.</p>
+<p>You care about some real examples and things you can use right now,
+but wouldn’t mind seeing some advanced or out-of-scope stuff as long
+as you don’t have to spend too much mental effort on it.</p>
+<p>You’ll probably do the more basic exercises and watch the rest as a
+demo until you come back to it later (if needed).</p>
+</li>
+<li><p>You’ve been using the cluster for a while and doing your work just
+fine - or so you think.  It works well, but you know there must be
+some other tricks out there that can make your life (if not work)
+even better.</p>
+<p>You’ll probably attend and do the more advanced exercises, while
+passively watching some of the more basic demos.</p>
+</li>
+</ul>
+</section>
+<section id="about-the-course">
+<h2>About the course<a class="headerlink" href="#about-the-course" title="Permalink to this heading"></a></h2>
+</section>
+<section id="see-also">
+<h2>See also<a class="headerlink" href="#see-also" title="Permalink to this heading"></a></h2>
+</section>
+<section id="credits">
+<h2>Credits<a class="headerlink" href="#credits" title="Permalink to this heading"></a></h2>
+<p>This course is a collaboration between ~10 different instructors.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="intro_and_motivation/" class="btn btn-neutral float-right" title="Intro to containers (on HPC)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024-, The contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

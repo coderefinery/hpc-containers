@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Verify Apptainer Installation &mdash; Container on HPC with Apptainer  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_lesson.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/term_role_formatting.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_rtd_theme_ext_color_contrast.css" />
+
+  
+    <link rel="shortcut icon" href="../_static/coderefinery.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script src="../_static/minipres.js"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="Building Your First Container" href="../first_build/" />
+    <link rel="prev" title="Tips, tricks and frequently asked questions" href="../tips_tricks/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../" class="icon icon-home">
+            Container on HPC with Apptainer
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">The lesson</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro_and_motivation/">Intro to containers (on HPC)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basics_running_containers/">Basics of running containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../container_images/">Intro to container images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../building_images/">Building Apptainer images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../binding_folders/">Binding folders into your container</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mpi/">MPI programs and containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gpus/">Running containers that use GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sharing/">Sharing reproducible containers</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Extras</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../services_apps/">Services and apps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tips_tricks/">Tips, tricks and frequently asked questions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Exercises</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Verify Apptainer Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#summary">Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../first_build/">Building Your First Container</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python_exercise/">Python environment in a container</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">Container on HPC with Apptainer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Verify Apptainer Installation</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/coderefinery/ttt4hpc_containers/blob/main/content/verify_installation.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="verify-apptainer-installation">
+<h1>Verify Apptainer Installation<a class="headerlink" href="#verify-apptainer-installation" title="Permalink to this heading"></a></h1>
+<div class="admonition-objectives objectives admonition" id="objectives-0">
+<p class="admonition-title">Objectives</p>
+<ul class="simple">
+<li><p>Understand the importance of verifying tool installation on HPC systems.</p></li>
+<li><p>Learn how to check the installation and version of Apptainer on an HPC cluster.</p></li>
+<li><p>Gain practical skills in verifying software prerequisites for scientific computing environments.</p></li>
+</ul>
+<p>This demo guides you through the process of verifying whether Apptainer is installed on your HPC cluster and checking its version. This is a critical first step in ensuring that the necessary tools are correctly configured before moving on to more complex containerization tasks. Knowing the version of Apptainer is essential as it may affect compatibility with container recipes or other tools used in your workflows.</p>
+</div>
+<div class="admonition-prerequisites prerequisites admonition" id="prerequisites-0">
+<p class="admonition-title">Prerequisites</p>
+<ul class="simple">
+<li><p>No prerequisites for following the demo</p></li>
+</ul>
+</div>
+<p>The first step in utilizing containers on any high-performance computing (HPC) cluster involves ensuring that the container management software, in this case, Apptainer, is properly installed. This demo is crucial as it confirms the foundational tool’s availability, which is necessary for all subsequent container-related operations.</p>
+<p>This demo will not only verify the presence of Apptainer on your system but will also teach you how to check its version. Knowing the installed version is important as it helps in troubleshooting and in ensuring compatibility with various container definitions and configurations used in scientific applications.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check if Apptainer is installed and determine its version</span>
+apptainer<span class="w"> </span>--version
+</pre></div>
+</div>
+<p>This command checks if Apptainer is installed and displays the version number. This information is useful for understanding which features and functionalities are available to you, as different versions may have different capabilities.</p>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this heading"></a></h2>
+<p>In this lesson, you learned how to verify the installation of Apptainer on your HPC cluster and how to check its version. This is a foundational skill that ensures you can proceed with confidence in using Apptainer for more advanced tasks in container management.</p>
+<div class="admonition-configure-apptainer exercise important admonition" id="exercise-0">
+<p class="admonition-title">Configure Apptainer</p>
+<p>Explore the online Apptainer documentation and search for the bash environment variables that apptainer uses.</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Do you have any apptainer variables set in your shell environment?</p></li>
+<li><p>How do you set the variables for the CACHEDIR and TMPDIR so that they are pointing to a disk where you have enough free space? (e.g. your work folder)</p></li>
+</ol>
+</div></blockquote>
+<div class="admonition-solution solution important dropdown admonition" id="solution-0">
+<p class="admonition-title">Solution</p>
+<ol class="arabic simple">
+<li><p>Apptainer uses the following environemnt variables:</p></li>
+<li><p>The following code creates subfolders in your work directory and makes sure that apptainer will use those folders to store temporary files</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span><span class="nv">$WRKDIR</span>/apptainercache/
+mkdir<span class="w"> </span><span class="nv">$WRKDIR</span>/apptainertemp/
+<span class="nb">export</span><span class="w"> </span><span class="nv">APPTAINER_CACHEDIR</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$WRKDIR</span><span class="s2">/apptainercache/&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">APPTAINER_TMPDIR</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$WRKDIR</span><span class="s2">/apptainertemp/&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../tips_tricks/" class="btn btn-neutral float-left" title="Tips, tricks and frequently asked questions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../first_build/" class="btn btn-neutral float-right" title="Building Your First Container" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024-, The contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

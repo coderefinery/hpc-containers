@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Python environment in a container &mdash; Container on HPC with Apptainer  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_lesson.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/term_role_formatting.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_rtd_theme_ext_color_contrast.css" />
+
+  
+    <link rel="shortcut icon" href="../_static/coderefinery.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script src="../_static/minipres.js"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="prev" title="Building Your First Container" href="../first_build/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../" class="icon icon-home">
+            Container on HPC with Apptainer
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">The lesson</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro_and_motivation/">Intro to containers (on HPC)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basics_running_containers/">Basics of running containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../container_images/">Intro to container images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../building_images/">Building Apptainer images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../binding_folders/">Binding folders into your container</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mpi/">MPI programs and containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gpus/">Running containers that use GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sharing/">Sharing reproducible containers</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Extras</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../services_apps/">Services and apps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tips_tricks/">Tips, tricks and frequently asked questions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Exercises</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../verify_installation/">Verify Apptainer Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../first_build/">Building Your First Container</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Python environment in a container</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#background">Background</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#exercise-1-creating-python-image-with-image-s-pip">Exercise 1: Creating Python image with image’s pip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#exercise-2-creating-conda-mamba-environment-in-an-image">Exercise 2: Creating conda/mamba environment in an image</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">Container on HPC with Apptainer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Python environment in a container</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/coderefinery/ttt4hpc_containers/blob/main/content/python_exercise.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="python-environment-in-a-container">
+<h1>Python environment in a container<a class="headerlink" href="#python-environment-in-a-container" title="Permalink to this heading"></a></h1>
+<div class="admonition-objectives objectives admonition" id="objectives-0">
+<p class="admonition-title">Objectives</p>
+<ul class="simple">
+<li><p>Learn how to create a Python environment in an apptainer image</p></li>
+</ul>
+</div>
+<section id="background">
+<h2>Background<a class="headerlink" href="#background" title="Permalink to this heading"></a></h2>
+<p>Python environments are nowadays very popular due to the popularity of
+Python as a scientific programming language. These environments can sometimes
+be problematic for the filesystem as they require thousands of files.</p>
+</section>
+<section id="exercise-1-creating-python-image-with-image-s-pip">
+<h2>Exercise 1: Creating Python image with image’s pip<a class="headerlink" href="#exercise-1-creating-python-image-with-image-s-pip" title="Permalink to this heading"></a></h2>
+<div class="admonition-install-python-environment-to-base-python-image exercise important admonition" id="exercise-0">
+<p class="admonition-title">Install Python environment to base python image</p>
+<dl class="simple">
+<dt>Use the base python image and install following packages to the image:</dt><dd><ul class="simple">
+<li><p>python</p></li>
+<li><p>numpy</p></li>
+<li><p>pandas</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition-solution solution important dropdown admonition" id="solution-0">
+<p class="admonition-title">Solution</p>
+<p>Create the following definition file <code class="docutils literal notranslate"><span class="pre">python_definition.def</span></code>:</p>
+<div class="highlight-singularity notranslate"><div class="highlight"><pre><span></span><span class="k">Bootstrap</span>:<span class="w"> </span>docker
+<span class="k">From</span>:<span class="w"> </span>python:latest
+
+<span class="gh">%post</span>
+<span class="w">    </span><span class="c1"># Python is already installed in the image</span>
+<span class="w">    </span>pip<span class="w"> </span>install<span class="w"> </span>numpy<span class="w"> </span>pandas
+</pre></div>
+</div>
+<p>You can then create the container with:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>apptainer<span class="w"> </span>build<span class="w"> </span>python_environment.sif<span class="w"> </span>python_definition.def
+</pre></div>
+</div>
+<p>You can test out the python with:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>apptainer<span class="w"> </span>run<span class="w"> </span>python_environment.sif<span class="w"> </span>python
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="exercise-2-creating-conda-mamba-environment-in-an-image">
+<h2>Exercise 2: Creating conda/mamba environment in an image<a class="headerlink" href="#exercise-2-creating-conda-mamba-environment-in-an-image" title="Permalink to this heading"></a></h2>
+<div class="admonition-install-an-environment-to-an-apptainer-image-using-an-optimized-definition-file exercise important admonition" id="exercise-1">
+<p class="admonition-title">Install an environment to an apptainer image using an optimized definition file</p>
+<p>Create an environment with this definition file customized for
+environment creation:</p>
+<p><a class="reference external" href="https://github.com/simo-tuomisto/micromamba-apptainer">https://github.com/simo-tuomisto/micromamba-apptainer</a></p>
+<dl class="simple">
+<dt>Install the following packages to the environment:</dt><dd><ul class="simple">
+<li><p>python</p></li>
+<li><p>numpy</p></li>
+<li><p>pandas</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition-solution solution important dropdown admonition" id="solution-1">
+<p class="admonition-title">Solution</p>
+<p>Write the following <code class="docutils literal notranslate"><span class="pre">environment.yml</span></code>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">base</span>
+<span class="nt">channels</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">conda-forge</span>
+<span class="nt">dependencies</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">python</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">numpy</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pandas</span>
+</pre></div>
+</div>
+<p>Obtain the <code class="docutils literal notranslate"><span class="pre">micromamba_apptainer.def</span></code> bootstrap definition file from the repository:</p>
+<div class="highlight-singularity notranslate"><div class="highlight"><pre><span></span><span class="k">Bootstrap</span>:<span class="w"> </span>docker
+<span class="k">From</span>:<span class="w"> </span>mambaorg/micromamba:latest
+
+<span class="gh">%files</span>
+environment.yml<span class="w"> </span>/opt
+
+<span class="gh">%post</span>
+<span class="w">    </span>micromamba<span class="w"> </span>install<span class="w"> </span>-q<span class="w"> </span>-y<span class="w"> </span>-n<span class="w"> </span>base<span class="w"> </span>-f<span class="w"> </span>/opt/environment.yml
+
+<span class="w">    </span>micromamba<span class="w"> </span>clean<span class="w"> </span>--all<span class="w"> </span>--yes
+
+<span class="gh">%labels</span>
+<span class="w">    </span>EnvironmentFile:<span class="w"> </span>/opt/environment.yml
+
+<span class="gh">%help</span>
+<span class="w">    </span>This<span class="w"> </span>container<span class="w"> </span>containes<span class="w"> </span>a<span class="w"> </span>Python<span class="w"> </span>environment<span class="w"> </span>created
+<span class="w">    </span>from<span class="w"> </span>an<span class="w"> </span>environment<span class="w"> </span>file.
+
+<span class="w">    </span>To<span class="w"> </span>run<span class="w"> </span>Python<span class="w"> </span>from<span class="w"> </span>the<span class="w"> </span>environment:
+
+<span class="w">        </span>apptainer<span class="w"> </span>run<span class="w"> </span>my_environment.sif<span class="w"> </span>python
+
+<span class="w">    </span>To<span class="w"> </span>see<span class="w"> </span>the<span class="w"> </span>environment<span class="w"> </span>file<span class="w"> </span>used<span class="w"> </span>to<span class="w"> </span>create<span class="w"> </span>the<span class="w"> </span>environment:
+
+<span class="w">        </span>apptainer<span class="w"> </span>run<span class="w"> </span>my_environment.sif<span class="w"> </span>cat<span class="w"> </span>/opt/environment.yml
+
+<span class="w">    </span>To<span class="w"> </span>see<span class="w"> </span>what<span class="w"> </span>packags<span class="w"> </span>are<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>environment:
+
+<span class="w">        </span>apptainer<span class="w"> </span>run<span class="w"> </span>micromamba<span class="w"> </span>list
+</pre></div>
+</div>
+<p>You can then create the container with:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>apptainer<span class="w"> </span>build<span class="w"> </span>my_environment.sif<span class="w"> </span>micromamba_apptainer.def
+</pre></div>
+</div>
+<p>You can test out the python with:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>apptainer<span class="w"> </span>run<span class="w"> </span>my_environment.sif<span class="w"> </span>python
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../first_build/" class="btn btn-neutral float-left" title="Building Your First Container" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024-, The contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
