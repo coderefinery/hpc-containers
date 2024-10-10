@@ -9,7 +9,7 @@ from: ubuntu:latest
 
 %post
 
-  ### Install OpenMPI dependencies
+  ### Install MPICH dependencies
 
   apt-get update
   apt-get install -y file g++ gcc gfortran make gdb strace wget ca-certificates --no-install-recommends

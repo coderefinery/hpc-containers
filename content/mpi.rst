@@ -107,25 +107,26 @@ files differ as well. Pick a definition file for your site.
 
    .. tab:: Triton (Aalto)
 
-      :download:`triton-ompi.def </examples/triton-ompi.def>`:
+      :download:`triton-openmpi.def </examples/triton-openmpi.def>`:
 
-      .. literalinclude:: /examples/triton-ompi.def
+      .. literalinclude:: /examples/triton-openmpi.def
          :language: singularity
 
       To build:
 
       .. code-block:: console
 
-         srun --mem=16G --cpus-per-task=4 --time=01:00:00 apptainer build triton-ompi.sif triton-ompi.def
+         srun --mem=16G --cpus-per-task=4 --time=01:00:00 apptainer build triton-openmpi.sif triton-openmpi.def
 
       To run (some extra parameters are needed to prevent launch errors):
 
       .. code-block:: console
 
          $ module load openmpi/4.1.6
-         $ export OMPI_MCA_orte_top_session_dir=/tmp/$USER/openmpi
          $ export PMIX_MCA_gds=hash
-         $ srun --partition=batch-milan --mem=2G --nodes=2-2 --ntasks-per-node=1 --time=00:10:00 apptainer run ompi-triton.sif
+         $ export UCX_POSIX_USE_PROC_LINK=n
+         $ export OMPI_MCA_orte_top_session_dir=/tmp/$USER/openmpi
+         $ srun --partition=batch-milan --mem=2G --nodes=2-2 --ntasks-per-node=1 --time=00:10:00 apptainer run openmpi-triton.sif
          srun: job 3521915 queued and waiting for resources
          srun: job 3521915 has been allocated resources
 
@@ -159,16 +160,16 @@ files differ as well. Pick a definition file for your site.
 
    .. tab:: Puhti (CSC)
 
-      :download:`puhti-ompi.def <examples/puhti-ompi.def>`:
+      :download:`puhti-openmpi.def <examples/puhti-openmpi.def>`:
 
-      .. literalinclude:: /examples/puhti-ompi.def
+      .. literalinclude:: /examples/puhti-openmpi.def
          :language: singularity
 
       To build:
 
       .. code-block:: console
 
-         apptainer build puhti-ompi.sif puhti-ompi.def
+         apptainer build puhti-openmpi.sif puhti-openmpi.def
 
       To run (some extra parameters are needed to prevent error messages):
 
@@ -176,7 +177,7 @@ files differ as well. Pick a definition file for your site.
 
          $ module load openmpi/4.1.4
          $ export PMIX_MCA_gds=hash
-         $ srun --account=project_XXXXXXX --partition=large --mem=2G --nodes=2-2 --ntasks-per-node=1 --time=00:10:00 apptainer run puhti-ompi.sif
+         $ srun --account=project_XXXXXXX --partition=large --mem=2G --nodes=2-2 --ntasks-per-node=1 --time=00:10:00 apptainer run puhti-openmpi.sif
          srun: job 23736111 queued and waiting for resources
          srun: job 23736111 has been allocated resources
 
@@ -206,7 +207,6 @@ files differ as well. Pick a definition file for your site.
          1048576             12008.62
          2097152             12050.35
          4194304             12058.36
-
 
    .. tab:: LUMI (CSC)
 
@@ -302,17 +302,17 @@ Below are explanations on how the interconnect libraries were provided.
       The interconnect support was provided by the ``libucx-dev``-package that
       provides Infiniband drivers.
 
-      :download:`triton-ompi.def <examples/triton-ompi.def>`, line 15:
+      :download:`triton-openmpi.def <examples/triton-openmpi.def>`, line 15:
 
-      .. literalinclude:: /examples/triton-ompi.def
-         :language: singularity
+      .. literalinclude:: /examples/triton-openmpi.def
+         :# Copy example from imagelanguage: singularity
          :lines: 15
 
       The OpenMPI installation was then configured to use these drivers:
 
-      :download:`triton-ompi.def <examples/triton-ompi.def>`, line 26:
+      :download:`triton-openmpi.def <examples/triton-openmpi.def>`, line 26:
 
-      .. literalinclude:: /examples/triton-ompi.def
+      .. literalinclude:: /examples/triton-openmpi.def
          :language: singularity
          :lines: 26
 
@@ -321,9 +321,9 @@ Below are explanations on how the interconnect libraries were provided.
       The interconnect support is provided by installing drivers from
       Mellanox's Infiniband driver repository:
 
-      :download:`puhti-ompi.def <examples/puhti-ompi.def>`, lines 27-38:
+      :download:`puhti-openmpi.def <examples/puhti-openmpi.def>`, lines 27-38:
 
-      .. literalinclude:: /examples/puhti-ompi.def
+      .. literalinclude:: /examples/puhti-openmpi.def
          :language: singularity
          :lines: 27-38
 
@@ -373,6 +373,110 @@ that the program in the container can be built against. This
 wrapper can then use different MPI implementations during
 runtime.
 
+Example on portability: LAMMPS
+------------------------------
+
+LAMMPS is a classical molecular dynamics simulation code with a focus
+on materials modeling.
+
+Let's build a container with LAMMPS in it:
+
+
+.. literalinclude:: /examples/lammps-openmpi.def
+   :language: singularity
+
+Let's also create a submission script that runs a LAMMPS example
+where an indent will pushes against a material:
+
+.. literalinclude:: /examples/run_lammps_indent.sh
+   :language: singularity
+
+Now this exact same container can be run in both Triton / Puhti that have
+OpenMPI installed because both clusters use Slurm and InfiniBand
+interconnects.
+
+.. tabs::
+
+   .. tab:: Triton (Aalto)
+
+      .. code-block:: console
+
+         $ export PMIX_MCA_gds=hash
+         $ export UCX_POSIX_USE_PROC_LINK=n
+         $ export OMPI_MCA_orte_top_session_dir=/tmp/$USER/openmpi
+         $ sbatch run_lammps_indent.sh
+         $ tail -n 27 lammps_indent.out
+         Loop time of 0.752293 on 4 procs for 30000 steps with 420 atoms
+
+         Performance: 10336396.152 tau/day, 39878.072 timesteps/s, 16.749 Matom-step/s
+         99.6% CPU use with 4 MPI tasks x 1 OpenMP threads
+
+         MPI task timing breakdown:
+         Section |  min time  |  avg time  |  max time  |%varavg| %total
+         ---------------------------------------------------------------
+         Pair    | 0.31927    | 0.37377    | 0.42578    |   7.5 | 49.68
+         Neigh   | 0.016316   | 0.020162   | 0.023961   |   2.3 |  2.68
+         Comm    | 0.19882    | 0.25882    | 0.31814    |  10.2 | 34.40
+         Output  | 0.00033215 | 0.00038609 | 0.00054361 |   0.0 |  0.05
+         Modify  | 0.044981   | 0.049941   | 0.054024   |   1.7 |  6.64
+         Other   |            | 0.04921    |            |       |  6.54
+
+         Nlocal:            105 ave         112 max          98 min
+         Histogram: 1 0 1 0 0 0 0 1 0 1
+         Nghost:           92.5 ave          96 max          89 min
+         Histogram: 1 0 1 0 0 0 0 1 0 1
+         Neighs:         892.25 ave        1003 max         788 min
+         Histogram: 2 0 0 0 0 0 0 0 1 1
+
+         Total # of neighbors = 3569
+         Ave neighs/atom = 8.497619
+         Neighbor list builds = 634
+         Dangerous builds = 0
+         Total wall time: 0:00:01
+
+   .. tab:: Puhti (CSC)
+
+      .. code-block:: console
+
+         $ export PMIX_MCA_gds=hash
+         $ sbatch --account=project_XXXXXXX --partition=large run_lammps_indent.sh
+         $ tail -n 27 lammps_indent.out
+         Loop time of 0.527178 on 4 procs for 30000 steps with 420 atoms
+
+         Performance: 14750222.558 tau/day, 56906.723 timesteps/s, 23.901 Matom-step/s
+         99.7% CPU use with 4 MPI tasks x 1 OpenMP threads
+
+         MPI task timing breakdown:
+         Section |  min time  |  avg time  |  max time  |%varavg| %total
+         ---------------------------------------------------------------
+         Pair    | 0.22956    | 0.26147    | 0.28984    |   5.5 | 49.60
+         Neigh   | 0.012471   | 0.015646   | 0.018613   |   2.3 |  2.97
+         Comm    | 0.13816    | 0.17729    | 0.2192     |   9.3 | 33.63
+         Output  | 0.00023943 | 0.00024399 | 0.00025267 |   0.0 |  0.05
+         Modify  | 0.03212    | 0.035031   | 0.037378   |   1.2 |  6.65
+         Other   |            | 0.0375     |            |       |  7.11
+
+         Nlocal:            105 ave         112 max          98 min
+         Histogram: 1 0 1 0 0 0 0 1 0 1
+         Nghost:           92.5 ave          96 max          89 min
+         Histogram: 1 0 1 0 0 0 0 1 0 1
+         Neighs:         892.25 ave        1003 max         788 min
+         Histogram: 2 0 0 0 0 0 0 0 1 1
+
+         Total # of neighbors = 3569
+         Ave neighs/atom = 8.497619
+         Neighbor list builds = 634
+         Dangerous builds = 0
+         Total wall time: 0:00:01
+
+
+
 Review of this session
 ----------------------
 
+.. admonition:: Key points to remember
+
+   - MPI version should match the version installed to the cluster
+   - Cluster MPI module should be loaded for maximum compatibility with job launching
+   - Care must be taken to make certain that the container utilizes
+     fast interconnects

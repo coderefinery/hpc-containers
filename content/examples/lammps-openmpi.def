@@ -1,0 +1,68 @@
+Bootstrap: docker
+From: ubuntu:latest
+
+%arguments
+
+  NPROCS=4
+  OPENMPI_VERSION=4.1.6
+  LAMMPS_VERSION=29Aug2024
+
+%post
+
+  ### Install OpenMPI dependencies
+
+  apt-get update
+  apt-get install -y wget bash gcc gfortran g++ make file bzip2 ca-certificates libucx-dev
+
+  ### Build OpenMPI
+
+  OPENMPI_VERSION_SHORT=$(echo {{ OPENMPI_VERSION }} | cut -f 1-2 -d '.')
+  cd /opt
+  mkdir ompi
+  wget -q https://download.open-mpi.org/release/open-mpi/v${OPENMPI_VERSION_SHORT}/openmpi-{{ OPENMPI_VERSION }}.tar.bz2
+  tar -xvf openmpi-{{ OPENMPI_VERSION }}.tar.bz2
+  # Compile and install
+  cd openmpi-{{ OPENMPI_VERSION }}
+  ./configure --prefix=/opt/ompi --with-ucx=/usr
+  make -j{{ NPROCS }}
+  make install
+  cd ..
+  rm -rf openmpi-{{ OPENMPI_VERSION }} openmpi-{{ OPENMPI_VERSION }}.tar.bz2
+
+  ### Build example application
+
+  # Install LAMMPS dependencies
+  apt-get install -y cmake
+
+  export OMPI_DIR=/opt/ompi
+  export PATH="$OMPI_DIR/bin:$PATH"
+  export LD_LIBRARY_PATH="$OMPI_DIR/lib:$LD_LIBRARY_PATH"
+  export CMAKE_PREFIX_PATH="$OMPI_DIR:$CMAKE_PREFIX_PATH"
+ 
+  # Build LAMMPS
+  cd /opt
+  wget -q https://download.lammps.org/tars/lammps-{{ LAMMPS_VERSION }}.tar.gz
+  tar xf lammps-{{ LAMMPS_VERSION }}.tar.gz
+  cd lammps-{{ LAMMPS_VERSION }}
+  cmake -S cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/opt/lammps \
+    -DBUILD_MPI=yes \
+    -DBUILD_OMP=yes
+  cmake --build build --parallel {{ NPROCS }} --target install
+  cp -r examples /opt/lammps/examples
+  cd ..
+  rm -rf lammps-{{ LAMMPS_VERSION }} lammps-{{ LAMMPS_VERSION }}.tar.gz
+
+%environment
+  export OMPI_DIR=/opt/ompi
+  export PATH="$OMPI_DIR/bin:$PATH"
+  export LD_LIBRARY_PATH="$OMPI_DIR/lib:$LD_LIBRARY_PATH"
+  export MANPATH="$OMPI_DIR/share/man:$MANPATH"
+
+  export LAMMPS_DIR=/opt/lammps
+  export PATH="$LAMMPS_DIR/bin:$PATH"
+  export LD_LIBRARY_PATH="$LAMMPS_DIR/lib:$LD_LIBRARY_PATH"
+  export MANPATH="$LAMMPS_DIR/share/man:$MANPATH"
+
+%runscript
+  exec /opt/lammps/bin/lmp "$@"
