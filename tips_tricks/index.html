@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tips, tricks and frequently asked questions &mdash; Container on HPC with Apptainer  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_lesson.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/term_role_formatting.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_rtd_theme_ext_color_contrast.css" />
+
+  
+    <link rel="shortcut icon" href="../_static/coderefinery.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script src="../_static/minipres.js"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="Verify Apptainer Installation" href="../verify_installation/" />
+    <link rel="prev" title="Services and apps" href="../services_apps/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../" class="icon icon-home">
+            Container on HPC with Apptainer
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">The lesson</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro_and_motivation/">Intro to containers (on HPC)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basics_running_containers/">Basics of running containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../container_images/">Intro to container images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../building_images/">Building Apptainer images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../binding_folders/">Binding folders into your container</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mpi/">MPI programs and containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gpus/">Running containers that use GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sharing/">Sharing reproducible containers</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Extras</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../services_apps/">Services and apps</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Tips, tricks and frequently asked questions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#i-m-having-problems-when-building-a-container-e-g-fakeroot-errors">I’m having problems when building a container (e.g. <code class="docutils literal notranslate"><span class="pre">fakeroot</span></code>-errors)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#where-should-i-install-my-software">Where should I install my software?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#i-have-sensitive-code-that-i-would-need-to-have-in-the-container">I have sensitive code that I would need to have in the container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#i-have-an-existing-container-but-i-would-want-to-do-small-modifications-to-the-code">I have an existing container, but I would want to do small modifications to the code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#my-container-starts-to-become-huge">My container starts to become huge</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#i-would-want-to-install-my-conda-environment-in-a-container">I would want to install my conda environment in a container</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Exercises</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../verify_installation/">Verify Apptainer Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../first_build/">Building Your First Container</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python_exercise/">Python environment in a container</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">Container on HPC with Apptainer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Tips, tricks and frequently asked questions</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/coderefinery/ttt4hpc_containers/blob/main/content/tips_tricks.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="tips-tricks-and-frequently-asked-questions">
+<h1>Tips, tricks and frequently asked questions<a class="headerlink" href="#tips-tricks-and-frequently-asked-questions" title="Permalink to this heading"></a></h1>
+<section id="i-m-having-problems-when-building-a-container-e-g-fakeroot-errors">
+<h2>I’m having problems when building a container (e.g. <code class="docutils literal notranslate"><span class="pre">fakeroot</span></code>-errors)<a class="headerlink" href="#i-m-having-problems-when-building-a-container-e-g-fakeroot-errors" title="Permalink to this heading"></a></h2>
+<p>Sometimes when the host system and the guest container have operating systems
+from different eras (e.g. Ubuntu 16.04 is really old), you might want to
+use the
+<a class="reference external" href="https://apptainer.org/docs/admin/main/installation.html#install-unprivileged-from-pre-built-binaries">pre-built Apptainer binaries</a>.
+These can be installed without any privileges.</p>
+<p>The reason for this errors is that a critical piece of software called GLIBC
+might be too new in the host system. For more info, see the third point in
+<a class="reference external" href="https://apptainer.org/docs/user/latest/fakeroot.html">Apptainer’s fakeroot documentation</a>.</p>
+</section>
+<section id="where-should-i-install-my-software">
+<h2>Where should I install my software?<a class="headerlink" href="#where-should-i-install-my-software" title="Permalink to this heading"></a></h2>
+<p>Quite often in Docker images software is installed under <code class="docutils literal notranslate"><span class="pre">root</span></code>-user’s
+home folder (<code class="docutils literal notranslate"><span class="pre">/root</span></code>). This is <strong>the wrong approach</strong>. Installing software
+there with the assumption that the container will be run by <code class="docutils literal notranslate"><span class="pre">root</span></code>-user
+can cause permission headaches.</p>
+<p>Folders under <code class="docutils literal notranslate"><span class="pre">/home</span></code> are also bad as that is commonly mounted by Apptainer
+and thus the bind mount hides software installed there.</p>
+<p>You should install manual installations of software to, for example,
+<code class="docutils literal notranslate"><span class="pre">/opt</span></code> or <code class="docutils literal notranslate"><span class="pre">/usr/local</span></code>. See
+<a class="reference external" href="https://en.wikipedia.org/wiki/Filesystem_Hierarchy_Standard">Filesystem Hierarchy Standard</a>
+for explanation on how different folders are organized.</p>
+</section>
+<section id="i-have-sensitive-code-that-i-would-need-to-have-in-the-container">
+<h2>I have sensitive code that I would need to have in the container<a class="headerlink" href="#i-have-sensitive-code-that-i-would-need-to-have-in-the-container" title="Permalink to this heading"></a></h2>
+<p>Instead of installing your sensitive application to the image
+you can instead mount the application directory inside the container.</p>
+<p>If your program requires compilations or installations, you can
+install dependencies into the container image and then install software
+in a bound folder or on a
+<a class="reference external" href="https://apptainer.org/docs/user/latest/persistent_overlays.html">persistent overlay</a>.</p>
+<p>If you still decide to put sensitive code in your image,
+remember that it is visible to everyone who has access to the image.</p>
+</section>
+<section id="i-have-an-existing-container-but-i-would-want-to-do-small-modifications-to-the-code">
+<h2>I have an existing container, but I would want to do small modifications to the code<a class="headerlink" href="#i-have-an-existing-container-but-i-would-want-to-do-small-modifications-to-the-code" title="Permalink to this heading"></a></h2>
+<p>If you want to do you’re own modifications to the code
+you can either use
+<a class="reference external" href="https://apptainer.org/docs/user/latest/persistent_overlays.html">persistent overlays</a>
+or you can use the following trick:</p>
+<ol class="arabic">
+<li><p>Copy the code that you want to modify from the container to a folder outside
+of the container:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>apptainer<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>my_container.sif<span class="w"> </span>cp<span class="w"> </span>-r<span class="w"> </span>/path/to/code/src<span class="w"> </span>src
+</pre></div>
+</div>
+</li>
+<li><p>Modify the code outside of the container</p></li>
+<li><p>Bind mount modified code from outside of the container back into the container</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>apptainer<span class="w"> </span>run<span class="w"> </span>--bind<span class="w"> </span>src:/path/to/code/src<span class="w"> </span>my_container.sif
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="my-container-starts-to-become-huge">
+<h2>My container starts to become huge<a class="headerlink" href="#my-container-starts-to-become-huge" title="Permalink to this heading"></a></h2>
+<p>Remember to clean up any unnecessary source code or software in your
+<code class="docutils literal notranslate"><span class="pre">%post</span></code>-block. If your program does not need e.g. development headers
+once it has been installed, you can remove them.</p>
+<p>You can also try
+<a class="reference external" href="https://apptainer.org/docs/user/latest/definition_files.html#multi-stage-builds">multi-stage builds</a>
+where one container is used to build a software, which is then copied
+to another container that has only those packages required to run the software.</p>
+</section>
+<section id="i-would-want-to-install-my-conda-environment-in-a-container">
+<h2>I would want to install my conda environment in a container<a class="headerlink" href="#i-would-want-to-install-my-conda-environment-in-a-container" title="Permalink to this heading"></a></h2>
+<p>See
+<a class="reference external" href="https://github.com/simo-tuomisto/micromamba-apptainer">this repository</a>
+for an example definition file that can be used to bootstrap
+conda environment into a Apptainer container image.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../services_apps/" class="btn btn-neutral float-left" title="Services and apps" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../verify_installation/" class="btn btn-neutral float-right" title="Verify Apptainer Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024-, The contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

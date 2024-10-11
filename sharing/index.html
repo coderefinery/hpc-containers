@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sharing reproducible containers &mdash; Container on HPC with Apptainer  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_lesson.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/term_role_formatting.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_rtd_theme_ext_color_contrast.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/tabs.css" />
+
+  
+    <link rel="shortcut icon" href="../_static/coderefinery.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script src="../_static/minipres.js"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script src="../_static/tabs.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="Services and apps" href="../services_apps/" />
+    <link rel="prev" title="Running containers that use GPUs" href="../gpus/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../" class="icon icon-home">
+            Container on HPC with Apptainer
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">The lesson</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro_and_motivation/">Intro to containers (on HPC)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basics_running_containers/">Basics of running containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../container_images/">Intro to container images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../building_images/">Building Apptainer images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../binding_folders/">Binding folders into your container</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mpi/">MPI programs and containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gpus/">Running containers that use GPUs</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Sharing reproducible containers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#reuse">Reuse</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#example-image-dependency">Example image dependency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#popular-base-images">Popular base images</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#be-specific">Be specific</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#separate-concerns">Separate concerns</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#purpose">Purpose</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#data">Data</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#document-your-image">Document your image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#use-version-control-and-public-registries">Use version control and public registries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#exercises">Exercises</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Extras</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../services_apps/">Services and apps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tips_tricks/">Tips, tricks and frequently asked questions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Exercises</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../verify_installation/">Verify Apptainer Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../first_build/">Building Your First Container</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python_exercise/">Python environment in a container</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">Container on HPC with Apptainer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Sharing reproducible containers</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/coderefinery/ttt4hpc_containers/blob/main/content/sharing.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="sharing-reproducible-containers">
+<h1>Sharing reproducible containers<a class="headerlink" href="#sharing-reproducible-containers" title="Permalink to this heading"></a></h1>
+<div class="admonition-objectives objectives admonition" id="objectives-0">
+<p class="admonition-title">Objectives</p>
+<ul class="simple">
+<li><p>Know about <strong>good practices</strong> for creating reproducible containers</p></li>
+<li><p>Know about some <strong>popular services</strong> to share container definition files and images</p></li>
+</ul>
+</div>
+<p>In this lesson we will go through a handful of guidelines and tips that will help you to create reproducible containers which can be shared today and hopefully years into the future.</p>
+<p>We will encourage you to</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#reuse-label"><span class="std std-ref">Reuse</span></a></p></li>
+<li><p><a class="reference internal" href="#be-specific-label"><span class="std std-ref">Be specific</span></a></p></li>
+<li><p><a class="reference internal" href="#separate-label"><span class="std std-ref">Separate concerns</span></a></p></li>
+<li><p><a class="reference internal" href="#document-label"><span class="std std-ref">Document</span></a></p></li>
+<li><p><a class="reference internal" href="#version-control-label"><span class="std std-ref">Use version control and public registries</span></a></p></li>
+</ul>
+<p>And finally we will give you an exercise to practice your new skills.</p>
+<section id="reuse">
+<span id="reuse-label"></span><h2>Reuse<a class="headerlink" href="#reuse" title="Permalink to this heading"></a></h2>
+<p>As we have learned, building a container means that you pack the OS and all
+the applications you need into a file. We have also learned that typically we
+don’t do everything from scratch, we <strong>build upon base containers</strong>.</p>
+<p>This means that when building containers we try to:</p>
+<ul class="simple">
+<li><p>Use available base containers</p></li>
+<li><p>Add customisation on top of that</p></li>
+</ul>
+<p>An <a class="reference internal" href="../building_images/"><span class="doc">example</span></a> was using an official python image for our python container:</p>
+<div class="highlight-singularity notranslate"><div class="highlight"><pre><span></span><span class="k">Bootstrap</span>:<span class="w"> </span>docker
+<span class="k">From</span>:<span class="w"> </span>python:latest
+
+<span class="gh">%files</span>
+<span class="w">    </span>summation.py<span class="w"> </span>/opt
+
+<span class="gh">%runscript</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Got arguments: </span><span class="nv">$*</span><span class="s2">&quot;</span>
+<span class="w">    </span><span class="nb">exec</span><span class="w"> </span>python<span class="w"> </span>/opt/summation.py<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span>
+
+<span class="gh">%post</span>
+<span class="w">    </span>pip<span class="w"> </span>install<span class="w"> </span>numpy
+</pre></div>
+</div>
+<p>Here we use a <a class="reference external" href="https://hub.docker.com/_/python">python base image</a> and in addition we install some more
+software: numpy (and we copy our custom python script into the image).</p>
+<p>Building upon base-images is used extensively: The python image is not just python, it is again based on an another image, which itself is based on another image, and so on.</p>
+<p>To find the image dependency, you will need to do a bit of detective work, finding the image in a registry, and inspecting its Dockerfile which hopefully is linked from the registry. If there is no Dockerfile linked from the registry page, you may be out of luck.</p>
+<section id="example-image-dependency">
+<h3>Example image dependency<a class="headerlink" href="#example-image-dependency" title="Permalink to this heading"></a></h3>
+<p>Let’s check the <a class="reference external" href="https://hub.docker.com/_/python">Dockerhub python registry</a>. We can click on the link of the latest bookworm tag (see DockerHub python tab below) which leads us to its <a class="reference external" href="https://github.com/docker-library/python/blob/7c8595e8e2b1c8bca0b6d9d146675b94c2a37ec7/3.13/bookworm/Dockerfile">Dockerfile on Github</a>  (as seen in the Dockerfile python tab).</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">DockerHub python</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">Dockerfile python</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><figure class="align-default">
+<img alt="../_images/dockerhub_python.png" src="../_images/dockerhub_python.png" />
+</figure>
+</div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><figure class="align-default">
+<img alt="../_images/dockerfile_python_image.png" src="../_images/dockerfile_python_image.png" />
+</figure>
+</div></div>
+<p>Inspecting this Dockerfile, we see that it again is based on a another image, namely <code class="docutils literal notranslate"><span class="pre">buildpack-deps:bookworm</span></code>.</p>
+<p>We can do the same exercise for the image <code class="docutils literal notranslate"><span class="pre">buildpack-deps:bookworm</span></code> by finding the image in a registry like Dockerhub, navigating to the Dockerfile linked from that registry, and so on.</p>
+<p>After all that, this is the image dependency tree we find for the original python docker base image:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">--&gt;</span> <span class="n">From</span><span class="p">:</span> <span class="n">python</span><span class="p">:</span><span class="n">latest</span>
+  <span class="o">--&gt;</span> <span class="n">FROM</span><span class="p">:</span> <span class="n">buildpack</span><span class="o">-</span><span class="n">deps</span><span class="p">:</span><span class="n">bookworm</span>
+    <span class="o">--&gt;</span> <span class="n">FROM</span> <span class="n">buildpack</span><span class="o">-</span><span class="n">deps</span><span class="p">:</span><span class="n">bookworm</span><span class="o">-</span><span class="n">scm</span>
+      <span class="o">--&gt;</span> <span class="n">FROM</span> <span class="n">buildpack</span><span class="o">-</span><span class="n">deps</span><span class="p">:</span><span class="n">bookworm</span><span class="o">-</span><span class="n">curl</span>
+        <span class="o">--&gt;</span> <span class="n">FROM</span> <span class="n">debian</span><span class="p">:</span><span class="n">bookworm</span>
+          <span class="o">--&gt;</span> <span class="n">FROM</span> <span class="n">scratch</span>
+</pre></div>
+</div>
+<div class="admonition-take-away-message admonition">
+<p class="admonition-title">Take-away message</p>
+<p>Check if there is a suitable official base image for the applications you need, and build upon that.</p>
+</div>
+</section>
+<section id="popular-base-images">
+<h3>Popular base images<a class="headerlink" href="#popular-base-images" title="Permalink to this heading"></a></h3>
+<p>There probably exists a base image for your need, almost whatever it is. If you
+web-search e.g. “best docker containers” you will find useful lists of popular
+ones. Here is a customised selection of such a list - with some images we find
+very useful:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://hub.docker.com/_/alpine">Alpine</a> (slim Linux OS)</p></li>
+<li><p><a class="reference external" href="https://hub.docker.com/_/busybox">BusyBox</a> (slim Linux OS with many common Linux utilities)</p></li>
+<li><p><a class="reference external" href="https://hub.docker.com/_/nginx">Nginx</a> (web server)</p></li>
+<li><p><a class="reference external" href="https://hub.docker.com/_/ubuntu">Ubuntu</a> (Linux OS)</p></li>
+<li><p><a class="reference external" href="https://hub.docker.com/_/python">Python</a></p></li>
+<li><p><a class="reference external" href="https://hub.docker.com/_/postgres">PostGreSQL</a> (database)</p></li>
+<li><p><a class="reference external" href="https://hub.docker.com/_/node">Node</a> (web development)</p></li>
+<li><p><a class="reference external" href="https://hub.docker.com/_/mysql">MySQL</a> (database)</p></li>
+<li><p><a class="reference external" href="https://hub.docker.com/r/jupyter/datascience-notebook">Jupyter datascience-notebook</a></p></li>
+</ul>
+<p>Once you have found a suitable base image, you must think about what version to
+chose. You will see that each image has a selection of different versions, so
+which should you chose? We will explore this in the next section.</p>
+</section>
+</section>
+<section id="be-specific">
+<span id="be-specific-label"></span><h2>Be specific<a class="headerlink" href="#be-specific" title="Permalink to this heading"></a></h2>
+<p>One of the main objectives of using images is that the users gets exactly what
+they expect, and everything should just work. The container is after all
+self-contained!</p>
+<p>During development you might want to have “latest” versions of software.  But
+“latest” is a moving target: “latest” today is not the same as “latest” in 2
+years.  And now you can get into problems! Maybe the latest version of your
+base image is not compatible with the other software the image has included.
+Or which you are including. This can spoil the party massively!</p>
+<div class="admonition-take-away-message admonition">
+<p class="admonition-title">Take-away message</p>
+<p>When sharing/publishing a container, try to be as specific as you can! Always specify software versions.</p>
+</div>
+<p>Taking our python image as an example, a more future-proof definition file would specify the base image version as well as the numpy version. Compare these two:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-1-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-1-1-0" name="1-0" role="tab" tabindex="0">With specific versions</button><button aria-controls="panel-1-1-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-1" name="1-1" role="tab" tabindex="-1">Versions are not specified</button></div><div aria-labelledby="tab-1-1-0" class="sphinx-tabs-panel" id="panel-1-1-0" name="1-0" role="tabpanel" tabindex="0"><div class="highlight-singularity notranslate"><div class="highlight"><pre><span></span><span class="k">Bootstrap</span>:<span class="w"> </span>docker
+<span class="hll"><span class="k">From</span>:<span class="w"> </span>python:<span class="m">3.12.7</span>-bookworm
+</span>
+<span class="gh">%files</span>
+<span class="w">    </span>summation.py<span class="w"> </span>/opt
+
+<span class="gh">%runscript</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Got arguments: </span><span class="nv">$*</span><span class="s2">&quot;</span>
+<span class="w">    </span><span class="nb">exec</span><span class="w"> </span>python<span class="w"> </span>/opt/summation.py<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span>
+
+<span class="gh">%post</span>
+<span class="hll"><span class="w">    </span>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">numpy</span><span class="o">==</span><span class="m">1</span>.26.0
+</span></pre></div>
+</div>
+</div><div aria-labelledby="tab-1-1-1" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-1" name="1-1" role="tabpanel" tabindex="0"><div class="highlight-singularity notranslate"><div class="highlight"><pre><span></span><span class="k">Bootstrap</span>:<span class="w"> </span>docker
+<span class="hll"><span class="k">From</span>:<span class="w"> </span>python:latest
+</span>
+<span class="gh">%files</span>
+<span class="w">    </span>summation.py<span class="w"> </span>/opt
+
+<span class="gh">%runscript</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Got arguments: </span><span class="nv">$*</span><span class="s2">&quot;</span>
+<span class="w">    </span><span class="nb">exec</span><span class="w"> </span>python<span class="w"> </span>/opt/summation.py<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span>
+
+<span class="gh">%post</span>
+<span class="hll"><span class="w">    </span>pip<span class="w"> </span>install<span class="w"> </span>numpy
+</span></pre></div>
+</div>
+</div></div>
+<p>Further below we have an exercise where we can practice recognizing future
+problems in container definition files.</p>
+</section>
+<section id="separate-concerns">
+<span id="separate-label"></span><h2>Separate concerns<a class="headerlink" href="#separate-concerns" title="Permalink to this heading"></a></h2>
+<section id="purpose">
+<h3>Purpose<a class="headerlink" href="#purpose" title="Permalink to this heading"></a></h3>
+<p>When creating you image definition file - have a think about what the image should contain based on what purpose it has. Do not be tempted to add software just because it is convenient for general use.</p>
+<p>For instance: an image that is used to run some specific scientific analysis on a specific input type of data may not need your favourite text editor inside. Or that extra python package just in case.</p>
+<p>Slim the image down to just what it needs for the purpose it fulfills. The benefit will be at least two-fold: the image will be lighter meaning it will be quicker to download and have smaller carbon-footprint. But in addition there is less software to potentially get into software dependency problems with. Another benefit: it will be clearer for the user what is the purpose of the image, and how to use it.</p>
+<div class="admonition-stay-to-the-point admonition">
+<p class="admonition-title">Stay to the point</p>
+<ul class="simple">
+<li><p>Try to make your image as specific as possible</p></li>
+<li><p>Only add software that is needed for the specific purpose of the container</p></li>
+</ul>
+</div>
+</section>
+<section id="data">
+<h3>Data<a class="headerlink" href="#data" title="Permalink to this heading"></a></h3>
+<p>The main purpose of a software image is exactly that - to provide software, not datasets. There are several reasons why it is not a good idea to include (potentially large) datasets, here are a few:</p>
+<ul class="simple">
+<li><p>The image could become very heavy</p></li>
+<li><p>The data may better be stored in a suited data registry</p></li>
+<li><p>The data may be different from user to user</p></li>
+<li><p>The data may be sensitive and should only reside in a private and secure computing environment</p></li>
+</ul>
+<p>Instead of shipping the data with the image, let the user bind mount it into the container. Check out the <a class="reference internal" href="../binding_folders/"><span class="doc">Binding folders into your container lesson</span></a> for details.</p>
+<p>Compare the two apptainer definition files and how to run the resulting <code class="docutils literal notranslate"><span class="pre">my_container.sif</span></code> container. The right tab also exemplifies bind-mounting a folder for output data, which is useful in order to access the resulting output data directly from the host server.</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-2-2-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-2-2-0" name="2-0" role="tab" tabindex="0">Image including data</button><button aria-controls="panel-2-2-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-2-2-1" name="2-1" role="tab" tabindex="-1">Image not including data - using bind-mounts</button></div><div aria-labelledby="tab-2-2-0" class="sphinx-tabs-panel" id="panel-2-2-0" name="2-0" role="tabpanel" tabindex="0"><div class="highlight-singularity notranslate"><div class="highlight"><pre><span></span><span class="k">Bootstrap</span>:<span class="w"> </span>docker
+<span class="k">From</span>:<span class="w"> </span>python:<span class="m">3.9</span>-slim
+
+<span class="gh">%files</span>
+<span class="w">   </span>process_data.py<span class="w"> </span>/app/process_data.py
+<span class="hll"><span class="w">   </span>input_data<span class="w"> </span>/app/input_data
+</span>
+<span class="gh">%post</span>
+<span class="w">   </span>mkdir<span class="w"> </span>/app/output_data
+<span class="hll"><span class="w">   </span>chmod<span class="w"> </span><span class="m">777</span><span class="w"> </span>/app/output_data
+</span>
+<span class="gh">%runscript</span>
+<span class="w">   </span>python<span class="w"> </span>/app/process_data.py<span class="w"> </span>/app/input_data<span class="w"> </span>/app/output_data
+
+<span class="gh">%help</span>
+<span class="hll"><span class="w">   </span>Usage:<span class="w"> </span>apptainer<span class="w"> </span>run<span class="w"> </span>--writable-tmpfs<span class="w"> </span>this_container.sif
+</span></pre></div>
+</div>
+</div><div aria-labelledby="tab-2-2-1" class="sphinx-tabs-panel" hidden="true" id="panel-2-2-1" name="2-1" role="tabpanel" tabindex="0"><div class="highlight-singularity notranslate"><div class="highlight"><pre><span></span><span class="k">Bootstrap</span>:<span class="w"> </span>docker
+<span class="k">From</span>:<span class="w"> </span>python:<span class="m">3.9</span>-slim
+
+<span class="gh">%files</span>
+<span class="w">   </span>process_data.py<span class="w"> </span>/app/process_data.py
+
+<span class="gh">%post</span>
+<span class="w">   </span>mkdir<span class="w"> </span>/app/output_data
+<span class="hll"><span class="w">   </span>mkdir<span class="w"> </span>/app/input_data
+</span>
+<span class="gh">%runscript</span>
+<span class="w">   </span>python<span class="w"> </span>/app/process_data.py<span class="w"> </span>/app/input_data<span class="w"> </span>/app/output_data
+
+<span class="gh">%help</span>
+<span class="hll"><span class="w">   </span>Usage:<span class="w"> </span>apptainer<span class="w"> </span>run<span class="w"> </span>--bind<span class="w"> </span>/path/to/host/input:/app/input_data,/path/to/host/output:/app/output_data<span class="w"> </span>this_container.sif
+</span></pre></div>
+</div>
+</div></div>
+<p>That said, there may be reasons why some particular data is better copied into the container. For instance some reference data that stays unchanged and that is needed for all analysis.</p>
+<div class="admonition-data-key-practices admonition">
+<p class="admonition-title">Data key practices</p>
+<ul class="simple">
+<li><p>Avoid copying data into the container unless there are obvious benefits</p></li>
+</ul>
+</div>
+</section>
+</section>
+<section id="document-your-image">
+<span id="document-label"></span><h2>Document your image<a class="headerlink" href="#document-your-image" title="Permalink to this heading"></a></h2>
+<p>In the example above you can see that some documentation is added in the image itself under the <code class="docutils literal notranslate"><span class="pre">%help</span></code> block.  This is not only important for sharing, but also for yourself to help remember how to use the container. See more details in the <a class="reference internal" href="../building_images/#documentation"><span class="std std-ref">Adding documentation to your image</span></a>.</p>
+<div class="admonition-documentation-key-practices admonition">
+<p class="admonition-title">Documentation key practices</p>
+<p>Always add documentation to your image.</p>
+<ul class="simple">
+<li><p>Minimally how to use the container via the <code class="docutils literal notranslate"><span class="pre">%help</span></code> block</p></li>
+<li><p>In addition author, version, description via the <code class="docutils literal notranslate"><span class="pre">%label</span></code> block</p></li>
+</ul>
+</div>
+</section>
+<section id="use-version-control-and-public-registries">
+<span id="version-control-label"></span><h2>Use version control and public registries<a class="headerlink" href="#use-version-control-and-public-registries" title="Permalink to this heading"></a></h2>
+<div class="admonition-key-practices admonition">
+<p class="admonition-title">Key practices</p>
+<ul class="simple">
+<li><p><strong>Track the changes to the definition</strong> file with version control. In practice: Put the definition file on GitHub or GitLab.</p></li>
+<li><p>Make the container image findable by others. In practice: Put the image on a <strong>public registry</strong>.</p></li>
+<li><p><strong>Make sure one can find and inspect the definition file</strong> from the registry. In practice: Link the repo to the public registry.</p></li>
+</ul>
+</div>
+<p>In principle a definition file is enough to build a container image and in
+theory we would not need to share pre-built images. But in practice it is very
+<strong>useful to share the pre-built image as well</strong>. This is because:</p>
+<ul class="simple">
+<li><p>Building a container image can take time and resources.</p></li>
+<li><p>If we were not careful specifying versions, the image might not build again
+in the same way.</p></li>
+<li><p>Some dependencies might not be available anymore.</p></li>
+</ul>
+<p>There are many popular services to share container images and almost every
+big-tech company offers one:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://hub.docker.com/">Docker Hub</a>: Default Docker registry with public/private repositories and CI/CD integration.</p></li>
+<li><p><a class="reference external" href="https://cloud.google.com/container-registry">Google Container Registry (GCR)</a>: GCP service, tightly integrated with Google Cloud services and Kubernetes.</p></li>
+<li><p><a class="reference external" href="https://azure.microsoft.com/en-us/services/container-registry/">Azure Container Registry (ACR)</a>: Fully managed, integrated with Azure services like AKS and DevOps.</p></li>
+<li><p><a class="reference external" href="https://quay.io/">Quay.io</a>: Red Hat service, security scanning, OpenShift/Kubernetes integration, public/private repositories.</p></li>
+<li><p><a class="reference external" href="https://jfrog.com/artifactory/">JFrog Artifactory</a>: Universal artifact repository supporting Docker and other formats, advanced security features.</p></li>
+<li><p><a class="reference external" href="https://goharbor.io/">Harbor</a>: Open-source registry, role-based access control, vulnerability scanning, and image signing.</p></li>
+<li><p><a class="reference external" href="https://www.digitalocean.com/products/container-registry/">DigitalOcean Container Registry</a>: Integrated with DigitalOcean Kubernetes.</p></li>
+<li><p><a class="reference external" href="https://docs.gitlab.com/ee/user/packages/container_registry/">GitLab Container Registry</a>: Built into GitLab, works seamlessly with GitLab CI/CD pipelines.</p></li>
+</ul>
+<p>What many projects do (however, note the warning below):</p>
+<ul class="simple">
+<li><p>Track their container definition files in a public repository on GitHub or GitLab.</p></li>
+<li><p>From these repositories, they build the container images and push them to a public registry (above list).</p></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>A public registry that is free today might not be free tomorrow. Make sure
+you have a backup plan for your images and make sure the image can still be
+found 5 years from now if the service provider changes their pricing model.</p>
+</div>
+<div class="admonition-recommendation-to-guarantee-long-term-availability admonition">
+<p class="admonition-title">Recommendation to “guarantee” long-term availability</p>
+<ul class="simple">
+<li><p>There are no guarantees, however:</p></li>
+<li><p>One of the most stable services is <a class="reference external" href="https://zenodo.org/">Zenodo</a> which
+is an excellent place to publish your container image as supporting
+material for a publication and also get a DOI for it. It is unlikely to
+change pricing for academic use.</p></li>
+<li><p>Make sure to also publish the definition file with it.</p></li>
+</ul>
+</div>
+<p>It is possible to host both the definition file and the image on GitHub:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>You don’t need to host it yourself.</p></li>
+<li><p>The image stays close to its sources and is not on a different service.</p></li>
+<li><p>Anybody can inspect the recipe and how it was built.</p></li>
+<li><p>Every time you make a change to the recipe, it builds a new image.</p></li>
+<li><p>We can practice/demonstrate this in the exercise below.</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="exercises">
+<h2>Exercises<a class="headerlink" href="#exercises" title="Permalink to this heading"></a></h2>
+<div class="admonition-exercise-sharing-1-time-travel-with-containers exercise important admonition" id="exercise-0">
+<p class="admonition-title">Exercise Sharing-1: Time-travel with containers</p>
+<p>Imagine the following situation: A researcher has written and published their research code which
+requires a number of libraries and system dependencies. They ran their code
+on a Linux computer (Ubuntu). One very nice thing they did was to publish
+also a container image with all dependencies included, as well as the
+definition file (below) to create the container image.</p>
+<p>Now we travel 3 years into the future and want to reuse their work and adapt
+it for our data. The container registry where they uploaded the container
+image however no longer exists. But luckily (!) we still have the definition
+file (below). From this we should be able to create a new container image.</p>
+<ul class="simple">
+<li><p>Can you anticipate problems using the definition file here 3 years after its
+creation? Which possible problems can you point out?</p></li>
+<li><p>Discuss possible take-aways for creating more reusable containers.</p></li>
+</ul>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-3-3-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-3-3-0" name="3-0" role="tab" tabindex="0">Python project using virtual environment</button><button aria-controls="panel-3-3-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-3-3-1" name="3-1" role="tab" tabindex="-1">C++ project</button></div><div aria-labelledby="tab-3-3-0" class="sphinx-tabs-panel" id="panel-3-3-0" name="3-0" role="tabpanel" tabindex="0"><div class="highlight-singularity notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">Bootstrap</span>:<span class="w"> </span>docker
+<span class="linenos"> 2</span><span class="k">From</span>:<span class="w"> </span>ubuntu:latest
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="gh">%post</span>
+<span class="linenos"> 5</span><span class="w">    </span><span class="c1"># Set environment variables</span>
+<span class="linenos"> 6</span><span class="w">    </span><span class="nb">export</span><span class="w"> </span><span class="nv">VIRTUAL_ENV</span><span class="o">=</span>/app/venv
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="w">    </span><span class="c1"># Install system dependencies and Python 3</span>
+<span class="linenos"> 9</span><span class="w">    </span>apt-get<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="se">\</span>
+<span class="linenos">10</span><span class="w">    </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>--no-install-recommends<span class="w"> </span><span class="se">\</span>
+<span class="linenos">11</span><span class="w">        </span>gcc<span class="w"> </span><span class="se">\</span>
+<span class="linenos">12</span><span class="w">        </span>libgomp1<span class="w"> </span><span class="se">\</span>
+<span class="linenos">13</span><span class="w">        </span>python3<span class="w"> </span><span class="se">\</span>
+<span class="linenos">14</span><span class="w">        </span>python3-venv<span class="w"> </span><span class="se">\</span>
+<span class="linenos">15</span><span class="w">        </span>python3-distutils<span class="w"> </span><span class="se">\</span>
+<span class="linenos">16</span><span class="w">        </span>python3-pip<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="se">\</span>
+<span class="linenos">17</span><span class="w">    </span>apt-get<span class="w"> </span>clean<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="se">\</span>
+<span class="linenos">18</span><span class="w">    </span>rm<span class="w"> </span>-rf<span class="w"> </span>/var/lib/apt/lists/*
+<span class="linenos">19</span>
+<span class="linenos">20</span><span class="w">    </span><span class="c1"># Set up the virtual environment</span>
+<span class="linenos">21</span><span class="w">    </span>python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span><span class="nv">$VIRTUAL_ENV</span>
+<span class="linenos">22</span><span class="w">    </span>.<span class="w"> </span><span class="nv">$VIRTUAL_ENV</span>/bin/activate
+<span class="linenos">23</span>
+<span class="linenos">24</span><span class="w">    </span><span class="c1"># Install Python libraries</span>
+<span class="linenos">25</span><span class="w">    </span>pip<span class="w"> </span>install<span class="w"> </span>--no-cache-dir<span class="w"> </span>--upgrade<span class="w"> </span>pip<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="se">\</span>
+<span class="linenos">26</span><span class="w">    </span>pip<span class="w"> </span>install<span class="w"> </span>--no-cache-dir<span class="w"> </span>-r<span class="w"> </span>/app/requirements.txt
+<span class="linenos">27</span>
+<span class="linenos">28</span><span class="gh">%files</span>
+<span class="linenos">29</span><span class="w">    </span><span class="c1"># Copy project files</span>
+<span class="linenos">30</span><span class="w">    </span>./requirements.txt<span class="w"> </span>/app/requirements.txt
+<span class="linenos">31</span><span class="w">    </span>./app.py<span class="w"> </span>/app/app.py
+<span class="linenos">32</span><span class="w">    </span><span class="c1"># Copy data</span>
+<span class="linenos">33</span><span class="w">    </span>/home/myself/data<span class="w"> </span>/app/data
+<span class="linenos">34</span><span class="w">    </span><span class="c1"># Workaround to fix dependency on fancylib</span>
+<span class="linenos">35</span><span class="w">    </span>/home/myself/fancylib<span class="w"> </span>/usr/lib/fancylib
+<span class="linenos">36</span>
+<span class="linenos">37</span><span class="gh">%environment</span>
+<span class="linenos">38</span><span class="w">    </span><span class="c1"># Set the environment variables</span>
+<span class="linenos">39</span><span class="w">    </span><span class="nb">export</span><span class="w"> </span><span class="nv">LANG</span><span class="o">=</span>C.UTF-8<span class="w"> </span><span class="nv">LC_ALL</span><span class="o">=</span>C.UTF-8
+<span class="linenos">40</span><span class="w">    </span><span class="nb">export</span><span class="w"> </span><span class="nv">VIRTUAL_ENV</span><span class="o">=</span>/app/venv
+<span class="linenos">41</span>
+<span class="linenos">42</span><span class="gh">%runscript</span>
+<span class="linenos">43</span><span class="w">    </span><span class="c1"># Activate the virtual environment</span>
+<span class="linenos">44</span><span class="w">    </span>.<span class="w"> </span><span class="nv">$VIRTUAL_ENV</span>/bin/activate
+<span class="linenos">45</span><span class="w">    </span><span class="c1"># Run the application</span>
+<span class="linenos">46</span><span class="w">    </span>python<span class="w"> </span>/app/app.py
+</pre></div>
+</div>
+<div class="admonition-solution solution important dropdown admonition" id="solution-0">
+<p class="admonition-title">Solution</p>
+<ul class="simple">
+<li><p>Line 2: “ubuntu:latest” will mean something different 3 years in future.</p></li>
+<li><p>Lines 11-12: The compiler gcc and the library libgomp1 will have evolved.</p></li>
+<li><p>Line 30: The container uses requirements.txt to build the virtual environment but we don’t see
+here what libraries the code depends on.</p></li>
+<li><p>Line 33: Data is copied in from the hard disk of the person who created it. Hopefully we can find the data somewhere.</p></li>
+<li><p>Line 35: The library fancylib has been built outside the container and copied in but we don’t see here how it was done.</p></li>
+<li><p>Python version will be different then and hopefully the code still runs then.</p></li>
+<li><p>Singularity/Apptainer will have also evolved by then. Hopefully this definition file then still works.</p></li>
+<li><p>No help text.</p></li>
+<li><p>No contact address to ask more questions about this file.</p></li>
+<li><p>(Can you find more? Please contribute more points.)</p></li>
+</ul>
+<div class="highlight-singularity notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">Bootstrap</span>:<span class="w"> </span>docker
+<span class="hll"><span class="linenos"> 2</span><span class="k">From</span>:<span class="w"> </span>ubuntu:latest
+</span><span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="gh">%post</span>
+<span class="linenos"> 5</span><span class="w">    </span><span class="c1"># Set environment variables</span>
+<span class="linenos"> 6</span><span class="w">    </span><span class="nb">export</span><span class="w"> </span><span class="nv">VIRTUAL_ENV</span><span class="o">=</span>/app/venv
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="w">    </span><span class="c1"># Install system dependencies and Python 3</span>
+<span class="linenos"> 9</span><span class="w">    </span>apt-get<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="se">\</span>
+<span class="linenos">10</span><span class="w">    </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>--no-install-recommends<span class="w"> </span><span class="se">\</span>
+<span class="hll"><span class="linenos">11</span><span class="w">        </span>gcc<span class="w"> </span><span class="se">\</span>
+</span><span class="hll"><span class="linenos">12</span><span class="w">        </span>libgomp1<span class="w"> </span><span class="se">\</span>
+</span><span class="linenos">13</span><span class="w">        </span>python3<span class="w"> </span><span class="se">\</span>
+<span class="linenos">14</span><span class="w">        </span>python3-venv<span class="w"> </span><span class="se">\</span>
+<span class="linenos">15</span><span class="w">        </span>python3-distutils<span class="w"> </span><span class="se">\</span>
+<span class="linenos">16</span><span class="w">        </span>python3-pip<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="se">\</span>
+<span class="linenos">17</span><span class="w">    </span>apt-get<span class="w"> </span>clean<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="se">\</span>
+<span class="linenos">18</span><span class="w">    </span>rm<span class="w"> </span>-rf<span class="w"> </span>/var/lib/apt/lists/*
+<span class="linenos">19</span>
+<span class="linenos">20</span><span class="w">    </span><span class="c1"># Set up the virtual environment</span>
+<span class="linenos">21</span><span class="w">    </span>python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span><span class="nv">$VIRTUAL_ENV</span>
+<span class="linenos">22</span><span class="w">    </span>.<span class="w"> </span><span class="nv">$VIRTUAL_ENV</span>/bin/activate
+<span class="linenos">23</span>
+<span class="linenos">24</span><span class="w">    </span><span class="c1"># Install Python libraries</span>
+<span class="linenos">25</span><span class="w">    </span>pip<span class="w"> </span>install<span class="w"> </span>--no-cache-dir<span class="w"> </span>--upgrade<span class="w"> </span>pip<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="se">\</span>
+<span class="linenos">26</span><span class="w">    </span>pip<span class="w"> </span>install<span class="w"> </span>--no-cache-dir<span class="w"> </span>-r<span class="w"> </span>/app/requirements.txt
+<span class="linenos">27</span>
+<span class="linenos">28</span><span class="gh">%files</span>
+<span class="linenos">29</span><span class="w">    </span><span class="c1"># Copy project files</span>
+<span class="hll"><span class="linenos">30</span><span class="w">    </span>./requirements.txt<span class="w"> </span>/app/requirements.txt
+</span><span class="linenos">31</span><span class="w">    </span>./app.py<span class="w"> </span>/app/app.py
+<span class="linenos">32</span><span class="w">    </span><span class="c1"># Copy data</span>
+<span class="hll"><span class="linenos">33</span><span class="w">    </span>/home/myself/data<span class="w"> </span>/app/data
+</span><span class="linenos">34</span><span class="w">    </span><span class="c1"># Workaround to fix dependency on fancylib</span>
+<span class="hll"><span class="linenos">35</span><span class="w">    </span>/home/myself/fancylib<span class="w"> </span>/usr/lib/fancylib
+</span><span class="linenos">36</span>
+<span class="linenos">37</span><span class="gh">%environment</span>
+<span class="linenos">38</span><span class="w">    </span><span class="c1"># Set the environment variables</span>
+<span class="linenos">39</span><span class="w">    </span><span class="nb">export</span><span class="w"> </span><span class="nv">LANG</span><span class="o">=</span>C.UTF-8<span class="w"> </span><span class="nv">LC_ALL</span><span class="o">=</span>C.UTF-8
+<span class="linenos">40</span><span class="w">    </span><span class="nb">export</span><span class="w"> </span><span class="nv">VIRTUAL_ENV</span><span class="o">=</span>/app/venv
+<span class="linenos">41</span>
+<span class="linenos">42</span><span class="gh">%runscript</span>
+<span class="linenos">43</span><span class="w">    </span><span class="c1"># Activate the virtual environment</span>
+<span class="linenos">44</span><span class="w">    </span>.<span class="w"> </span><span class="nv">$VIRTUAL_ENV</span>/bin/activate
+<span class="linenos">45</span><span class="w">    </span><span class="c1"># Run the application</span>
+<span class="linenos">46</span><span class="w">    </span>python<span class="w"> </span>/app/app.py
+</pre></div>
+</div>
+</div>
+</div><div aria-labelledby="tab-3-3-1" class="sphinx-tabs-panel" hidden="true" id="panel-3-3-1" name="3-1" role="tabpanel" tabindex="0"><p>This definition files has potential problems 3 years later. Further
+down on this page we show a better and real version.</p>
+<div class="highlight-singularity notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">Bootstrap</span>:<span class="w"> </span>docker
+<span class="linenos"> 2</span><span class="k">From</span>:<span class="w"> </span>ubuntu:latest
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="gh">%post</span>
+<span class="linenos"> 5</span><span class="w">    </span><span class="nb">export</span><span class="w"> </span><span class="nv">DEBIAN_FRONTEND</span><span class="o">=</span>noninteractive
+<span class="linenos"> 6</span><span class="w">    </span>apt-get<span class="w"> </span>update<span class="w"> </span>-y
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="w">    </span>apt<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>git<span class="w"> </span>build-essential<span class="w"> </span>pkg-config
+<span class="linenos"> 9</span><span class="w">    </span>apt<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>libz-dev<span class="w"> </span>libbz2-dev<span class="w"> </span>liblzma-dev<span class="w"> </span>libcurl4-openssl-dev<span class="w"> </span>libssl-dev<span class="w"> </span>libgsl-dev
+<span class="linenos">10</span>
+<span class="linenos">11</span><span class="w">    </span>git<span class="w"> </span>clone<span class="w"> </span>--recursive<span class="w"> </span>https://github.com/someuser/sometool.git
+<span class="linenos">12</span><span class="w">    </span><span class="nb">cd</span><span class="w"> </span>sometool
+<span class="linenos">13</span>
+<span class="linenos">14</span><span class="w">    </span>make
+<span class="linenos">15</span>
+<span class="linenos">16</span><span class="gh">%files</span>
+<span class="linenos">17</span><span class="w">    </span><span class="c1"># Workaround to fix dependency on fancylib</span>
+<span class="linenos">18</span><span class="w">    </span>/home/myself/fancylib<span class="w"> </span>/usr/lib/fancylib
+<span class="linenos">19</span>
+<span class="linenos">20</span><span class="gh">%environment</span>
+<span class="linenos">21</span><span class="w">    </span><span class="nb">export</span><span class="w"> </span><span class="nv">LC_ALL</span><span class="o">=</span>C
+<span class="linenos">22</span>
+<span class="linenos">23</span><span class="gh">%runscript</span>
+<span class="linenos">24</span><span class="w">    </span><span class="nb">export</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span>/sometool:<span class="nv">$PATH</span>
+<span class="linenos">25</span>
+<span class="linenos">26</span><span class="w">    </span><span class="nv">$@</span>
+</pre></div>
+</div>
+<div class="admonition-solution solution important dropdown admonition" id="solution-1">
+<p class="admonition-title">Solution</p>
+<ul class="simple">
+<li><p>Line 2: “ubuntu:latest” will mean something different 3 years in future.</p></li>
+<li><p>Lines 9: The libraries will have evolved.</p></li>
+<li><p>Line 11: We clone a Git repository recursively and that repository might evolve until we build the container image the next time.
+here what libraries the code depends on.</p></li>
+<li><p>Line 18: The library fancylib has been built outside the container and copied in but we don’t see here how it was done.</p></li>
+<li><p>Singularity/Apptainer will have also evolved by then. Hopefully this definition file then still works.</p></li>
+<li><p>No help text.</p></li>
+<li><p>No contact address to ask more questions about this file.</p></li>
+<li><p>(Can you find more? Please contribute more points.)</p></li>
+</ul>
+<div class="highlight-singularity notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">Bootstrap</span>:<span class="w"> </span>docker
+<span class="hll"><span class="linenos"> 2</span><span class="k">From</span>:<span class="w"> </span>ubuntu:latest
+</span><span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="gh">%post</span>
+<span class="linenos"> 5</span><span class="w">    </span><span class="nb">export</span><span class="w"> </span><span class="nv">DEBIAN_FRONTEND</span><span class="o">=</span>noninteractive
+<span class="linenos"> 6</span><span class="w">    </span>apt-get<span class="w"> </span>update<span class="w"> </span>-y
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="w">    </span>apt<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>git<span class="w"> </span>build-essential<span class="w"> </span>pkg-config
+<span class="hll"><span class="linenos"> 9</span><span class="w">    </span>apt<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>libz-dev<span class="w"> </span>libbz2-dev<span class="w"> </span>liblzma-dev<span class="w"> </span>libcurl4-openssl-dev<span class="w"> </span>libssl-dev<span class="w"> </span>libgsl-dev
+</span><span class="linenos">10</span>
+<span class="hll"><span class="linenos">11</span><span class="w">    </span>git<span class="w"> </span>clone<span class="w"> </span>--recursive<span class="w"> </span>https://github.com/someuser/sometool.git
+</span><span class="linenos">12</span><span class="w">    </span><span class="nb">cd</span><span class="w"> </span>sometool
+<span class="linenos">13</span>
+<span class="linenos">14</span><span class="w">    </span>make
+<span class="linenos">15</span>
+<span class="linenos">16</span><span class="gh">%files</span>
+<span class="linenos">17</span><span class="w">    </span><span class="c1"># Workaround to fix dependency on fancylib</span>
+<span class="hll"><span class="linenos">18</span><span class="w">    </span>/home/myself/fancylib<span class="w"> </span>/usr/lib/fancylib
+</span><span class="linenos">19</span>
+<span class="linenos">20</span><span class="gh">%environment</span>
+<span class="linenos">21</span><span class="w">    </span><span class="nb">export</span><span class="w"> </span><span class="nv">LC_ALL</span><span class="o">=</span>C
+<span class="linenos">22</span>
+<span class="linenos">23</span><span class="gh">%runscript</span>
+<span class="linenos">24</span><span class="w">    </span><span class="nb">export</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span>/sometool:<span class="nv">$PATH</span>
+<span class="linenos">25</span>
+<span class="linenos">26</span><span class="w">    </span><span class="nv">$@</span>
+</pre></div>
+</div>
+</div>
+</div></div>
+</div>
+<div class="admonition-exercise-sharing-2-building-a-container-on-github exercise important admonition" id="exercise-1">
+<p class="admonition-title">Exercise Sharing-2: Building a container on GitHub</p>
+<p>You can build a container on GitHub (using GitHub Actions) or GitLab (using
+GitLab CI) and host the image on GitHub/GitLab. This has the following
+advantages:</p>
+<ul class="simple">
+<li><p>You don’t need to host it yourself.</p></li>
+<li><p>The image stays close to its sources and is not on a different service.</p></li>
+<li><p>Anybody can inspect the recipe and how it was built.</p></li>
+<li><p>Every time you make a change to the recipe, it builds a new image.</p></li>
+</ul>
+<p>If you want to try this out:</p>
+<ul class="simple">
+<li><p>Take <a class="reference external" href="https://github.com/bast/container-example">this repository</a> as starting point and inspiration.</p></li>
+<li><p>We don’t need to focus too much on what this container does, but rather <a class="reference external" href="https://github.com/bast/container-example/tree/main/.github/workflows">how it is built</a>.</p></li>
+<li><p>To build a new version, one needs to send a pull request which updates
+the file <code class="docutils literal notranslate"><span class="pre">VERSION</span></code> and modifies the definition file.</p></li>
+<li><p>Using this approach, try to build a very simple container definition
+directly on GitHub where the goal is to have both the definition file
+and the image file in the same place.</p></li>
+</ul>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../gpus/" class="btn btn-neutral float-left" title="Running containers that use GPUs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../services_apps/" class="btn btn-neutral float-right" title="Services and apps" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024-, The contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

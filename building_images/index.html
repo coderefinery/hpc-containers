@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Building Apptainer images &mdash; Container on HPC with Apptainer  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_lesson.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/term_role_formatting.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_rtd_theme_ext_color_contrast.css" />
+
+  
+    <link rel="shortcut icon" href="../_static/coderefinery.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script src="../_static/minipres.js"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="Binding folders into your container" href="../binding_folders/" />
+    <link rel="prev" title="Intro to container images" href="../container_images/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../" class="icon icon-home">
+            Container on HPC with Apptainer
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">The lesson</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro_and_motivation/">Intro to containers (on HPC)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basics_running_containers/">Basics of running containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../container_images/">Intro to container images</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Building Apptainer images</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#pulling-an-existing-image-from-a-container-registry">Pulling an existing image from a container registry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#handling-temporary-layers-needed-by-the-build-process">Handling temporary layers needed by the build process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#creating-an-image-using-a-specification-file">Creating an image using a specification file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#running-additional-installation-commands-during-image-creation">Running additional installation commands during image creation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setting-environment-variables-in-the-image">Setting environment variables in the image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adding-documentation-to-your-image">Adding documentation to your image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#examining-the-container">Examining the container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#additional-definition-file-options">Additional definition file options</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../binding_folders/">Binding folders into your container</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mpi/">MPI programs and containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gpus/">Running containers that use GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sharing/">Sharing reproducible containers</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Extras</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../services_apps/">Services and apps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tips_tricks/">Tips, tricks and frequently asked questions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Exercises</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../verify_installation/">Verify Apptainer Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../first_build/">Building Your First Container</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python_exercise/">Python environment in a container</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">Container on HPC with Apptainer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Building Apptainer images</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/coderefinery/ttt4hpc_containers/blob/main/content/building_images.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="building-apptainer-images">
+<h1>Building Apptainer images<a class="headerlink" href="#building-apptainer-images" title="Permalink to this heading"></a></h1>
+<div class="admonition-objectives objectives admonition" id="objectives-0">
+<p class="admonition-title">Objectives</p>
+<ul class="simple">
+<li><p>Learn how you can build container images</p></li>
+</ul>
+</div>
+<p>In this session we’ll discuss various ways you can create Apptainer images.</p>
+<section id="pulling-an-existing-image-from-a-container-registry">
+<h2>Pulling an existing image from a container registry<a class="headerlink" href="#pulling-an-existing-image-from-a-container-registry" title="Permalink to this heading"></a></h2>
+<p>We have already seen how to pull a
+<a class="reference external" href="https://hub.docker.com/_/python">Python image from Docker Hub</a>.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>apptainer<span class="w"> </span>pull<span class="w"> </span>python.sif<span class="w"> </span>docker://python
+</pre></div>
+</div>
+<p>We could have alternatively used the full registry specification URL:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>apptainer<span class="w"> </span>pull<span class="w"> </span>python.sif<span class="w"> </span>docker://docker.io/library/python:latest
+</pre></div>
+</div>
+<p>The format for these registry specifications is:</p>
+<p><code class="docutils literal notranslate"><span class="pre">docker://REGISTRY_URL/USER_NAMESPACE/IMAGE_NAME:IMAGE_TAG</span></code></p>
+<p>Here <code class="docutils literal notranslate"><span class="pre">docker://</span></code> means that we use a Docker Hub compatible container
+registry. There are other compatible registries such as
+<a class="reference external" href="https://quay.io/">quay</a> and
+<a class="reference external" href="https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry">GitHub container registry</a>.</p>
+<p>You can read the command like this:</p>
+<figure class="align-default" id="id1">
+<img alt="../_images/pull_example.png" src="../_images/pull_example.png" />
+<figcaption>
+<p><span class="caption-text">Figure 1: Pulling an image from a repository</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="handling-temporary-layers-needed-by-the-build-process">
+<h2>Handling temporary layers needed by the build process<a class="headerlink" href="#handling-temporary-layers-needed-by-the-build-process" title="Permalink to this heading"></a></h2>
+<p>When Apptainer creates a <code class="docutils literal notranslate"><span class="pre">.sif</span></code>-image it needs to first download any layers
+it uses for the building. Then it will squash all of these layers to one
+<code class="docutils literal notranslate"><span class="pre">.sif</span></code>-image.</p>
+<p>These are stored in a folder specified by an environment variable
+<code class="docutils literal notranslate"><span class="pre">APPTAINER_CACHEDIR</span></code>. By default, Apptainer will use
+<code class="docutils literal notranslate"><span class="pre">$HOME/.apptainer/cache</span></code>. This can result in you running out of quota
+during the image creation process if the home folder quota is not big.</p>
+<p>You can set the cache directory with:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>mkdir<span class="w"> </span>apptainer_cache
+<span class="gp">$ </span><span class="nb">export</span><span class="w"> </span><span class="nv">APPTAINER_CACHEDIR</span><span class="o">=</span><span class="nv">$PWD</span>/apptainer_cache
+</pre></div>
+</div>
+<p>It is adviced to select a location in some filesystem that has enough space available.
+For instance a type of “scratch” area on your HPC.</p>
+<p>You can check the cache status with:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>apptainer<span class="w"> </span>cache<span class="w"> </span>list
+</pre></div>
+</div>
+<p>and you can clean the cache with:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>apptainer<span class="w"> </span>cache<span class="w"> </span>clean
+</pre></div>
+</div>
+<p>See <a class="reference external" href="https://apptainer.org/docs/user/main/build_env.html#sec-cache">this page</a>
+for more documentation.</p>
+</section>
+<section id="creating-an-image-using-a-specification-file">
+<h2>Creating an image using a specification file<a class="headerlink" href="#creating-an-image-using-a-specification-file" title="Permalink to this heading"></a></h2>
+<p>Let’s say we want to create an apptainer image for the following
+<code class="docutils literal notranslate"><span class="pre">summation.py</span></code>-script:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">argparse</span>
+
+<span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+    <span class="s2">&quot;numbers&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Numbers to sum&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s1">&#39;*&#39;</span>
+<span class="p">)</span>
+<span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+<span class="n">numbers</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">numbers</span>
+
+<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+   <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Sum of numbers was: </span><span class="si">{</span><span class="nb">sum</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+   <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;You did not give me any numbers to sum!&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Let’s create a definition file for this image:</p>
+<div class="highlight-singularity notranslate"><div class="highlight"><pre><span></span><span class="k">Bootstrap</span>:<span class="w"> </span>docker
+<span class="k">From</span>:<span class="w"> </span>python:latest
+
+<span class="gh">%files</span>
+<span class="w">    </span>summation.py<span class="w"> </span>/opt
+
+<span class="gh">%runscript</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Got arguments: </span><span class="nv">$*</span><span class="s2">&quot;</span>
+<span class="w">    </span><span class="nb">exec</span><span class="w"> </span>python<span class="w"> </span>/opt/summation.py<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+<p>In this definition file we specify:</p>
+<ol class="arabic simple">
+<li><p>The bootstrapping method we want to use to build the image.</p></li>
+<li><p>The base image we want to use for bootstrapping.</p></li>
+<li><p>Files we want to copy to the image in the <code class="docutils literal notranslate"><span class="pre">%files</span></code>-block.</p></li>
+<li><p>Commands we want to run when the image is ran in the <code class="docutils literal notranslate"><span class="pre">%runscript</span></code>-block.</p></li>
+</ol>
+<p>Now we can built this image with:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>apptainer<span class="w"> </span>build<span class="w"> </span>my_container.sif<span class="w"> </span>my_container_definition.def
+</pre></div>
+</div>
+<figure class="align-default" id="id2">
+<img alt="../_images/build_example.png" src="../_images/build_example.png" />
+<figcaption>
+<p><span class="caption-text">Figure 2: Building an image from a definition file</span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>After building the image we can test out the image with:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>apptainer<span class="w"> </span>run<span class="w"> </span>my_container.sif<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="m">2</span>
+</pre></div>
+</div>
+<p>This will run the default set of commands specified in the <cite>%runscript</cite> block in
+the Apptainer definition file. The two arguments we send into the
+shell environment of the container, namely the numbers 1 and 2 are used by the
+executable in the runscript.</p>
+<div class="dropdown admonition">
+<p class="admonition-title">Expected result</p>
+<p>Building container should result in a container image
+<code class="docutils literal notranslate"><span class="pre">my_container.sif</span></code> being created.</p>
+<p>Running the container should produce the following output:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>apptainer<span class="w"> </span>run<span class="w"> </span>my_container.sif<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="m">2</span>
+<span class="go">Got arguments: 1 2</span>
+<span class="go">Sum of numbers was: 3</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition-key-points-to-remember admonition">
+<p class="admonition-title">Key points to remember</p>
+<ul class="simple">
+<li><p>Bootstrap settings are analogous to what you would use with
+<code class="docutils literal notranslate"><span class="pre">apptainer</span> <span class="pre">pull</span></code>.</p></li>
+<li><p>The application inside the container could be much more complex.
+By creating a <code class="docutils literal notranslate"><span class="pre">apptainer</span> <span class="pre">run</span></code>-interface via <code class="docutils literal notranslate"><span class="pre">%runscript</span></code>-block
+you can convert a big and complex installation into what is
+basically a single executable.</p></li>
+</ul>
+</div>
+</section>
+<section id="running-additional-installation-commands-during-image-creation">
+<h2>Running additional installation commands during image creation<a class="headerlink" href="#running-additional-installation-commands-during-image-creation" title="Permalink to this heading"></a></h2>
+<p>More often than not, creating an image involves more than
+just using an existing image.</p>
+<p>If you want to run additional installation commands,
+you can do them in a <code class="docutils literal notranslate"><span class="pre">%post</span></code>-block. These commands will
+be run once during the building procedure.</p>
+<p>For example, let’s modify our definition file so that we get an installation
+of <a class="reference external" href="https://numpy.org/">numpy</a>-package in the image:</p>
+<div class="highlight-singularity notranslate"><div class="highlight"><pre><span></span><span class="k">Bootstrap</span>:<span class="w"> </span>docker
+<span class="k">From</span>:<span class="w"> </span>python:latest
+
+<span class="gh">%files</span>
+<span class="w">    </span>summation.py<span class="w"> </span>/opt
+
+<span class="gh">%runscript</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Got arguments: </span><span class="nv">$*</span><span class="s2">&quot;</span>
+<span class="w">    </span><span class="nb">exec</span><span class="w"> </span>python<span class="w"> </span>/opt/summation.py<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span>
+
+<span class="gh">%post</span>
+<span class="w">    </span>pip<span class="w"> </span>install<span class="w"> </span>numpy
+</pre></div>
+</div>
+<p>After re-building the image we can test the numpy installation with:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>apptainer<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>my_container.sif<span class="w"> </span>python<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;import numpy; print(numpy.__version__)&#39;</span>
+</pre></div>
+</div>
+<div class="dropdown admonition">
+<p class="admonition-title">Expected result</p>
+<p>During the build process we should see that the numpy-package is
+being installed.</p>
+<p>Running the container should produce the following output:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>apptainer<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>my_container.sif<span class="w"> </span>python<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;import numpy; print(numpy.__version__)&#39;</span>
+<span class="go">1.26.4</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition-image-building-is-done-as-a-fake-root-user admonition">
+<p class="admonition-title">Image building is done as a fake root-user</p>
+<p>Commands that are run in the <code class="docutils literal notranslate"><span class="pre">%post</span></code> step and in other setup steps
+are run in a state called
+<a class="reference external" href="https://apptainer.org/docs/user/main/fakeroot.html">fakeroot</a> where
+the user looks like the <code class="docutils literal notranslate"><span class="pre">root</span></code>-user inside the container when in reality
+the user is a normal user.</p>
+<p>This means that use of <code class="docutils literal notranslate"><span class="pre">sudo</span></code> is not needed when installing packages via
+package managers.</p>
+<p>When converting installation instructions written for normal
+non-containerized installations to definition files
+one should usually remove <code class="docutils literal notranslate"><span class="pre">sudo</span></code> from the front of commands.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Remember that images should not contain any secrets
+(passwords, sensitive code or data etc.)!</p>
+<p>Anybody who has access to the image can access all files
+in the image.</p>
+</div>
+</section>
+<section id="setting-environment-variables-in-the-image">
+<h2>Setting environment variables in the image<a class="headerlink" href="#setting-environment-variables-in-the-image" title="Permalink to this heading"></a></h2>
+<p>We can also specify that additional environment variables should be set
+when the image is being launched with an <code class="docutils literal notranslate"><span class="pre">%environment</span></code>-block.</p>
+<p>While <code class="docutils literal notranslate"><span class="pre">%runscript</span></code> only applies when we <code class="docutils literal notranslate"><span class="pre">apptainer</span> <span class="pre">run</span></code> the image,
+commands specified in the <code class="docutils literal notranslate"><span class="pre">%environment</span></code>-block will be executed when
+the image is launched.</p>
+<p>Let’s use this opportunity to set the terminal language options
+in the container. Usually containers do not have all available language
+settings installed, so setting these environment variables is very common.</p>
+<div class="highlight-singularity notranslate"><div class="highlight"><pre><span></span><span class="k">Bootstrap</span>:<span class="w"> </span>docker
+<span class="k">From</span>:<span class="w"> </span>python:latest
+
+<span class="gh">%files</span>
+<span class="w">    </span>summation.py<span class="w"> </span>/opt
+
+<span class="gh">%runscript</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Got arguments: </span><span class="nv">$*</span><span class="s2">&quot;</span>
+<span class="w">    </span><span class="nb">exec</span><span class="w"> </span>python<span class="w"> </span>/opt/summation.py<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span>
+
+<span class="gh">%post</span>
+<span class="w">    </span>pip<span class="w"> </span>install<span class="w"> </span>numpy
+
+<span class="gh">%environment</span>
+<span class="w">    </span><span class="nb">export</span><span class="w"> </span><span class="nv">LC_ALL</span><span class="o">=</span>C
+<span class="w">    </span><span class="nb">export</span><span class="w"> </span><span class="nv">LANGUAGE</span><span class="o">=</span>C
+<span class="w">    </span><span class="nb">export</span><span class="w"> </span><span class="nv">LANG</span><span class="o">=</span>C
+</pre></div>
+</div>
+<p>After re-building the image we can test that the environment values is set with:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>apptainer<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>my_container.sif<span class="w"> </span>python<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;import os; print(os.getenv(&quot;LANG&quot;))&#39;</span>
+</pre></div>
+</div>
+<div class="dropdown admonition">
+<p class="admonition-title">Expected result</p>
+<p>After rebuilding the container running the container should produce the following output:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>apptainer<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>my_container.sif<span class="w"> </span>python<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;import os; print(os.getenv(&quot;MYVAR&quot;))&#39;</span>
+<span class="go">yes</span>
+</pre></div>
+</div>
+</div>
+<p>You can also set environment variables when running an image by
+setting <code class="docutils literal notranslate"><span class="pre">APPTAINERENV_MYVAR=myvalue</span></code> outside of the container or
+by giving <code class="docutils literal notranslate"><span class="pre">--env</span> <span class="pre">MYVAR=myvalue</span></code> as a flag to the
+<code class="docutils literal notranslate"><span class="pre">run</span></code>/<code class="docutils literal notranslate"><span class="pre">exec</span></code>/<code class="docutils literal notranslate"><span class="pre">shell</span></code>-command.</p>
+<p>For more info on how to set environment variables when running containers,
+see <a class="reference external" href="https://apptainer.org/docs/user/latest/environment_and_metadata.html">this page</a>
+from Apptainer’s documentation.</p>
+</section>
+<section id="adding-documentation-to-your-image">
+<span id="documentation"></span><h2>Adding documentation to your image<a class="headerlink" href="#adding-documentation-to-your-image" title="Permalink to this heading"></a></h2>
+<p>If you’re planning on sharing your image with other people or you want to
+keep tabs on multiple images you can use labels to mark your image with
+a <code class="docutils literal notranslate"><span class="pre">%labels</span></code>-block.</p>
+<p>You can also add a <code class="docutils literal notranslate"><span class="pre">%help</span></code>-block that will tell users on how to use your
+image.</p>
+<p>Let’s add these blocks to the definition file:</p>
+<div class="highlight-singularity notranslate"><div class="highlight"><pre><span></span><span class="k">Bootstrap</span>:<span class="w"> </span>docker
+<span class="k">From</span>:<span class="w"> </span>python:latest
+
+<span class="gh">%files</span>
+<span class="w">    </span>summation.py<span class="w"> </span>/opt
+
+<span class="gh">%runscript</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Got arguments: </span><span class="nv">$*</span><span class="s2">&quot;</span>
+<span class="w">    </span><span class="nb">exec</span><span class="w"> </span>python<span class="w"> </span>/opt/summation.py<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span>
+
+<span class="gh">%post</span>
+<span class="w">    </span>pip<span class="w"> </span>install<span class="w"> </span>numpy
+
+<span class="gh">%environment</span>
+<span class="w">    </span><span class="nb">export</span><span class="w"> </span><span class="nv">LC_ALL</span><span class="o">=</span>C
+<span class="w">    </span><span class="nb">export</span><span class="w"> </span><span class="nv">LANGUAGE</span><span class="o">=</span>C
+<span class="w">    </span><span class="nb">export</span><span class="w"> </span><span class="nv">LANG</span><span class="o">=</span>C
+
+<span class="gh">%labels</span>
+<span class="w">   </span>Author:<span class="w"> </span>CodeRefinery
+<span class="w">   </span>Version:<span class="w"> </span>v0.0.1
+<span class="w">   </span>Description:<span class="w"> </span>This<span class="w"> </span>is<span class="w"> </span>an<span class="w"> </span>example<span class="w"> </span>image
+
+<span class="gh">%help</span>
+<span class="w">   </span>This<span class="w"> </span>container<span class="w"> </span>sums<span class="w"> </span>up<span class="w"> </span>numbers.
+
+<span class="w">   </span>Example:
+
+<span class="w">      </span>apptainer<span class="w"> </span>run<span class="w"> </span>my_container.sif<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="m">2</span>
+</pre></div>
+</div>
+<p>Let’s check the help message with:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>apptainer<span class="w"> </span>run-help<span class="w"> </span>my_container.sif
+</pre></div>
+</div>
+<div class="dropdown admonition">
+<p class="admonition-title">Expected result</p>
+<p>The output should look something like this:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>apptainer<span class="w"> </span>run-help<span class="w"> </span>my_container.sif
+<span class="go">    This container sums up numbers.</span>
+
+<span class="go">    Example:</span>
+
+<span class="go">       apptainer run my_container.sif 1 2</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="examining-the-container">
+<h2>Examining the container<a class="headerlink" href="#examining-the-container" title="Permalink to this heading"></a></h2>
+<p>Now that we have a container with some software in it we can examine it with</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>apptainer<span class="w"> </span>inspect<span class="w"> </span>my_container.sif
+</pre></div>
+</div>
+<div class="dropdown admonition">
+<p class="admonition-title">Expected result</p>
+<p>The output should look something like this:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>apptainer<span class="w"> </span>inspect<span class="w"> </span>my_container.sif
+<span class="go">Author:: CodeRefinery</span>
+<span class="go">Description:: This is an example image</span>
+<span class="go">Version:: v0.0.1</span>
+<span class="go">org.label-schema.build-arch: amd64</span>
+<span class="go">org.label-schema.build-date: Thursday_25_April_2024_21:45:51_EEST</span>
+<span class="go">org.label-schema.schema-version: 1.0</span>
+<span class="go">org.label-schema.usage.apptainer.version: 1.3.0</span>
+<span class="go">org.label-schema.usage.singularity.deffile.bootstrap: docker</span>
+<span class="go">org.label-schema.usage.singularity.deffile.from: python:latest</span>
+</pre></div>
+</div>
+</div>
+<p>We can also see the image contents with</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>apptainer<span class="w"> </span>sif<span class="w"> </span>list<span class="w"> </span>my_container.sif
+</pre></div>
+</div>
+<div class="dropdown admonition">
+<p class="admonition-title">Expected result</p>
+<p>Output of the command should be something like this:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>apptainer<span class="w"> </span>sif<span class="w"> </span>list<span class="w"> </span>my_container.sif
+<span class="go">------------------------------------------------------------------------------</span>
+<span class="go">ID   |GROUP   |LINK    |SIF POSITION (start-end)  |TYPE</span>
+<span class="go">------------------------------------------------------------------------------</span>
+<span class="go">1    |1       |NONE    |32176-32385               |Def.FILE</span>
+<span class="go">2    |1       |NONE    |32385-34957               |JSON.Generic</span>
+<span class="go">3    |1       |NONE    |34957-35407               |JSON.Generic</span>
+<span class="go">4    |1       |NONE    |36864-394522624           |FS (Squashfs/-System/amd64)</span>
+</pre></div>
+</div>
+</div>
+<p>From the output of the previous command we see that at position 1 of the file we have
+the definition file used to build the image. We can examine that with</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>apptainer<span class="w"> </span>sif<span class="w"> </span>dump<span class="w"> </span><span class="m">1</span><span class="w"> </span>my_container.sif
+</pre></div>
+</div>
+</section>
+<section id="additional-definition-file-options">
+<h2>Additional definition file options<a class="headerlink" href="#additional-definition-file-options" title="Permalink to this heading"></a></h2>
+<p>There are plenty of other sections that can be used in the definition
+file. For a great and comprehensive documentation, see
+<a class="reference external" href="https://apptainer.org/docs/user/main/definition_files.html">Apptainer’s documentation for definition files</a>.</p>
+<dl class="simple">
+<dt>These features include:</dt><dd><ul class="simple">
+<li><p>Creating multiple callable applications in the image</p></li>
+<li><p>Creating services that can be started and stopped</p></li>
+<li><p>Creating tests for the image build</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition-key-points-to-remember admonition">
+<p class="admonition-title">Key points to remember</p>
+<ul class="simple">
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">apptainer</span> <span class="pre">pull</span></code> to pull existing Docker images.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">apptainer</span> <span class="pre">build</span></code> to build custom images from definition files.</p></li>
+<li><p>Do not store secret information in images.</p></li>
+<li><p>There are plenty of additional features provided. Check documentation
+for more info.</p></li>
+</ul>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../container_images/" class="btn btn-neutral float-left" title="Intro to container images" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../binding_folders/" class="btn btn-neutral float-right" title="Binding folders into your container" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024-, The contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

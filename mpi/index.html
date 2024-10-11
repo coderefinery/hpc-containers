@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MPI programs and containers &mdash; Container on HPC with Apptainer  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_lesson.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/term_role_formatting.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_rtd_theme_ext_color_contrast.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/tabs.css" />
+
+  
+    <link rel="shortcut icon" href="../_static/coderefinery.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script src="../_static/minipres.js"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script src="../_static/tabs.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="Running containers that use GPUs" href="../gpus/" />
+    <link rel="prev" title="Binding folders into your container" href="../binding_folders/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../" class="icon icon-home">
+            Container on HPC with Apptainer
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">The lesson</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro_and_motivation/">Intro to containers (on HPC)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basics_running_containers/">Basics of running containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../container_images/">Intro to container images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../building_images/">Building Apptainer images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../binding_folders/">Binding folders into your container</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">MPI programs and containers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#what-to-consider-when-creating-a-container-for-mpi-programs">What to consider when creating a container for MPI programs?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-mpi-works">How MPI works</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-to-use-mpi-with-a-container">How to use MPI with a container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#creating-a-simple-mpi-container">Creating a simple MPI container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#utilizing-the-fast-interconnects">Utilizing the fast interconnects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#abi-compatibility-in-mpi">ABI compatibility in MPI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-on-portability-lammps">Example on portability: LAMMPS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#review-of-this-session">Review of this session</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../gpus/">Running containers that use GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sharing/">Sharing reproducible containers</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Extras</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../services_apps/">Services and apps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tips_tricks/">Tips, tricks and frequently asked questions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Exercises</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../verify_installation/">Verify Apptainer Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../first_build/">Building Your First Container</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python_exercise/">Python environment in a container</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">Container on HPC with Apptainer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">MPI programs and containers</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/coderefinery/ttt4hpc_containers/blob/main/content/mpi.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="mpi-programs-and-containers">
+<h1>MPI programs and containers<a class="headerlink" href="#mpi-programs-and-containers" title="Permalink to this heading"></a></h1>
+<div class="admonition-objectives objectives admonition" id="objectives-0">
+<p class="admonition-title">Objectives</p>
+<ul class="simple">
+<li><p>Learn what complications are involved with MPI containers</p></li>
+<li><p>Learn how to generate a MPI container for your HPC system</p></li>
+</ul>
+</div>
+<section id="what-to-consider-when-creating-a-container-for-mpi-programs">
+<h2>What to consider when creating a container for MPI programs?<a class="headerlink" href="#what-to-consider-when-creating-a-container-for-mpi-programs" title="Permalink to this heading"></a></h2>
+<p>Message Passing Interface (MPI) is a standardized API and a programming
+paradigm where programs can use MPI directives to send messages
+across thousands of processes. It is commonly used in traditional
+HPC computing.</p>
+<p>To handle the scale of the MPI programs the MPI installations
+are typically tied to the high-speed interconnect available in
+the computational cluster and to the queue system that the cluster
+uses.</p>
+<p>This can create the following problems when an MPI program
+is containerized:</p>
+<ol class="arabic simple">
+<li><p>Launching of the MPI job can fail if the program does not
+communicate with the queue system.</p></li>
+<li><p>The MPI communication performance can be bad if the program
+does not utilize the high-speed interconnects correctly.</p></li>
+<li><p>The container can have portability issues when taking it to
+a different cluster with different MPI, queue system or
+interconnect.</p></li>
+</ol>
+<p>To solve these problems we first need to know how MPI works.</p>
+</section>
+<section id="how-mpi-works">
+<h2>How MPI works<a class="headerlink" href="#how-mpi-works" title="Permalink to this heading"></a></h2>
+<p>The launch process for an MPI program works like this:</p>
+<ol class="arabic simple">
+<li><p>A reservation is done in the queue system for some number
+of MPI tasks.</p></li>
+<li><p>When the reservation gets the resources, individual MPI
+programs are launched by the queue system (<code class="docutils literal notranslate"><span class="pre">srun</span></code>) or
+by an MPI launcher (<code class="docutils literal notranslate"><span class="pre">mpirun</span></code>).</p></li>
+<li><p>User’s MPI program calls the MPI librarires it was built
+against.</p></li>
+<li><p>These libraries ask the queue system how many other MPI
+tasks there are.</p></li>
+<li><p>Individual MPI tasks start running the program collectively.
+Communication between tasks is done via fast interconnects.</p></li>
+</ol>
+<figure class="align-default" id="id1">
+<a class="reference internal image-reference" href="../_images/mpi_job_structure.png"><img alt="../_images/mpi_job_structure.png" src="../_images/mpi_job_structure.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-text">Figure 1: How MPI programs launch</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>To make this work with various different queue systems and
+various different interconnects MPI installations often
+utilize Process Management Interface (PMI/PMI2/PMIx) when
+they connect to the queue system and Unified Communication X
+when they connect to the interconnects.</p>
+<figure class="align-default" id="id2">
+<a class="reference internal image-reference" href="../_images/mpi_install_structure.png"><img alt="../_images/mpi_install_structure.png" src="../_images/mpi_install_structure.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-text">Figure 2: How MPI installations are usually constructed</span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="how-to-use-mpi-with-a-container">
+<h2>How to use MPI with a container<a class="headerlink" href="#how-to-use-mpi-with-a-container" title="Permalink to this heading"></a></h2>
+<p>Most common way of running MPI programs in containers is
+to utilize a
+<a class="reference external" href="https://apptainer.org/docs/user/main/mpi.html#hybrid-model">hybrid model</a>,
+where the container contains the same MPI version as the host system.</p>
+<p>When using this model the MPI launcher will call the MPI
+within the container and use it to launch the application.</p>
+<figure class="align-default" id="id3">
+<a class="reference internal image-reference" href="../_images/mpi_job_structure_hybrid.png"><img alt="../_images/mpi_job_structure_hybrid.png" src="../_images/mpi_job_structure_hybrid.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-text">Figure 3: Hybrid MPI job launch</span><a class="headerlink" href="#id3" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>Do note that the MPI inside the container does not necessarily
+know how to utilize the fast interconnects. We’ll talk about
+solving this later.</p>
+</section>
+<section id="creating-a-simple-mpi-container">
+<h2>Creating a simple MPI container<a class="headerlink" href="#creating-a-simple-mpi-container" title="Permalink to this heading"></a></h2>
+<p>Let’s construct an example container that runs a simple
+MPI benchmark from
+<a class="reference external" href="http://mvapich.cse.ohio-state.edu/benchmarks/">OSU Micro-Benchmarks</a>.
+This benchmark suite is useful for testing whether the MPI
+installation works and whether the MPI can utilize the fast
+interconnect.</p>
+<p>Because different sites have different MPI versions the definition
+files differ as well. Pick a definition file for your site.</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">Triton (Aalto)</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">Puhti (CSC)</button><button aria-controls="panel-0-0-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-2" name="0-2" role="tab" tabindex="-1">LUMI (CSC)</button><button aria-controls="panel-0-0-3" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-3" name="0-3" role="tab" tabindex="-1">Sigma2 (Norway)</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><p><a class="reference download internal" download="" href="../_downloads/ff3d6a2935fcb472627a13145369a68b/triton-openmpi.def"><code class="xref download docutils literal notranslate"><span class="pre">triton-openmpi.def</span></code></a>:</p>
+<div class="highlight-singularity notranslate"><div class="highlight"><pre><span></span>Bootstrap: docker
+From: ubuntu:latest
+
+%arguments
+
+  NPROCS=4
+  OPENMPI_VERSION=4.1.6
+  OSU_MICRO_BENCHMARKS_VERSION=7.4
+
+%post
+
+  ### Install OpenMPI dependencies
+
+  apt-get update
+  apt-get install -y wget bash gcc gfortran g++ make file bzip2 ca-certificates libucx-dev
+
+  ### Build OpenMPI
+
+  OPENMPI_VERSION_SHORT=$(echo {{ OPENMPI_VERSION }} | cut -f 1-2 -d &#39;.&#39;)
+  cd /opt
+  mkdir ompi
+  wget -q https://download.open-mpi.org/release/open-mpi/v${OPENMPI_VERSION_SHORT}/openmpi-{{ OPENMPI_VERSION }}.tar.bz2
+  tar -xvf openmpi-{{ OPENMPI_VERSION }}.tar.bz2
+  # Compile and install
+  cd openmpi-{{ OPENMPI_VERSION }}
+  ./configure --prefix=/opt/ompi --with-ucx=/usr
+  make -j{{ NPROCS }}
+  make install
+  cd ..
+  rm -rf openmpi-{{ OPENMPI_VERSION }} openmpi-{{ OPENMPI_VERSION }}.tar.bz2
+
+  ### Build example application
+  
+  export OMPI_DIR=/opt/ompi
+  export PATH=&quot;$OMPI_DIR/bin:$PATH&quot;
+  export LD_LIBRARY_PATH=&quot;$OMPI_DIR/lib:$LD_LIBRARY_PATH&quot;
+
+  # Build osu benchmarks
+  cd /opt
+  wget -q http://mvapich.cse.ohio-state.edu/download/mvapich/osu-micro-benchmarks-{{ OSU_MICRO_BENCHMARKS_VERSION }}.tar.gz
+  tar xf osu-micro-benchmarks-{{ OSU_MICRO_BENCHMARKS_VERSION }}.tar.gz
+  cd osu-micro-benchmarks-{{ OSU_MICRO_BENCHMARKS_VERSION }}
+  ./configure --prefix=/opt/osu-micro-benchmarks CC=/opt/ompi/bin/mpicc CFLAGS=-O3
+  make -j{{ NPROCS }}
+  make install
+  cd ..
+  rm -rf osu-micro-benchmarks-{{ OSU_MICRO_BENCHMARKS_VERSION }} osu-micro-benchmarks-{{ OSU_MICRO_BENCHMARKS_VERSION }}.tar.gz
+
+%environment
+  export OMPI_DIR=/opt/ompi
+  export PATH=&quot;$OMPI_DIR/bin:$PATH&quot;
+  export LD_LIBRARY_PATH=&quot;$OMPI_DIR/lib:$LD_LIBRARY_PATH&quot;
+  export MANPATH=&quot;$OMPI_DIR/share/man:$MANPATH&quot;
+
+%runscript
+  /opt/osu-micro-benchmarks/libexec/osu-micro-benchmarks/mpi/pt2pt/osu_bw
+</pre></div>
+</div>
+<p>To build:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">srun --mem=16G --cpus-per-task=4 --time=01:00:00 apptainer build triton-openmpi.sif triton-openmpi.def</span>
+</pre></div>
+</div>
+<p>To run (some extra parameters are needed to prevent launch errors):</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>module<span class="w"> </span>load<span class="w"> </span>openmpi/4.1.6
+<span class="gp">$ </span><span class="nb">export</span><span class="w"> </span><span class="nv">PMIX_MCA_gds</span><span class="o">=</span><span class="nb">hash</span>
+<span class="gp">$ </span><span class="nb">export</span><span class="w"> </span><span class="nv">UCX_POSIX_USE_PROC_LINK</span><span class="o">=</span>n
+<span class="gp">$ </span><span class="nb">export</span><span class="w"> </span><span class="nv">OMPI_MCA_orte_top_session_dir</span><span class="o">=</span>/tmp/<span class="nv">$USER</span>/openmpi
+<span class="gp">$ </span>srun<span class="w"> </span>--partition<span class="o">=</span>batch-milan<span class="w"> </span>--mem<span class="o">=</span>2G<span class="w"> </span>--nodes<span class="o">=</span><span class="m">2</span>-2<span class="w"> </span>--ntasks-per-node<span class="o">=</span><span class="m">1</span><span class="w"> </span>--time<span class="o">=</span><span class="m">00</span>:10:00<span class="w"> </span>apptainer<span class="w"> </span>run<span class="w"> </span>openmpi-triton.sif
+<span class="go">srun: job 3521915 queued and waiting for resources</span>
+<span class="go">srun: job 3521915 has been allocated resources</span>
+
+<span class="gp"># </span>OSU<span class="w"> </span>MPI<span class="w"> </span>Bandwidth<span class="w"> </span>Test<span class="w"> </span>v7.4
+<span class="gp"># </span>Datatype:<span class="w"> </span>MPI_CHAR.
+<span class="gp"># </span>Size<span class="w">      </span>Bandwidth<span class="w"> </span><span class="o">(</span>MB/s<span class="o">)</span>
+<span class="go">1                       3.98</span>
+<span class="go">2                       8.05</span>
+<span class="go">4                      15.91</span>
+<span class="go">8                      32.03</span>
+<span class="go">16                     64.24</span>
+<span class="go">32                    125.47</span>
+<span class="go">64                    245.52</span>
+<span class="go">128                   469.00</span>
+<span class="go">256                   877.69</span>
+<span class="go">512                  1671.24</span>
+<span class="go">1024                 3218.11</span>
+<span class="go">2048                 5726.91</span>
+<span class="go">4096                 8096.24</span>
+<span class="go">8192                10266.18</span>
+<span class="go">16384               11242.78</span>
+<span class="go">32768               11298.70</span>
+<span class="go">65536               12038.27</span>
+<span class="go">131072              12196.28</span>
+<span class="go">262144              12202.05</span>
+<span class="go">524288              11786.58</span>
+<span class="go">1048576             12258.48</span>
+<span class="go">2097152             12179.43</span>
+<span class="go">4194304             12199.89</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><p><a class="reference download internal" download="" href="../_downloads/69e350fcc7a533a6096e256764f8d27b/puhti-openmpi.def"><code class="xref download docutils literal notranslate"><span class="pre">puhti-openmpi.def</span></code></a>:</p>
+<div class="highlight-singularity notranslate"><div class="highlight"><pre><span></span>Bootstrap: docker
+From: rockylinux:{{ OS_VERSION }}
+
+%arguments
+
+  NPROCS=4
+  OPENMPI_VERSION=4.1.4rc1
+  OSU_MICRO_BENCHMARKS_VERSION=7.4
+  GCC_VERSION=9
+  UCX_VERSION=1.13.0
+  OS_NAME=rhel
+  OS_VERSION=8.6
+  OFED_VERSION=5.6-2.0.9.0
+
+%post
+
+  ### Install OpenMPI dependencies
+
+  # Base tools and newer gcc version
+
+  dnf install -y dnf-plugins-core epel-release
+  dnf config-manager  --set-enabled powertools
+  dnf install -y make gdb wget numactl-devel which
+  dnf -y install gcc-toolset-{{ GCC_VERSION }}
+  source /opt/rh/gcc-toolset-{{ GCC_VERSION }}/enable
+
+  # Enable Mellanox OFED rpm repo
+
+  wget https://www.mellanox.com/downloads/ofed/RPM-GPG-KEY-Mellanox
+  rpm --import RPM-GPG-KEY-Mellanox
+  rm RPM-GPG-KEY-Mellanox
+  cd /etc/yum.repos.d/
+  wget https://linux.mellanox.com/public/repo/mlnx_ofed/{{ OFED_VERSION }}/{{ OS_NAME }}{{ OS_VERSION }}/mellanox_mlnx_ofed.repo
+  cd /
+
+  # Install network library components
+
+  dnf -y install rdma-core ucx-ib-{{ UCX_VERSION }} ucx-devel-{{ UCX_VERSION }} ucx-knem-{{ UCX_VERSION }} ucx-cma-{{ UCX_VERSION }} ucx-rdmacm-{{ UCX_VERSION }}
+
+  ### Install OpenMPI
+
+  dnf -y install openmpi-{{ OPENMPI_VERSION }}
+
+  ### Build example application
+
+  export OMPI_DIR=/usr/mpi/gcc/openmpi-{{ OPENMPI_VERSION }}
+  export PATH=&quot;$OMPI_DIR/bin:$PATH&quot;
+  export LD_LIBRARY_PATH=&quot;$OMPI_DIR/lib:$LD_LIBRARY_PATH&quot;
+
+  # Build osu benchmarks
+  cd /opt
+  wget -q http://mvapich.cse.ohio-state.edu/download/mvapich/osu-micro-benchmarks-{{ OSU_MICRO_BENCHMARKS_VERSION }}.tar.gz
+  tar xf osu-micro-benchmarks-{{ OSU_MICRO_BENCHMARKS_VERSION }}.tar.gz
+  cd osu-micro-benchmarks-{{ OSU_MICRO_BENCHMARKS_VERSION }}
+  ./configure --prefix=/opt/osu-micro-benchmarks CC=mpicc CFLAGS=-O3
+  make -j{{ NPROCS }}
+  make install
+  cd ..
+  rm -rf osu-micro-benchmarks-{{ OSU_MICRO_BENCHMARKS_VERSION }} osu-micro-benchmarks-{{ OSU_MICRO_BENCHMARKS_VERSION }}.tar.gz
+
+%environment
+  export OMPI_DIR=/usr/mpi/gcc/openmpi-{{ OPENMPI_VERSION }}
+  export PATH=&quot;$OMPI_DIR/bin:$PATH&quot;
+  export LD_LIBRARY_PATH=&quot;$OMPI_DIR/lib:$LD_LIBRARY_PATH&quot;
+  export MANPATH=&quot;$OMPI_DIR/share/man:$MANPATH&quot;
+
+%runscript
+  source /opt/rh/gcc-toolset-{{ GCC_VERSION }}/enable
+  /opt/osu-micro-benchmarks/libexec/osu-micro-benchmarks/mpi/pt2pt/osu_bw
+
+</pre></div>
+</div>
+<p>To build:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">apptainer build puhti-openmpi.sif puhti-openmpi.def</span>
+</pre></div>
+</div>
+<p>To run (some extra parameters are needed to prevent error messages):</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>module<span class="w"> </span>load<span class="w"> </span>openmpi/4.1.4
+<span class="gp">$ </span><span class="nb">export</span><span class="w"> </span><span class="nv">PMIX_MCA_gds</span><span class="o">=</span><span class="nb">hash</span>
+<span class="gp">$ </span>srun<span class="w"> </span>--account<span class="o">=</span>project_XXXXXXX<span class="w"> </span>--partition<span class="o">=</span>large<span class="w"> </span>--mem<span class="o">=</span>2G<span class="w"> </span>--nodes<span class="o">=</span><span class="m">2</span>-2<span class="w"> </span>--ntasks-per-node<span class="o">=</span><span class="m">1</span><span class="w"> </span>--time<span class="o">=</span><span class="m">00</span>:10:00<span class="w"> </span>apptainer<span class="w"> </span>run<span class="w"> </span>puhti-openmpi.sif
+<span class="go">srun: job 23736111 queued and waiting for resources</span>
+<span class="go">srun: job 23736111 has been allocated resources</span>
+
+<span class="gp"># </span>OSU<span class="w"> </span>MPI<span class="w"> </span>Bandwidth<span class="w"> </span>Test<span class="w"> </span>v7.4
+<span class="gp"># </span>Datatype:<span class="w"> </span>MPI_CHAR.
+<span class="gp"># </span>Size<span class="w">      </span>Bandwidth<span class="w"> </span><span class="o">(</span>MB/s<span class="o">)</span>
+<span class="go">1                       5.17</span>
+<span class="go">2                      10.47</span>
+<span class="go">4                      20.89</span>
+<span class="go">8                      41.63</span>
+<span class="go">16                     82.00</span>
+<span class="go">32                    166.40</span>
+<span class="go">64                    310.73</span>
+<span class="go">128                   477.56</span>
+<span class="go">256                  1162.51</span>
+<span class="go">512                  2250.29</span>
+<span class="go">1024                 3941.94</span>
+<span class="go">2048                 6174.39</span>
+<span class="go">4096                 8029.47</span>
+<span class="go">8192                10120.93</span>
+<span class="go">16384               10632.41</span>
+<span class="go">32768               10892.60</span>
+<span class="go">65536               11609.92</span>
+<span class="go">131072              11778.05</span>
+<span class="go">262144              12015.96</span>
+<span class="go">524288              11970.93</span>
+<span class="go">1048576             12008.62</span>
+<span class="go">2097152             12050.35</span>
+<span class="go">4194304             12058.36</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-0-0-2" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-2" name="0-2" role="tabpanel" tabindex="0"><p><a class="reference download internal" download="" href="../_downloads/c7c7f903ce66845641c48c1015bb49c9/lumi-mpich.def"><code class="xref download docutils literal notranslate"><span class="pre">lumi-mpich.def</span></code></a>:</p>
+<div class="highlight-singularity notranslate"><div class="highlight"><pre><span></span>bootstrap: docker
+from: ubuntu:latest
+
+%arguments
+
+  NPROCS=4
+  MPICH_VERSION=3.1.4
+  OSU_MICRO_BENCHMARKS_VERSION=7.4
+
+%post
+
+  ### Install MPICH dependencies
+
+  apt-get update
+  apt-get install -y file g++ gcc gfortran make gdb strace wget ca-certificates --no-install-recommends
+
+  # Build MPICH
+
+  wget -q http://www.mpich.org/static/downloads/{{ MPICH_VERSION }}/mpich-{{ MPICH_VERSION }}.tar.gz
+  tar xf mpich-{{ MPICH_VERSION }}.tar.gz
+  cd mpich-{{ MPICH_VERSION }}
+  ./configure --disable-fortran --enable-fast=all,O3 --prefix=/usr
+  make -j{{ NPROCS }}
+  make install
+  ldconfig
+
+  # Build osu benchmarks
+  cd /opt
+  wget -q http://mvapich.cse.ohio-state.edu/download/mvapich/osu-micro-benchmarks-{{ OSU_MICRO_BENCHMARKS_VERSION }}.tar.gz
+  tar xf osu-micro-benchmarks-{{ OSU_MICRO_BENCHMARKS_VERSION }}.tar.gz
+  cd osu-micro-benchmarks-{{ OSU_MICRO_BENCHMARKS_VERSION }}
+  ./configure --prefix=/opt/osu-micro-benchmarks CC=mpicc CFLAGS=-O3
+  make -j{{ NPROCS }}
+  make install
+  cd ..
+  rm -rf osu-micro-benchmarks-{{ OSU_MICRO_BENCHMARKS_VERSION }} osu-micro-benchmarks-{{ OSU_MICRO_BENCHMARKS_VERSION }}.tar.gz
+
+%runscript
+  /opt/osu-micro-benchmarks/libexec/osu-micro-benchmarks/mpi/pt2pt/osu_bw
+</pre></div>
+</div>
+<p>Building images in not allowed on LUMI, so you need to
+build this on your own laptop or some other machine:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">apptainer build lumi-mpich.sif lumi-mpich.def</span>
+</pre></div>
+</div>
+<p>Afterwards copy the image to your work directory in LUMI.</p>
+<p>To use the fast interconnect you need to install
+<code class="docutils literal notranslate"><span class="pre">singularity-bindings</span></code>-module with EasyBuild:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">module load LUMI/23.09 EasyBuild-user</span>
+<span class="go">eb singularity-bindings-system-cpeGNU-23.09-noglibc.eb -r</span>
+</pre></div>
+</div>
+<p>To run the example:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>module<span class="w"> </span>load<span class="w"> </span>LUMI/23.09<span class="w"> </span>EasyBuild-user<span class="w"> </span>singularity-bindings
+<span class="gp">$ </span><span class="nb">export</span><span class="w"> </span><span class="nv">SINGULARITY_BIND</span><span class="o">=</span><span class="nv">$SINGULARITY_BIND</span>,/usr/lib64/libnl-3.so.200
+<span class="gp">$ </span>srun<span class="w"> </span>--account<span class="o">=</span>project_XXXXXXXXX<span class="w"> </span>--partition<span class="o">=</span>dev-g<span class="w"> </span>--mem<span class="o">=</span>2G<span class="w"> </span>--nodes<span class="o">=</span><span class="m">2</span>-2<span class="w"> </span>--ntasks-per-node<span class="o">=</span><span class="m">1</span><span class="w"> </span>--time<span class="o">=</span><span class="m">00</span>:10:00<span class="w"> </span>singularity<span class="w"> </span>run<span class="w"> </span>lumi-mpich.sif
+<span class="go">srun: job 8108520 queued and waiting for resources</span>
+<span class="go">srun: job 8108520 has been allocated resources</span>
+
+<span class="gp"># </span>OSU<span class="w"> </span>MPI<span class="w"> </span>Bandwidth<span class="w"> </span>Test<span class="w"> </span>v7.4
+<span class="gp"># </span>Datatype:<span class="w"> </span>MPI_CHAR.
+<span class="gp"># </span>Size<span class="w">      </span>Bandwidth<span class="w"> </span><span class="o">(</span>MB/s<span class="o">)</span>
+<span class="go">1                       2.03</span>
+<span class="go">2                       4.09</span>
+<span class="go">4                       8.17</span>
+<span class="go">8                      16.23</span>
+<span class="go">16                     32.64</span>
+<span class="go">32                     65.57</span>
+<span class="go">64                    130.49</span>
+<span class="go">128                   260.55</span>
+<span class="go">256                   492.28</span>
+<span class="go">512                   983.37</span>
+<span class="go">1024                 1965.42</span>
+<span class="go">2048                 3924.00</span>
+<span class="go">4096                 7823.52</span>
+<span class="go">8192                14349.54</span>
+<span class="go">16384               17373.03</span>
+<span class="go">32768               18896.90</span>
+<span class="go">65536               20906.04</span>
+<span class="go">131072              21811.68</span>
+<span class="go">262144              22228.01</span>
+<span class="go">524288              22430.80</span>
+<span class="go">1048576             22537.82</span>
+<span class="go">2097152             22592.50</span>
+<span class="go">4194304             22619.96</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-0-0-3" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-3" name="0-3" role="tabpanel" tabindex="0"><p>Follow <a class="reference external" href="https://documentation.sigma2.no/code_development/guides/container_mpi.html">these instructions</a>.</p>
+</div></div>
+</section>
+<section id="utilizing-the-fast-interconnects">
+<h2>Utilizing the fast interconnects<a class="headerlink" href="#utilizing-the-fast-interconnects" title="Permalink to this heading"></a></h2>
+<p>In order to get the fast interconnects to work with the hybrid model
+one can either:</p>
+<ol class="arabic simple">
+<li><p>Install the interconnect drivers into the image and build the MPI to
+use them. This is the normal Hybrid approach described in Figure 3.</p></li>
+<li><p>Mount cluster’s MPI and other network libraries into the image and use
+them instead of the container’s MPI while running the MPI program.
+This is described in Figure 4.</p></li>
+</ol>
+<figure class="align-default" id="id4">
+<a class="reference internal image-reference" href="../_images/mpi_job_structure_bound.png"><img alt="../_images/mpi_job_structure_bound.png" src="../_images/mpi_job_structure_bound.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-text">Figure 4: Container with bound system MPI and network libraries</span><a class="headerlink" href="#id4" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>Below are explanations on how the interconnect libraries were provided.</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-1-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-1-1-0" name="1-0" role="tab" tabindex="0">Triton (Aalto)</button><button aria-controls="panel-1-1-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-1" name="1-1" role="tab" tabindex="-1">Puhti (CSC)</button><button aria-controls="panel-1-1-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-2" name="1-2" role="tab" tabindex="-1">LUMI (CSC)</button><button aria-controls="panel-1-1-3" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-3" name="1-3" role="tab" tabindex="-1">Sigma2 (Norway)</button></div><div aria-labelledby="tab-1-1-0" class="sphinx-tabs-panel" id="panel-1-1-0" name="1-0" role="tabpanel" tabindex="0"><p>The interconnect support was provided by the <code class="docutils literal notranslate"><span class="pre">libucx-dev</span></code>-package that
+provides Infiniband drivers.</p>
+<p><a class="reference download internal" download="" href="../_downloads/ff3d6a2935fcb472627a13145369a68b/triton-openmpi.def"><code class="xref download docutils literal notranslate"><span class="pre">triton-openmpi.def</span></code></a>, line 15:</p>
+<p>The OpenMPI installation was then configured to use these drivers:</p>
+<p><a class="reference download internal" download="" href="../_downloads/ff3d6a2935fcb472627a13145369a68b/triton-openmpi.def"><code class="xref download docutils literal notranslate"><span class="pre">triton-openmpi.def</span></code></a>, line 26:</p>
+<div class="highlight-singularity notranslate"><div class="highlight"><pre><span></span><span class="w">  </span>./configure<span class="w"> </span>--prefix=/opt/ompi<span class="w"> </span>--with-ucx=/usr
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-1-1-1" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-1" name="1-1" role="tabpanel" tabindex="0"><p>The interconnect support is provided by installing drivers from
+Mellanox’s Infiniband driver repository:</p>
+<p><a class="reference download internal" download="" href="../_downloads/69e350fcc7a533a6096e256764f8d27b/puhti-openmpi.def"><code class="xref download docutils literal notranslate"><span class="pre">puhti-openmpi.def</span></code></a>, lines 27-38:</p>
+<div class="highlight-singularity notranslate"><div class="highlight"><pre><span></span><span class="c">  # Enable Mellanox OFED rpm repo</span>
+
+<span class="w">  </span>wget<span class="w"> </span>https://www.mellanox.com/downloads/ofed/RPM-GPG-KEY-Mellanox
+<span class="w">  </span>rpm<span class="w"> </span>--import<span class="w"> </span>RPM-GPG-KEY-Mellanox
+<span class="w">  </span>rm<span class="w"> </span>RPM-GPG-KEY-Mellanox
+<span class="w">  </span>cd<span class="w"> </span>/etc/yum.repos.d/
+<span class="w">  </span>wget<span class="w"> </span>https://linux.mellanox.com/public/repo/mlnx_ofed/{{<span class="w"> </span>OFED_VERSION<span class="w"> </span>}}/{{<span class="w"> </span>OS_NAME<span class="w"> </span>}}{{<span class="w"> </span>OS_VERSION<span class="w"> </span>}}/mellanox_mlnx_ofed.repo
+<span class="w">  </span>cd<span class="w"> </span>/
+
+<span class="c">  # Install network library components</span>
+
+<span class="w">  </span>dnf<span class="w"> </span>-y<span class="w"> </span>install<span class="w"> </span>rdma-core<span class="w"> </span>ucx-ib-{{<span class="w"> </span>UCX_VERSION<span class="w"> </span>}}<span class="w"> </span>ucx-devel-{{<span class="w"> </span>UCX_VERSION<span class="w"> </span>}}<span class="w"> </span>ucx-knem-{{<span class="w"> </span>UCX_VERSION<span class="w"> </span>}}<span class="w"> </span>ucx-cma-{{<span class="w"> </span>UCX_VERSION<span class="w"> </span>}}<span class="w"> </span>ucx-rdmacm-{{<span class="w"> </span>UCX_VERSION<span class="w"> </span>}}
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-1-1-2" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-2" name="1-2" role="tabpanel" tabindex="0"><p>Module <code class="docutils literal notranslate"><span class="pre">singularity-bindings</span></code> mounts the system MPI and network drivers
+into the container:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>module<span class="w"> </span>load<span class="w"> </span>LUMI/23.09<span class="w"> </span>EasyBuild-user<span class="w"> </span>singularity-bindings
+<span class="gp">$ </span><span class="nb">export</span><span class="w"> </span><span class="nv">SINGULARITY_BIND</span><span class="o">=</span><span class="nv">$SINGULARITY_BIND</span>,/usr/lib64/libnl-3.so.200
+<span class="gp">$ </span><span class="nb">echo</span><span class="w"> </span><span class="nv">$SINGULARITY_BIND</span>
+<span class="go">/opt/cray,/var/spool,/etc/host.conf,/etc/hosts,/etc/nsswitch.conf,/etc/resolv.conf,/etc/ssl/openssl.cnf,/run/cxi,/usr/lib64/libbrotlicommon.so.1,/usr/lib64/libbrotlidec.so.1,/usr/lib64/libcrypto.so.1.1,/usr/lib64/libcurl.so.4,/usr/lib64/libcxi.so.1,/usr/lib64/libgssapi_krb5.so.2,/usr/lib64/libidn2.so.0,/usr/lib64/libjansson.so.4,/usr/lib64/libjitterentropy.so.3,/usr/lib64/libjson-c.so.3,/usr/lib64/libk5crypto.so.3,/usr/lib64/libkeyutils.so.1,/usr/lib64/libkrb5.so.3,/usr/lib64/libkrb5support.so.0,/usr/lib64/liblber-2.4.so.2,/usr/lib64/libldap_r-2.4.so.2,/usr/lib64/libnghttp2.so.14,/usr/lib64/libpcre.so.1,/usr/lib64/libpsl.so.5,/usr/lib64/libsasl2.so.3,/usr/lib64/libssh.so.4,/usr/lib64/libssl.so.1.1,/usr/lib64/libunistring.so.2,/usr/lib64/libzstd.so.1,/lib64/libselinux.so.1,,/usr/lib64/libnl-3.so.200</span>
+<span class="gp">$ </span><span class="nb">echo</span><span class="w"> </span><span class="nv">$SINGULARITYENV_LD_LIBRARY_PATH</span>
+<span class="go">/opt/cray/pe/mpich/8.1.27/ofi/gnu/9.1/lib-abi-mpich:/opt/cray/pe/lib64:/opt/cray/libfabric/1.15.2.0/lib64:/opt/cray/xpmem/default/lib64:/usr/lib64:/opt/cray/pe/gcc-libs</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-1-1-3" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-3" name="1-3" role="tabpanel" tabindex="0"><p>Interconnect support is not explicitly installed.</p>
+</div></div>
+</section>
+<section id="abi-compatibility-in-mpi">
+<h2>ABI compatibility in MPI<a class="headerlink" href="#abi-compatibility-in-mpi" title="Permalink to this heading"></a></h2>
+<p>Different MPI installations do not have necessarily have
+application binary interface (ABI) compatibility. This means
+that software built with certain MPI installation does not
+necessarily run with another MPI installation.</p>
+<p>Quite often MPI programs are built with the same version
+of MPI that will be used to run the program. However, in
+containerized applications the runtime MPI version might change
+if an outside MPI is bound into the container.</p>
+<p>This can work as there is some ABI compatibility
+within an MPI family (OpenMPI, MPICH). For more info, see
+<a class="reference external" href="https://docs.open-mpi.org/en/v5.0.x/version-numbering.html">OpenMPI’s page on version compatibility</a>
+and
+<a class="reference external" href="https://www.mpich.org/abi/">MPICH’s ABI Compatibility Initiative</a>.</p>
+<p>There are also projects like
+<a class="reference external" href="https://e4s-cl.readthedocs.io/en/latest/index.html">E4S Container Launcher</a>
+and
+<a class="reference external" href="https://github.com/cea-hpc/wi4mpi">WI4MPI (Wrapper Interface for MPI)</a>
+that aim to bypass this problem by creating a wrapper interfaces
+that the program in the container can be built against. This
+wrapper can then use different MPI implementations during
+runtime.</p>
+</section>
+<section id="example-on-portability-lammps">
+<h2>Example on portability: LAMMPS<a class="headerlink" href="#example-on-portability-lammps" title="Permalink to this heading"></a></h2>
+<p>LAMMPS is a classical molecular dynamics simulation code with a focus
+on materials modeling.</p>
+<p>Let’s build a container with LAMMPS in it:</p>
+<p><a class="reference download internal" download="" href="../_downloads/b2789bd6fc9a1e97d79c827edc887d37/lammps-openmpi.def"><code class="xref download docutils literal notranslate"><span class="pre">lammps-openmpi.def</span></code></a>:</p>
+<div class="highlight-singularity notranslate"><div class="highlight"><pre><span></span>Bootstrap: docker
+From: ubuntu:latest
+
+%arguments
+
+  NPROCS=4
+  OPENMPI_VERSION=4.1.6
+  LAMMPS_VERSION=29Aug2024
+
+%post
+
+  ### Install OpenMPI dependencies
+
+  apt-get update
+  apt-get install -y wget bash gcc gfortran g++ make file bzip2 ca-certificates libucx-dev
+
+  ### Build OpenMPI
+
+  OPENMPI_VERSION_SHORT=$(echo {{ OPENMPI_VERSION }} | cut -f 1-2 -d &#39;.&#39;)
+  cd /opt
+  mkdir ompi
+  wget -q https://download.open-mpi.org/release/open-mpi/v${OPENMPI_VERSION_SHORT}/openmpi-{{ OPENMPI_VERSION }}.tar.bz2
+  tar -xvf openmpi-{{ OPENMPI_VERSION }}.tar.bz2
+  # Compile and install
+  cd openmpi-{{ OPENMPI_VERSION }}
+  ./configure --prefix=/opt/ompi --with-ucx=/usr
+  make -j{{ NPROCS }}
+  make install
+  cd ..
+  rm -rf openmpi-{{ OPENMPI_VERSION }} openmpi-{{ OPENMPI_VERSION }}.tar.bz2
+
+  ### Build example application
+
+  # Install LAMMPS dependencies
+  apt-get install -y cmake
+
+  export OMPI_DIR=/opt/ompi
+  export PATH=&quot;$OMPI_DIR/bin:$PATH&quot;
+  export LD_LIBRARY_PATH=&quot;$OMPI_DIR/lib:$LD_LIBRARY_PATH&quot;
+  export CMAKE_PREFIX_PATH=&quot;$OMPI_DIR:$CMAKE_PREFIX_PATH&quot;
+ 
+  # Build LAMMPS
+  cd /opt
+  wget -q https://download.lammps.org/tars/lammps-{{ LAMMPS_VERSION }}.tar.gz
+  tar xf lammps-{{ LAMMPS_VERSION }}.tar.gz
+  cd lammps-{{ LAMMPS_VERSION }}
+  cmake -S cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/opt/lammps \
+    -DBUILD_MPI=yes \
+    -DBUILD_OMP=yes
+  cmake --build build --parallel {{ NPROCS }} --target install
+  cp -r examples /opt/lammps/examples
+  cd ..
+  rm -rf lammps-{{ LAMMPS_VERSION }} lammps-{{ LAMMPS_VERSION }}.tar.gz
+
+%environment
+  export OMPI_DIR=/opt/ompi
+  export PATH=&quot;$OMPI_DIR/bin:$PATH&quot;
+  export LD_LIBRARY_PATH=&quot;$OMPI_DIR/lib:$LD_LIBRARY_PATH&quot;
+  export MANPATH=&quot;$OMPI_DIR/share/man:$MANPATH&quot;
+
+  export LAMMPS_DIR=/opt/lammps
+  export PATH=&quot;$LAMMPS_DIR/bin:$PATH&quot;
+  export LD_LIBRARY_PATH=&quot;$LAMMPS_DIR/lib:$LD_LIBRARY_PATH&quot;
+  export MANPATH=&quot;$LAMMPS_DIR/share/man:$MANPATH&quot;
+
+%runscript
+  exec /opt/lammps/bin/lmp &quot;$@&quot;
+</pre></div>
+</div>
+<p>Let’s also create a submission script that runs a LAMMPS example
+where an indent will pushes against a material:</p>
+<p><a class="reference download internal" download="" href="../_downloads/89af20c2d98096490dcc145892ed280d/run_lammps_indent.sh"><code class="xref download docutils literal notranslate"><span class="pre">run_lammps_indent.sh</span></code></a>:</p>
+<div class="highlight-slurm notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<span class="kp">#SBATCH --time=00:10:00</span>
+<span class="kp">#SBATCH --mem=2G</span>
+<span class="kp">#SBATCH --nodes=1</span>
+<span class="kp">#SBATCH --ntasks-per-node=4</span>
+<span class="kp">#SBATCH --output=lammps_indent.out</span>
+
+<span class="c1"># Copy example from image</span>
+apptainer<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>lammps-openmpi.sif<span class="w"> </span>cp<span class="w"> </span>-r<span class="w"> </span>/opt/lammps/examples/indent<span class="w"> </span>.
+
+<span class="nb">cd</span><span class="w"> </span>indent
+
+<span class="c1"># Load OpenMPI module</span>
+module<span class="w"> </span>load<span class="w"> </span>openmpi
+
+<span class="c1"># Run simulation</span>
+<span class="nb">srun</span><span class="w"> </span>apptainer<span class="w"> </span>run<span class="w"> </span>../lammps-openmpi.sif<span class="w"> </span>-in<span class="w"> </span><span class="k">in</span>.indent
+</pre></div>
+</div>
+<p>Now this exact same container can be run in both Triton / Puhti that have
+OpenMPI installed because both clusters use Slurm and InfiniBand
+interconnects.</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-2-2-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-2-2-0" name="2-0" role="tab" tabindex="0">Triton (Aalto)</button><button aria-controls="panel-2-2-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-2-2-1" name="2-1" role="tab" tabindex="-1">Puhti (CSC)</button></div><div aria-labelledby="tab-2-2-0" class="sphinx-tabs-panel" id="panel-2-2-0" name="2-0" role="tabpanel" tabindex="0"><p>To build the image:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>srun<span class="w"> </span>--mem<span class="o">=</span>16G<span class="w"> </span>--cpus-per-task<span class="o">=</span><span class="m">4</span><span class="w"> </span>--time<span class="o">=</span><span class="m">01</span>:00:00<span class="w"> </span>apptainer<span class="w"> </span>build<span class="w"> </span>lammps-openmpi.sif<span class="w"> </span>lammps-openmpi.def
+</pre></div>
+</div>
+<p>To run the example:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span><span class="w"> </span><span class="nv">PMIX_MCA_gds</span><span class="o">=</span><span class="nb">hash</span>
+<span class="gp">$ </span><span class="nb">export</span><span class="w"> </span><span class="nv">UCX_POSIX_USE_PROC_LINK</span><span class="o">=</span>n
+<span class="gp">$ </span><span class="nb">export</span><span class="w"> </span><span class="nv">OMPI_MCA_orte_top_session_dir</span><span class="o">=</span>/tmp/<span class="nv">$USER</span>/openmpi
+<span class="gp">$ </span>sbatch<span class="w"> </span>run_lammps_indent.sh
+<span class="gp">$ </span>tail<span class="w"> </span>-n<span class="w"> </span><span class="m">27</span><span class="w"> </span>lammps_indent.out
+<span class="go">Loop time of 0.752293 on 4 procs for 30000 steps with 420 atoms</span>
+
+<span class="go">Performance: 10336396.152 tau/day, 39878.072 timesteps/s, 16.749 Matom-step/s</span>
+<span class="go">99.6% CPU use with 4 MPI tasks x 1 OpenMP threads</span>
+
+<span class="go">MPI task timing breakdown:</span>
+<span class="go">Section |  min time  |  avg time  |  max time  |%varavg| %total</span>
+<span class="go">---------------------------------------------------------------</span>
+<span class="go">Pair    | 0.31927    | 0.37377    | 0.42578    |   7.5 | 49.68</span>
+<span class="go">Neigh   | 0.016316   | 0.020162   | 0.023961   |   2.3 |  2.68</span>
+<span class="go">Comm    | 0.19882    | 0.25882    | 0.31814    |  10.2 | 34.40</span>
+<span class="go">Output  | 0.00033215 | 0.00038609 | 0.00054361 |   0.0 |  0.05</span>
+<span class="go">Modify  | 0.044981   | 0.049941   | 0.054024   |   1.7 |  6.64</span>
+<span class="go">Other   |            | 0.04921    |            |       |  6.54</span>
+
+<span class="go">Nlocal:            105 ave         112 max          98 min</span>
+<span class="go">Histogram: 1 0 1 0 0 0 0 1 0 1</span>
+<span class="go">Nghost:           92.5 ave          96 max          89 min</span>
+<span class="go">Histogram: 1 0 1 0 0 0 0 1 0 1</span>
+<span class="go">Neighs:         892.25 ave        1003 max         788 min</span>
+<span class="go">Histogram: 2 0 0 0 0 0 0 0 1 1</span>
+
+<span class="go">Total # of neighbors = 3569</span>
+<span class="go">Ave neighs/atom = 8.497619</span>
+<span class="go">Neighbor list builds = 634</span>
+<span class="go">Dangerous builds = 0</span>
+<span class="go">Total wall time: 0:00:01</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-2-2-1" class="sphinx-tabs-panel" hidden="true" id="panel-2-2-1" name="2-1" role="tabpanel" tabindex="0"><p>To build the image:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>apptainer<span class="w"> </span>build<span class="w"> </span>lammps-openmpi.sif<span class="w"> </span>lammps-openmpi.def
+</pre></div>
+</div>
+<p>To run the example:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span><span class="w"> </span><span class="nv">PMIX_MCA_gds</span><span class="o">=</span><span class="nb">hash</span>
+<span class="gp">$ </span>sbatch<span class="w"> </span>--account<span class="o">=</span>project_XXXXXXX<span class="w"> </span>--partition<span class="o">=</span>large<span class="w"> </span>run_lammps_indent.sh
+<span class="gp">$ </span>tail<span class="w"> </span>-n<span class="w"> </span><span class="m">27</span><span class="w"> </span>lammps_indent.out
+<span class="go">Loop time of 0.527178 on 4 procs for 30000 steps with 420 atoms</span>
+
+<span class="go">Performance: 14750222.558 tau/day, 56906.723 timesteps/s, 23.901 Matom-step/s</span>
+<span class="go">99.7% CPU use with 4 MPI tasks x 1 OpenMP threads</span>
+
+<span class="go">MPI task timing breakdown:</span>
+<span class="go">Section |  min time  |  avg time  |  max time  |%varavg| %total</span>
+<span class="go">---------------------------------------------------------------</span>
+<span class="go">Pair    | 0.22956    | 0.26147    | 0.28984    |   5.5 | 49.60</span>
+<span class="go">Neigh   | 0.012471   | 0.015646   | 0.018613   |   2.3 |  2.97</span>
+<span class="go">Comm    | 0.13816    | 0.17729    | 0.2192     |   9.3 | 33.63</span>
+<span class="go">Output  | 0.00023943 | 0.00024399 | 0.00025267 |   0.0 |  0.05</span>
+<span class="go">Modify  | 0.03212    | 0.035031   | 0.037378   |   1.2 |  6.65</span>
+<span class="go">Other   |            | 0.0375     |            |       |  7.11</span>
+
+<span class="go">Nlocal:            105 ave         112 max          98 min</span>
+<span class="go">Histogram: 1 0 1 0 0 0 0 1 0 1</span>
+<span class="go">Nghost:           92.5 ave          96 max          89 min</span>
+<span class="go">Histogram: 1 0 1 0 0 0 0 1 0 1</span>
+<span class="go">Neighs:         892.25 ave        1003 max         788 min</span>
+<span class="go">Histogram: 2 0 0 0 0 0 0 0 1 1</span>
+
+<span class="go">Total # of neighbors = 3569</span>
+<span class="go">Ave neighs/atom = 8.497619</span>
+<span class="go">Neighbor list builds = 634</span>
+<span class="go">Dangerous builds = 0</span>
+<span class="go">Total wall time: 0:00:01</span>
+</pre></div>
+</div>
+</div></div>
+</section>
+<section id="review-of-this-session">
+<h2>Review of this session<a class="headerlink" href="#review-of-this-session" title="Permalink to this heading"></a></h2>
+<div class="admonition-key-points-to-remember admonition">
+<p class="admonition-title">Key points to remember</p>
+<ul class="simple">
+<li><p>MPI version should match the version installed to the cluster</p></li>
+<li><p>Cluster MPI module should be loaded for maximum compatibility with job launching</p></li>
+<li><p>Care must be taken to make certain that the container utilizes
+fast interconnects</p></li>
+</ul>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../binding_folders/" class="btn btn-neutral float-left" title="Binding folders into your container" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../gpus/" class="btn btn-neutral float-right" title="Running containers that use GPUs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024-, The contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

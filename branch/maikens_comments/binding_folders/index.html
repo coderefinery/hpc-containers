@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Binding folders into your container &mdash; Container on HPC with Apptainer  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_lesson.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/term_role_formatting.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_rtd_theme_ext_color_contrast.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/tabs.css" />
+
+  
+    <link rel="shortcut icon" href="../_static/coderefinery.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script src="../_static/minipres.js"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="Running containers that use GPUs" href="../gpus/" />
+    <link rel="prev" title="Building Apptainer images" href="../building_images/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../" class="icon icon-home">
+            Container on HPC with Apptainer
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">The lesson</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro_and_motivation/">Intro to containers (on HPC)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basics_running_containers/">Basics of running containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../container_images/">Intro to container images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../building_images/">Building Apptainer images</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Binding folders into your container</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Extras</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gpus/">Running containers that use GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../services_apps/">Services and apps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tips_tricks/">Tips, tricks and frequently asked questions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Exercises</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../verify_installation/">Verify Apptainer Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../first_build/">Building Your First Container</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">Container on HPC with Apptainer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Binding folders into your container</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/coderefinery/ttt4hpc_containers/blob/main/ttt4hpc_containers/content/binding_folders.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="binding-folders-into-your-container">
+<h1>Binding folders into your container<a class="headerlink" href="#binding-folders-into-your-container" title="Permalink to this heading"></a></h1>
+<div class="admonition-objectives objectives admonition" id="objectives-0">
+<p class="admonition-title">Objectives</p>
+<ul class="simple">
+<li><p>Learn how you can bind folders into containers</p></li>
+</ul>
+</div>
+<p>When you launch a program in a container, the program runs in a contained
+environment. The file system in the container might not have the same
+folders structure as the machine that runs the container.</p>
+<p>So, when you want to work on your data, you need to bring it with you into
+this contained world inside the container.</p>
+<p>This is done via method called <strong>mount binding</strong>.</p>
+<p>Binding means that a folder from the host system is mapped into a folder
+inside the container.</p>
+<figure class="align-default" id="id1">
+<img alt="../_images/default_mounts.png" src="../_images/default_mounts.png" />
+<figcaption>
+<p><span class="caption-text">Figure 1: Only some folders are mounted by default</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>By default, <code class="docutils literal notranslate"><span class="pre">$HOME</span></code>, <code class="docutils literal notranslate"><span class="pre">$CWD</span></code> (current working directory)
+<code class="docutils literal notranslate"><span class="pre">/tmp</span></code> and
+<a class="reference external" href="https://apptainer.org/docs/user/main/bind_paths_and_mounts.html#system-defined-bind-paths">few other paths</a>
+are bound to the image.</p>
+<p>If you want to do additional mappings you need to do it by giving an
+extra arguments to the command you’re running.</p>
+<p>The following would bind folder <code class="docutils literal notranslate"><span class="pre">/scratch</span></code> from the host system to
+<code class="docutils literal notranslate"><span class="pre">/scratch</span></code> in the container:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>apptainer<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>--bind<span class="w"> </span>/scratch<span class="w"> </span>example.sif<span class="w"> </span>ls<span class="w"> </span>/scratch
+</pre></div>
+</div>
+<figure class="align-default" id="id2">
+<img alt="../_images/bind_example.png" src="../_images/bind_example.png" />
+<figcaption>
+<p><span class="caption-text">Figure 2: Binding a directory inside a container</span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>Setting <code class="docutils literal notranslate"><span class="pre">--bind</span></code>-argument works for <code class="docutils literal notranslate"><span class="pre">apptainer</span> <span class="pre">run</span></code>- and
+<code class="docutils literal notranslate"><span class="pre">apptainer</span> <span class="pre">shell</span></code>-commands as well.</p>
+<p>You can also bind directories to different places. This is especially
+helpful if, for example. the code in container expects that data
+should be in <code class="docutils literal notranslate"><span class="pre">/data</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>apptainer<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>--bind<span class="w"> </span>/scratch:/data<span class="w"> </span>example.sif<span class="w"> </span>ls<span class="w"> </span>/data
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Bind mounts <strong>are the same folders inside and outside</strong> of the image.</p>
+<p>Deleting file from the folder that you bound inside the image will
+delete the file completely.</p>
+</div>
+<div class="admonition-key-points-to-remember admonition">
+<p class="admonition-title">Key points to remember</p>
+<ul class="simple">
+<li><p>By default only some folders are bound inside the container.</p></li>
+<li><p>You’ll need to manually <code class="docutils literal notranslate"><span class="pre">--bind</span></code>-folders from outside of
+the container if you want to use them inside the container.</p></li>
+<li><p>Bound folders are the same folders inside and outside of the
+container.</p></li>
+</ul>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../building_images/" class="btn btn-neutral float-left" title="Building Apptainer images" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../gpus/" class="btn btn-neutral float-right" title="Running containers that use GPUs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024-, The contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

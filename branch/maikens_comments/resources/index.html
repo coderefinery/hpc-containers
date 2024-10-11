@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resource Limits &mdash; Container on HPC with Apptainer  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_lesson.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/term_role_formatting.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_rtd_theme_ext_color_contrast.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/tabs.css" />
+
+  
+    <link rel="shortcut icon" href="../_static/coderefinery.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script src="../_static/minipres.js"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../" class="icon icon-home">
+            Container on HPC with Apptainer
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">The lesson</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro_and_motivation/">Intro to containers (on HPC)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basics_running_containers/">Basics of running containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../container_images/">Intro to container images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../building_images/">Building Apptainer images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../binding_folders/">Binding folders into your container</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Extras</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gpus/">Running containers that use GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../services_apps/">Services and apps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tips_tricks/">Tips, tricks and frequently asked questions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Exercises</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../verify_installation/">Verify Apptainer Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../first_build/">Building Your First Container</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">Container on HPC with Apptainer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Resource Limits</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/coderefinery/ttt4hpc_containers/blob/main/ttt4hpc_containers/content/resources.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="resource-limits">
+<h1>Resource Limits<a class="headerlink" href="#resource-limits" title="Permalink to this heading"></a></h1>
+<div class="admonition-objectives objectives admonition" id="objectives-0">
+<p class="admonition-title">Objectives</p>
+<ul class="simple">
+<li><p>Understand the importance of managing resource usage within containerized environments on a shared HPC cluster.</p></li>
+<li><p>Learn to set specific CPU and memory limits on an Apptainer container.</p></li>
+<li><p>Develop skills to optimize container performance while preventing resource contention among users.</p></li>
+</ul>
+<p>This demo demonstrates how to set resource limits on an Apptainer container, which is essential in a shared HPC environment to ensure fair usage and prevent any single user or job from monopolizing system resources. Managing these limits helps maintain system stability and improves overall cluster performance, especially during peak usage times.</p>
+</div>
+<div class="admonition-prerequisites prerequisites admonition" id="prerequisites-0">
+<p class="admonition-title">Prerequisites</p>
+<ul class="simple">
+<li><p>Access to an HPC system with Apptainer installed.</p></li>
+<li><p>Basic understanding of system resources like CPU cores and memory.</p></li>
+<li><p>Permissions to run resource-limited jobs on the HPC cluster.</p></li>
+</ul>
+</div>
+<p>Resource limits on containers are crucial in multi-user environments where careful resource management is needed to avoid performance degradation. This tutorial will show you how to configure these settings, which can help in running multiple containerized applications concurrently without impacting each other’s performance.</p>
+<p>First, we’ll set up a simple Apptainer definition file that runs a resource-intensive task, and then apply CPU and memory limits to this container.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example Apptainer definition file for a resource-intensive task</span>
+Bootstrap:<span class="w"> </span>library
+From:<span class="w"> </span>ubuntu:20.04
+
+%post
+<span class="w">    </span>apt-get<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>stress
+
+%runscript
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Starting stress test...&quot;</span>
+<span class="w">    </span>stress<span class="w"> </span>--cpu<span class="w"> </span><span class="m">8</span><span class="w"> </span>--io<span class="w"> </span><span class="m">4</span><span class="w"> </span>--vm<span class="w"> </span><span class="m">2</span><span class="w"> </span>--vm-bytes<span class="w"> </span>256M<span class="w"> </span>--timeout<span class="w"> </span>30s
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Build the container for the stress test</span>
+apptainer<span class="w"> </span>build<span class="w"> </span>stress_container.sif<span class="w"> </span>stress.def
+</pre></div>
+</div>
+<p>This block builds the <code class="docutils literal notranslate"><span class="pre">stress_container.sif</span></code> from the <code class="docutils literal notranslate"><span class="pre">stress.def</span></code> file. It includes the <code class="docutils literal notranslate"><span class="pre">stress</span></code> tool, which is used to generate a controlled load on the system’s resources to demonstrate the effects of CPU and memory limits.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run the container with specific CPU and memory limits</span>
+apptainer<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>--apply-cgroups<span class="w"> </span>/path/to/cgroup_settings.json<span class="w"> </span>stress_container.sif
+</pre></div>
+</div>
+<p>This command runs the <code class="docutils literal notranslate"><span class="pre">stress_container.sif</span></code> container with resource limits specified in a cgroups configuration file. This file (<code class="docutils literal notranslate"><span class="pre">cgroup_settings.json</span></code>) should contain JSON-formatted settings that define the CPU and memory limits for the container, like the following:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;cpu&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;shares&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">512</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;memory&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;limit_in_bytes&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;500M&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>These settings restrict the container to using only a fraction of available CPU resources (<code class="docutils literal notranslate"><span class="pre">shares:</span> <span class="pre">512</span></code>) and limit its memory usage to 500 MB. Adjust these values based on your cluster’s policies and the specific requirements of your workload.</p>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this heading"></a></h2>
+<p>In this tutorial, you’ve learned how to set resource limits for an Apptainer container using cgroups. This approach is vital for managing resource allocation on shared HPC clusters, ensuring that all users and applications can operate effectively without resource contention. By implementing these limits, you can optimize the performance and reliability of containerized applications in a shared environment.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024-, The contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

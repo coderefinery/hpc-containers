@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Running Web Applications &mdash; Container on HPC with Apptainer  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_lesson.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/term_role_formatting.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_rtd_theme_ext_color_contrast.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/tabs.css" />
+
+  
+    <link rel="shortcut icon" href="../_static/coderefinery.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script src="../_static/minipres.js"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../" class="icon icon-home">
+            Container on HPC with Apptainer
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">The lesson</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro_and_motivation/">Intro to containers (on HPC)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basics_running_containers/">Basics of running containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../container_images/">Intro to container images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../building_images/">Building Apptainer images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../binding_folders/">Binding folders into your container</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Extras</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gpus/">Running containers that use GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../services_apps/">Services and apps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tips_tricks/">Tips, tricks and frequently asked questions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Exercises</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../verify_installation/">Verify Apptainer Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../first_build/">Building Your First Container</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">Container on HPC with Apptainer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Running Web Applications</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/coderefinery/ttt4hpc_containers/blob/main/ttt4hpc_containers/content/webapp.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="running-web-applications">
+<h1>Running Web Applications<a class="headerlink" href="#running-web-applications" title="Permalink to this heading"></a></h1>
+<div class="admonition-objectives objectives admonition" id="objectives-0">
+<p class="admonition-title">Objectives</p>
+<ul class="simple">
+<li><p>Understand how to configure and run web applications within Apptainer containers.</p></li>
+<li><p>Learn to set up network settings that allow web applications to run effectively inside containers.</p></li>
+<li><p>Develop skills to leverage container technology for deploying networked applications in an HPC environment.</p></li>
+</ul>
+<p>This demo will show you how to deploy a simple web application inside an Apptainer container, highlighting how to configure network settings to support web services. Running web applications in containers is a common scenario in many fields, including data science and web development, as it allows for scalable, consistent environments that are isolated from the host system.</p>
+</div>
+<div class="admonition-prerequisites prerequisites admonition" id="prerequisites-0">
+<p class="admonition-title">Prerequisites</p>
+<ul class="simple">
+<li><p>Access to an HPC system with Apptainer installed.</p></li>
+<li><p>Basic knowledge of web technologies and network configurations.</p></li>
+<li><p>Familiarity with container networking and security settings.</p></li>
+</ul>
+</div>
+<p>Containers provide a lightweight, efficient means of deploying web applications, ensuring that they run the same way on any system. This is particularly useful in HPC environments where maintaining consistency across numerous nodes is critical. In this demo, you will set up a basic Python web server inside an Apptainer container to explore this functionality.</p>
+<p>First, we’ll create a container definition file that includes a Python web application.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example Apptainer definition file for a Python web server</span>
+Bootstrap:<span class="w"> </span>library
+From:<span class="w"> </span>ubuntu:20.04
+
+%post
+<span class="w">    </span>apt-get<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>python3<span class="w"> </span>python3-pip
+<span class="w">    </span>pip3<span class="w"> </span>install<span class="w"> </span>flask
+<span class="w">    </span>mkdir<span class="w"> </span>/webapp
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;from flask import Flask, request&quot;</span><span class="w"> </span>&gt;<span class="w"> </span>/webapp/app.py
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;app = Flask(__name__)&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>/webapp/app.py
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;@app.route(&#39;/&#39;, methods=[&#39;GET&#39;])&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>/webapp/app.py
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;def home():&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>/webapp/app.py
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;    return &#39;Hello from Flask inside Apptainer!&#39;&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>/webapp/app.py
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;if __name__ == &#39;__main__&#39;:&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>/webapp/app.py
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;    app.run(host=&#39;0.0.0.0&#39;, port=5000)&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>/webapp/app.py
+
+%environment
+<span class="w">    </span><span class="nb">export</span><span class="w"> </span><span class="nv">FLASK_APP</span><span class="o">=</span>/webapp/app.py
+
+%runscript
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Starting the Flask web server...&quot;</span>
+<span class="w">    </span>python3<span class="w"> </span>/webapp/app.py
+</pre></div>
+</div>
+<p>This block constructs the <code class="docutils literal notranslate"><span class="pre">webapp_container.sif</span></code> from the <code class="docutils literal notranslate"><span class="pre">webapp.def</span></code> definition file, which sets up a basic Flask application in the container. The Flask server is configured to listen on all network interfaces at port 5000, allowing external access.</p>
+<p>This command runs the container with network settings that map port 5000 inside the container to port 5000 on the host. This setup allows you to access the Flask web server from outside the container, demonstrating the container’s network capabilities.</p>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this heading"></a></h2>
+<p>In this tutorial, you’ve learned how to set up and run a simple web application within an Apptainer container, configuring it to be accessible over a network. This capability is key for deploying scalable, reproducible web services across different computing environments, making it an essential skill for developers and system administrators working in HPC contexts.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024-, The contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

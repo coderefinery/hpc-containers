@@ -1,0 +1,6 @@
+Bootstrap: docker
+From: pytorch/pytorch:2.2.2-cuda12.1-cudnn8-runtime
+
+%post
+
+  pip install accelerate evaluate datasets scipy scikit-learn transformers

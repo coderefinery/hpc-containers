@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Intro to containers (on HPC) &mdash; Container on HPC with Apptainer  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_lesson.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/term_role_formatting.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_rtd_theme_ext_color_contrast.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/tabs.css" />
+
+  
+    <link rel="shortcut icon" href="../_static/coderefinery.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script src="../_static/minipres.js"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="Basics of running containers" href="../basics_running_containers/" />
+    <link rel="prev" title="Containers on HPC with Apptainer" href="../" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../" class="icon icon-home">
+            Container on HPC with Apptainer
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">The lesson</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Intro to containers (on HPC)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#what-even-is-a-container">What even is a container?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#what-is-the-intended-use-case-of-apptainer">What is the intended use case of Apptainer?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#apptainer-vs-singularity">Apptainer vs. Singularity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#image-sources">Image sources</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../basics_running_containers/">Basics of running containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../container_images/">Intro to container images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../building_images/">Building Apptainer images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../binding_folders/">Binding folders into your container</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Extras</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gpus/">Running containers that use GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../services_apps/">Services and apps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tips_tricks/">Tips, tricks and frequently asked questions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Exercises</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../verify_installation/">Verify Apptainer Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../first_build/">Building Your First Container</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">Container on HPC with Apptainer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Intro to containers (on HPC)</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/coderefinery/ttt4hpc_containers/blob/main/ttt4hpc_containers/content/intro_and_motivation.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="intro-to-containers-on-hpc">
+<h1>Intro to containers (on HPC)<a class="headerlink" href="#intro-to-containers-on-hpc" title="Permalink to this heading"></a></h1>
+<div class="admonition-objectives objectives admonition" id="objectives-0">
+<p class="admonition-title">Objectives</p>
+<ul class="simple">
+<li><p>Understand the basic logic and terms behind container technology</p></li>
+<li><p>Learn about the possible use cases for containers on HPC clusters</p></li>
+</ul>
+</div>
+<section id="what-even-is-a-container">
+<h2>What even is a container?<a class="headerlink" href="#what-even-is-a-container" title="Permalink to this heading"></a></h2>
+<p>Containers take their name from shipping containers:</p>
+<figure class="align-default" id="id1">
+<img alt="https://upload.wikimedia.org/wikipedia/commons/3/36/Shipping_container%2C_Bellarena_-_geograph.org.uk_-_1859736.jpg" src="https://upload.wikimedia.org/wikipedia/commons/3/36/Shipping_container%2C_Bellarena_-_geograph.org.uk_-_1859736.jpg" />
+<figcaption>
+<p><span class="caption-text">Figure 1: A shipping container in its natural habitat</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>This analogue is based on the idea is that containers have a barrier
+between the insides of the container and outside of the container.
+This makes shipping them between ports easy.</p>
+<p>Based on this analogue one might think that the container is just a
+storage format. It is that as well: containers are stored in container
+images (more on this in a later chapter).</p>
+<p>Instead it is a way of running <strong>an application in a self-contained
+environment with all the tools that this specific application needs</strong>.</p>
+<p>More traditional container launchers like Docker, Podman and Kubernetes
+also manage containers’ resource usage, networking and various other aspects.
+When using Apptainer, we do not need to worry about these features.</p>
+<div class="dropdown admonition">
+<p class="admonition-title">More technical information on how traditional containers work</p>
+<p>Traditional containers use
+<a class="reference external" href="https://en.wikipedia.org/wiki/Linux_namespaces">linux namespaces</a>
+when they implement various features. These features include:</p>
+<ul class="simple">
+<li><p><strong>Creating a separate process identifier (PID) namespace:</strong>
+This means that process id’s are not shared in the container and on
+the host.</p></li>
+<li><p><strong>Creating a virtual network for the containers:</strong>
+Container runtimes such as docker often create virtual network
+interfaces that the containers can use to communicate like actual
+virtual machines.</p></li>
+<li><p><strong>Limiting container resources:</strong>
+Container runtimes usually limit container resource usage
+(CPU usage, RAM usage) via Linux control groups (cgroups).</p></li>
+</ul>
+<p>Apptainer does none of these as it is meant to be run as a normal
+user and not as a superuser.</p>
+<p>Apptainer does use
+<a class="reference external" href="https://apptainer.org/docs/user/latest/security.html#setuid-user-namespaces">user namespaces</a>
+for launching the container without giving the user additional privileges.</p>
+</div>
+<p>Let’s consider the following case:</p>
+<ol class="arabic simple">
+<li><p>User installs and runs an application on a their home computer</p></li>
+<li><p>They want to run the exact same application on their HPC cluster</p></li>
+<li><p>The operating system / available software is different on the HPC cluster</p></li>
+<li><p>Even if the program runs, it is necessarily not the <strong>exact same program</strong> as operating system has changed</p></li>
+</ol>
+<figure class="align-default" id="id2">
+<img alt="../_images/normal_application.png" src="../_images/normal_application.png" />
+<figcaption>
+<p><span class="caption-text">Figure 2: Without containers, your program uses libraries from the host system</span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>With containers the user would run the exact same container on both systems:</p>
+<figure class="align-default" id="id3">
+<img alt="../_images/containerized_application.png" src="../_images/containerized_application.png" />
+<figcaption>
+<p><span class="caption-text">Figure 3: With containers, your program uses libraries from the container image</span><a class="headerlink" href="#id3" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<div class="admonition-key-points-to-remember admonition">
+<p class="admonition-title">Key points to remember</p>
+<p>Containers are a way of launching applications in a self-contained
+environment with their own OS and program libraries.</p>
+<p>The filesystem used by containers is stored in container images. We’ll talk
+more on container images later.</p>
+<dl class="simple">
+<dt>Remember that the word container can refer to:</dt><dd><ul class="simple">
+<li><p>a running container with it’s own environment</p></li>
+<li><p>the container image that defines the container environment</p></li>
+</ul>
+</dd>
+</dl>
+</div>
+</section>
+<section id="what-is-the-intended-use-case-of-apptainer">
+<h2>What is the intended use case of Apptainer?<a class="headerlink" href="#what-is-the-intended-use-case-of-apptainer" title="Permalink to this heading"></a></h2>
+<p>Apptainer is meant for running complex applications in various systems such
+as HPC systems in a reproducible and portable way.</p>
+<p>There are many uses, but here are some example:</p>
+<ul class="simple">
+<li><p>Installing an application that has installation instructions designed for a specific operating system different than the one you are on.</p></li>
+<li><p>Creating a self-contained application that can be used as a part of your
+workflow in multiple different systems and can easily be shared with colleagues</p></li>
+<li><p>Creating a finished application that can be shared with your paper</p></li>
+<li><p>Reducing the amount of files needed to install an application by putting
+all files in the image (especially useful for Python environments)</p></li>
+</ul>
+</section>
+<section id="apptainer-vs-singularity">
+<h2>Apptainer vs. Singularity<a class="headerlink" href="#apptainer-vs-singularity" title="Permalink to this heading"></a></h2>
+<p>Singularity started as an open source project from Lawrence Berkeley National
+Laboratory in 2015. In 2018 a company called Sylabs was founded to provide
+commercial support for sites that use it.</p>
+<p>In 2021 the project joined Linux Foundation and was renamed Apptainer.</p>
+<p>Sylabs is still present and they maintain their own fork of the project called
+SingulartyCE.</p>
+<p>For more info, see the
+<a class="reference external" href="https://en.wikipedia.org/wiki/Singularity_(software)">Singularity wikipedia article</a>.</p>
+<div class="admonition-key-points-to-remember admonition">
+<p class="admonition-title">Key points to remember</p>
+<p>Your site might be running Singularity, SingularityCE or Apptainer.</p>
+<p>In most cases the user interface is completely the same.</p>
+<p>If you’re running <code class="docutils literal notranslate"><span class="pre">singularity</span></code> you can just rename any
+<code class="docutils literal notranslate"><span class="pre">apptainer</span></code>-commands to <code class="docutils literal notranslate"><span class="pre">singularity</span></code>.</p>
+</div>
+</section>
+<section id="image-sources">
+<h2>Image sources<a class="headerlink" href="#image-sources" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Shipping container, Bellarena by Rossographer, <a class="reference external" href="https://creativecommons.org/licenses/by-sa/2.0">CC BY-SA 2.0</a>, via <a class="reference external" href="https://commons.wikimedia.org/wiki/File:Shipping_container,_Bellarena_-_geograph.org.uk_-_1859736.jpg">Wikimedia Commons</a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../" class="btn btn-neutral float-left" title="Containers on HPC with Apptainer" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../basics_running_containers/" class="btn btn-neutral float-right" title="Basics of running containers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024-, The contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

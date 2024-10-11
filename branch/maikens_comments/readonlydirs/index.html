@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Container Security Features &mdash; Container on HPC with Apptainer  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_lesson.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/term_role_formatting.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_rtd_theme_ext_color_contrast.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/tabs.css" />
+
+  
+    <link rel="shortcut icon" href="../_static/coderefinery.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script src="../_static/minipres.js"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../" class="icon icon-home">
+            Container on HPC with Apptainer
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">The lesson</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro_and_motivation/">Intro to containers (on HPC)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basics_running_containers/">Basics of running containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../container_images/">Intro to container images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../building_images/">Building Apptainer images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../binding_folders/">Binding folders into your container</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Extras</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gpus/">Running containers that use GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../services_apps/">Services and apps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tips_tricks/">Tips, tricks and frequently asked questions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Exercises</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../verify_installation/">Verify Apptainer Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../first_build/">Building Your First Container</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">Container on HPC with Apptainer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Container Security Features</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/coderefinery/ttt4hpc_containers/blob/main/ttt4hpc_containers/content/readonlydirs.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="container-security-features">
+<h1>Container Security Features<a class="headerlink" href="#container-security-features" title="Permalink to this heading"></a></h1>
+<div class="admonition-objectives objectives admonition" id="objectives-0">
+<p class="admonition-title">Objectives</p>
+<ul class="simple">
+<li><p>Understand Apptainer’s security model and its implications for HPC environments.</p></li>
+<li><p>Learn how to bind host directories to a container as read-only to prevent unauthorized changes.</p></li>
+<li><p>Develop the ability to securely configure containers to protect sensitive data and maintain system integrity.</p></li>
+</ul>
+<p>This demo explores the security features of Apptainer, with a focus on how to bind host directories as read-only within a container. Apptainer’s ability to integrate securely into HPC systems makes it an invaluable tool for managing containerized applications in a multi-user environment. By making directories read-only, you can prevent unintended or malicious modifications to the host system from within the container, thus enhancing the security and stability of your computational infrastructure.</p>
+</div>
+<div class="admonition-prerequisites prerequisites admonition" id="prerequisites-0">
+<p class="admonition-title">Prerequisites</p>
+<ul class="simple">
+<li><p>Access to an HPC system with Apptainer installed.</p></li>
+<li><p>Basic knowledge of Linux filesystem permissions and container security concerns.</p></li>
+</ul>
+</div>
+<p>Containers can significantly streamline the deployment and management of applications, but they also introduce new security challenges. Apptainer’s security features, such as read-only bindings, are designed to mitigate these risks by strictly controlling how containers interact with the host filesystem.</p>
+<p>In this demo, we will create a container that includes tools for inspecting its environment, and then demonstrate the security implications of read-only host directory bindings.</p>
+<p>First, we will prepare a simple environment inside the container that attempts to write to a bound directory, showing the effect of the read-only property.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create an example host directory and a simple text file</span>
+mkdir<span class="w"> </span>/home/user/example_dir
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;This is a host file&quot;</span><span class="w"> </span>&gt;<span class="w"> </span>/home/user/example_dir/hostfile.txt
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example Apptainer definition file with security settings</span>
+Bootstrap:<span class="w"> </span>library
+From:<span class="w"> </span>ubuntu:20.04
+
+%post
+<span class="w">    </span>apt-get<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>nano
+
+%runscript
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Trying to modify the host file from within the container...&quot;</span>
+<span class="w">    </span>nano<span class="w"> </span>/home/user/example_dir/hostfile.txt
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Build the container with basic tools</span>
+apptainer<span class="w"> </span>build<span class="w"> </span>security_container.sif<span class="w"> </span>security.def
+</pre></div>
+</div>
+<p>This block builds the <code class="docutils literal notranslate"><span class="pre">security_container.sif</span></code> from the definition file <code class="docutils literal notranslate"><span class="pre">security.def</span></code>, which includes installing Nano, a simple text editor, to demonstrate file editing within the container.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run the container with a read-only bind to the host directory</span>
+apptainer<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>--bind<span class="w"> </span>/home/user/example_dir:/home/user/example_dir:ro<span class="w"> </span>security_container.sif<span class="w"> </span>/bin/bash
+</pre></div>
+</div>
+<p>This command runs the container and binds the <code class="docutils literal notranslate"><span class="pre">/home/user/example_dir</span></code> directory from the host as read-only inside the container. When you try to modify <code class="docutils literal notranslate"><span class="pre">hostfile.txt</span></code> using Nano from within the container, you will see that the system prevents any changes, illustrating the effectiveness of read-only bindings for protecting host resources.</p>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this heading"></a></h2>
+<p>In this tutorial, you’ve explored key security features of Apptainer, focusing on read-only bindings of host directories. This technique is crucial for preventing unauthorized changes to the host filesystem from within containers, thereby safeguarding the integrity of both the host and the containerized applications. By implementing these security measures, you can enhance the overall resilience and stability of your HPC infrastructure against both unintentional errors and malicious attacks.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024-, The contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

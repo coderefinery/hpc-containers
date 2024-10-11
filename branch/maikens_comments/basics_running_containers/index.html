@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Basics of running containers &mdash; Container on HPC with Apptainer  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_lesson.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/term_role_formatting.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_rtd_theme_ext_color_contrast.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/tabs.css" />
+
+  
+    <link rel="shortcut icon" href="../_static/coderefinery.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script src="../_static/minipres.js"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="Intro to container images" href="../container_images/" />
+    <link rel="prev" title="Intro to containers (on HPC)" href="../intro_and_motivation/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../" class="icon icon-home">
+            Container on HPC with Apptainer
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">The lesson</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro_and_motivation/">Intro to containers (on HPC)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Basics of running containers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#different-ways-you-can-run-your-containers">Different ways you can run your containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-to-read-apptainer-commands">How to read Apptainer commands?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#obtaining-a-container-from-container-registry">Obtaining a container from container registry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#running-the-container">Running the container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#launching-an-interactive-shell-in-the-container">Launching an interactive shell in the container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#running-a-single-program-from-the-container">Running a single program from the container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#review-of-this-session">Review of this session</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../container_images/">Intro to container images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../building_images/">Building Apptainer images</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../binding_folders/">Binding folders into your container</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Extras</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gpus/">Running containers that use GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../services_apps/">Services and apps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tips_tricks/">Tips, tricks and frequently asked questions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Exercises</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../verify_installation/">Verify Apptainer Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../first_build/">Building Your First Container</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">Container on HPC with Apptainer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Basics of running containers</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/coderefinery/ttt4hpc_containers/blob/main/ttt4hpc_containers/content/basics_running_containers.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="basics-of-running-containers">
+<h1>Basics of running containers<a class="headerlink" href="#basics-of-running-containers" title="Permalink to this heading"></a></h1>
+<div class="admonition-objectives objectives admonition" id="objectives-0">
+<p class="admonition-title">Objectives</p>
+<ul class="simple">
+<li><p>Learn what methods are available to run a container</p></li>
+</ul>
+</div>
+<section id="different-ways-you-can-run-your-containers">
+<h2>Different ways you can run your containers<a class="headerlink" href="#different-ways-you-can-run-your-containers" title="Permalink to this heading"></a></h2>
+<p>You can run your container in multiple different ways:</p>
+<ul class="simple">
+<li><p>You can run the container as a single application</p></li>
+<li><p>You can get an interactive terminal in the container</p></li>
+<li><p>You can run an application from within the container</p></li>
+</ul>
+<p>We’ll cover these ways in individual sections below.</p>
+</section>
+<section id="how-to-read-apptainer-commands">
+<h2>How to read Apptainer commands?<a class="headerlink" href="#how-to-read-apptainer-commands" title="Permalink to this heading"></a></h2>
+<p>Apptainer’s commands can sometimes have multiple flags
+which can make it hard to parse the command line.</p>
+<p>A typical apptainer command has:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">apptainer</span></code> is at the start because we use the
+Apptainer client to run the commands.</p></li>
+<li><p>A subcommand (like <code class="docutils literal notranslate"><span class="pre">pull</span></code>, <code class="docutils literal notranslate"><span class="pre">build</span></code>, <code class="docutils literal notranslate"><span class="pre">exec</span></code>, <code class="docutils literal notranslate"><span class="pre">run</span></code> etc.)
+that tells which Apptainer feature we want to use.</p></li>
+<li><p>Often after the subcommand we have the name of the image we
+want to use.</p></li>
+<li><p>At the end we might have additional commands that Apptainer
+ignores but are to be digested by the application that the container itself is running.</p></li>
+</ol>
+<p>For legibility reasons many commands in this lesson are highlighted
+in this format:</p>
+<figure class="align-default" id="id1">
+<a class="reference internal image-reference" href="../_images/apptainer_example.png"><img alt="../_images/apptainer_example.png" src="../_images/apptainer_example.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-text">Figure 1: How apptainer-commands are highlighted</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>For the comprehensive list of client commands, see
+<a class="reference external" href="https://apptainer.org/docs/user/latest/cli.html">Apptainer CLI reference page</a>.</p>
+</section>
+<section id="obtaining-a-container-from-container-registry">
+<h2>Obtaining a container from container registry<a class="headerlink" href="#obtaining-a-container-from-container-registry" title="Permalink to this heading"></a></h2>
+<p>For these examples let’s use a
+<a class="reference external" href="https://hub.docker.com/_/python">Python image from Docker Hub</a>.</p>
+<p>For now let’s just consider it as an application we want
+to use and that this application is available in Docker Hub.</p>
+<p>Let’s create the container image with the following command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>apptainer<span class="w"> </span>pull<span class="w"> </span>python.sif<span class="w"> </span>docker://python
+</pre></div>
+</div>
+<p>We’ll talk about container images and image building later on.
+For now it is enough to know that the file <code class="docutils literal notranslate"><span class="pre">python.sif</span></code> contains
+a Python installation.</p>
+</section>
+<section id="running-the-container">
+<h2>Running the container<a class="headerlink" href="#running-the-container" title="Permalink to this heading"></a></h2>
+<p>Running the container means that we run some specific program
+that the image creator has set to be the default program for this image.</p>
+<p>When we run the container we will execute a so-called entry script
+or runscript that contains commands specified by the image creators.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Remember to only run containers from sources that you trust.</p>
+</div>
+<p>Let’s run the Python container image:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>apptainer<span class="w"> </span>run<span class="w"> </span>python.sif
+</pre></div>
+</div>
+<div class="dropdown admonition">
+<p class="admonition-title">Expected result</p>
+<p>We get a Python interpreter running in the container:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>apptainer<span class="w"> </span>run<span class="w"> </span>python.sif
+<span class="go">Python 3.12.3 (main, Apr 10 2024, 14:35:18) [GCC 12.2.0] on linux</span>
+<span class="go">Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+</div>
+<p>You should read the command line like this:</p>
+<figure class="align-default" id="id2">
+<a class="reference internal image-reference" href="../_images/run_example.png"><img alt="../_images/run_example.png" src="../_images/run_example.png" style="width: 367.0px; height: 196.0px;" /></a>
+<figcaption>
+<p><span class="caption-text">Figure 2: A simple run command</span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>This syntax might seem self-evident, but in more complex use cases we will give
+additional flags to various parts of the command.</p>
+</section>
+<section id="launching-an-interactive-shell-in-the-container">
+<h2>Launching an interactive shell in the container<a class="headerlink" href="#launching-an-interactive-shell-in-the-container" title="Permalink to this heading"></a></h2>
+<p>We can launch an interactive shell in a container with
+<code class="docutils literal notranslate"><span class="pre">apptainer</span> <span class="pre">shell</span></code>-command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>apptainer<span class="w"> </span>shell<span class="w"> </span>python.sif
+</pre></div>
+</div>
+<div class="dropdown admonition">
+<p class="admonition-title">Expected result</p>
+<p>We get a <code class="docutils literal notranslate"><span class="pre">bash</span></code> terminal running in the container:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>apptainer<span class="w"> </span>shell<span class="w"> </span>python.sif
+<span class="go">Apptainer&gt; echo $SHELL</span>
+<span class="go">/bin/bash</span>
+</pre></div>
+</div>
+</div>
+<p>You should read the command line like this:</p>
+<figure class="align-default" id="id3">
+<a class="reference internal image-reference" href="../_images/shell_example.png"><img alt="../_images/shell_example.png" src="../_images/shell_example.png" style="width: 375.0px; height: 196.0px;" /></a>
+<figcaption>
+<p><span class="caption-text">Figure 3: Launch a shell in a container</span><a class="headerlink" href="#id3" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="running-a-single-program-from-the-container">
+<h2>Running a single program from the container<a class="headerlink" href="#running-a-single-program-from-the-container" title="Permalink to this heading"></a></h2>
+<p>We can launch a single program in a container with
+<code class="docutils literal notranslate"><span class="pre">apptainer</span> <span class="pre">exec</span></code>-command.</p>
+<p>The Python container is based on a Debian Linux distribution.
+Let’s check the Debian version in the container:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>apptainer<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>python.sif<span class="w"> </span>cat<span class="w"> </span>/etc/debian_version
+</pre></div>
+</div>
+<div class="dropdown admonition">
+<p class="admonition-title">Expected result</p>
+<p>With the command we print the contents of the
+<code class="docutils literal notranslate"><span class="pre">/etc/debian_version</span></code>-file:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>apptainer<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>python.sif<span class="w"> </span>cat<span class="w"> </span>/etc/debian_version
+<span class="go">12.5</span>
+</pre></div>
+</div>
+</div>
+<p>You should read the command line like this:</p>
+<figure class="align-default" id="id4">
+<a class="reference internal image-reference" href="../_images/exec_example.png"><img alt="../_images/exec_example.png" src="../_images/exec_example.png" style="width: 671.0px; height: 196.0px;" /></a>
+<figcaption>
+<p><span class="caption-text">Figure 4: Launch a program in a container</span><a class="headerlink" href="#id4" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="review-of-this-session">
+<h2>Review of this session<a class="headerlink" href="#review-of-this-session" title="Permalink to this heading"></a></h2>
+<div class="admonition-key-points-to-remember admonition">
+<p class="admonition-title">Key points to remember</p>
+<ul class="simple">
+<li><p>You can run the containers default program/application/set-of-commands with <code class="docutils literal notranslate"><span class="pre">apptainer</span> <span class="pre">run</span> <span class="pre">my_image.sif</span></code></p></li>
+<li><p>You can start an interactive shell in a container with <code class="docutils literal notranslate"><span class="pre">apptainer</span> <span class="pre">shell</span> <span class="pre">my_image.sif</span></code></p></li>
+<li><p>You can execute a single program in a container with <code class="docutils literal notranslate"><span class="pre">apptainer</span> <span class="pre">exec</span> <span class="pre">my_image.sif</span> <span class="pre">my_program</span> <span class="pre">arg1</span> <span class="pre">arg2</span></code></p></li>
+</ul>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../intro_and_motivation/" class="btn btn-neutral float-left" title="Intro to containers (on HPC)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../container_images/" class="btn btn-neutral float-right" title="Intro to container images" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024-, The contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
