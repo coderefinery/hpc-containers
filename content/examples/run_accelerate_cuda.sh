@@ -5,7 +5,7 @@
 #SBATCH --gpus-per-task=2
 #SBATCH --cpus-per-task=12
 #SBATCH --time=00:10:00
-#SBATCH --output=accelerate_run_parallel.out
+#SBATCH --output=accelerate_cuda.out
 
 export OMP_NUM_THREADS=$(( $SLURM_CPUS_PER_TASK / $SLURM_GPUS_ON_NODE ))
 

@@ -101,9 +101,9 @@ and installs a few missing Python packages:
 
 Submission script that launches the container looks like this:
 
-:download:`run_accelerate_parallel.sh </examples/run_accelerate_parallel.sh>`:
+:download:`run_accelerate_cuda.sh </examples/run_accelerate_cuda.sh>`:
 
-.. literalinclude:: /examples/run_accelerate_parallel.sh
+.. literalinclude:: /examples/run_accelerate_cuda.sh
    :language: slurm
 
 .. tabs::
@@ -120,8 +120,9 @@ Submission script that launches the container looks like this:
 
       .. code-block:: console
 
-         $ sbatch run_accelerate_parallel.sh
-         $ cat accelerate_run.out 
+         $ wget https://raw.githubusercontent.com/huggingface/accelerate/refs/heads/main/examples/nlp_example.py
+         $ sbatch run_accelerate_cuda.sh
+         $ cat accelerate_cuda.out 
          Some weights of BertForSequenceClassification were not initialized from the model checkpoint at bert-base-cased and are newly initialized: ['classifier.bias', 'classifier.weight']
          You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
          You're using a BertTokenizerFast tokenizer. Please note that with a fast tokenizer, using the `__call__` method is faster than using a method to encode the text followed by a call to the `pad` method to get a padded encoding.
