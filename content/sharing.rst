@@ -443,8 +443,8 @@ Exercises
 
    If you want to try this out:
 
-   - Take `this repository <https://github.com/bast/html2pdf>`_ as starting point and inspiration.
-   - Don't focus too much on what this container does, but rather `how it is built <https://github.com/bast/html2pdf/tree/main/.github/workflows>`_.
+   - Take `this repository <https://github.com/bast/container-example>`_ as starting point and inspiration.
+   - We don't need to focus too much on what this container does, but rather `how it is built <https://github.com/bast/container-example/tree/main/.github/workflows>`_.
    - To build a new version, one needs to send a pull request which updates
      the file ``VERSION`` and modifies the definition file.
    - Using this approach, try to build a very simple container definition
