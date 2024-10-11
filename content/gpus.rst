@@ -22,11 +22,9 @@ When using NVIDIA's GPUs that use the CUDA-framework the flag is ``--nv``.
 
 As an example, let's get a CUDA-enabled PyTorch-image:
 
-:download:`accelerate_cuda.def </examples/accelerate_cuda.def>`:
+.. code-block:: console
 
-.. literalinclude:: /examples/accelerate-cuda.def
-   :language: singularity
-
+   $ apptainer pull pytorch-cuda.sif docker://docker.io/pytorch/pytorch:2.2.2-cuda12.1-cudnn8-runtime
 
 Now when we launch the image, we can give the image GPU access with
 
